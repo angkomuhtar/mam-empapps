@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@slices/*": ["./src/applications/slices/*"],
+      "@actions/*": ["./src/applications/actions/*"],
+      "@screens/*": ["./src/presentation/screens/*"],
+      "@components/*": ["./src/presentation/components/*"],
+
+      "@navigation/*": ["./src/navigation/*"],
+      "@stores/*": ["./src/stores/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@images/*": ["./assets/images/*"]
+    }
+  }
+}
