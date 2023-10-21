@@ -8,7 +8,6 @@ import {apiSlice} from '../../../applications/slices/api.slice';
 import {useFocusEffect} from '@react-navigation/native';
 
 const History = ({navigation}) => {
-  // const {data: history, isLoading} = useGetClockQuery();
   const [trigger, {data: history, isLoading}, lastPromiseInfo] =
     apiSlice.endpoints.getClock.useLazyQuery();
   const dispatch = useDispatch();
@@ -51,7 +50,6 @@ const History = ({navigation}) => {
   // console.log('im here >>>', result);
 
   const onRefresh = () => {
-    // dispatch(apiSlice.endpoints.getClockQuery);
     trigger();
   };
 
@@ -73,35 +71,38 @@ const History = ({navigation}) => {
         }
         className=""
       />
-      {isLoading && <Loading />}
-      <VStack flex={1}>
-        {!isLoading && history && (
-          <FlatList
-            data={history}
-            showsVerticalScrollIndicator={false}
-            refreshControl={
-              <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
-            }
-            ListEmptyComponent={() => {
-              return (
-                <Text className="font-sans text-center font-semibold">
-                  No Data
-                </Text>
-              );
-            }}
-            renderItem={({item}) => (
-              <HistoryCard
-                date={item.date}
-                status={item.status}
-                checkin={item.clock_in}
-                checkout={item.clock_out}
-              />
-            )}
-            ListFooterComponent={() => <VStack h={10} />}
-            keyExtractor={item => item.id}
-          />
-        )}
-      </VStack>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <VStack flex={1}>
+          {!isLoading && history && (
+            <FlatList
+              data={history}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+              }
+              ListEmptyComponent={() => {
+                return (
+                  <Text className="font-sans text-center font-semibold">
+                    No Data
+                  </Text>
+                );
+              }}
+              renderItem={({item}) => (
+                <HistoryCard
+                  date={item.date}
+                  status={item.status}
+                  checkin={item.clock_in}
+                  checkout={item.clock_out}
+                />
+              )}
+              ListFooterComponent={() => <VStack h={10} />}
+              keyExtractor={item => item.id}
+            />
+          )}
+        </VStack>
+      )}
     </View>
   );
 };

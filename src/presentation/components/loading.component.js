@@ -11,15 +11,15 @@ const Loading = () => {
       style={{height: Dimensions.get('screen').height}}>
       <LottieView
         style={{
-          height: 200,
+          height: 150,
           width: '100%',
         }}
-        source={require('../assets/images/plane.json')}
+        source={require('../assets/images/truck.json')}
         autoPlay
         loop
       />
       <Text
-        className="font-semibold text-lg text-primary-900 -mt-16"
+        className="font-semibold text-lg text-primary-900 -mt-5"
         style={{fontFamily: 'Montserrat-Bold'}}>
         Mohon Tunggu
       </Text>

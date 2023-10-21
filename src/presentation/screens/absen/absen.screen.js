@@ -69,8 +69,8 @@ const Absen = ({navigation}) => {
   });
   const [trigger, {data: today, isLoading}] =
     apiSlice.endpoints.getToday.useLazyQuery();
-  const {data: shift} = useGetShiftQuery();
-  const {data: ab_location} = useGetAbsenLocationQuery();
+  const {data: shift, isLoading: shiftLoading} = useGetShiftQuery();
+  const {data: ab_location, isLoading: locLoading} = useGetAbsenLocationQuery();
   const [setClockIn, {isLoading: postLoading}] = useSetClockInMutation();
 
   const getCurrent = () => {
@@ -277,7 +277,9 @@ const Absen = ({navigation}) => {
   );
   return (
     <View className="flex-1 relative">
-      {(postLoading || isLoading || loading) && <Loading />}
+      {(postLoading || isLoading || loading || shiftLoading || locLoading) && (
+        <Loading />
+      )}
       <Alert
         visible={alert.show}
         type={alert.type}
