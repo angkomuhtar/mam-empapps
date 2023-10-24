@@ -29,12 +29,12 @@ const LeaveConfirmCard = () => {
           <View className="justify-center">
             <Text
               style={{fontFamily: 'Inter-Light'}}
-              className="text-xs capitalize mb-2">
+              className="text-xs capitalize mb-2 text-primary-950">
               Leslie Alexander
             </Text>
             <Text
               style={{fontFamily: 'Inter-SemiBold'}}
-              className="text-sm capitalize ">
+              className="text-sm capitalize text-primary-950 ">
               {moment().format('MMM DD, YYYY')} -{' '}
               {moment().add('5', 'd').format('MMM DD, YYYY')}
             </Text>

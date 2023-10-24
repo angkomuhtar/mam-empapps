@@ -20,5 +20,7 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+<string>Allow access to the photo library for selecting images</string>
 </dict>
 </plist>

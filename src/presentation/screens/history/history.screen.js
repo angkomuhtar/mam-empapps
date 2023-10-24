@@ -6,6 +6,7 @@ import HistoryCard from '@components/history-card-component';
 import {useDispatch} from 'react-redux';
 import {apiSlice} from '../../../applications/slices/api.slice';
 import {useFocusEffect} from '@react-navigation/native';
+import Empty from '../../components/empty.comnponent';
 
 const History = ({navigation}) => {
   const [trigger, {data: history, isLoading}, lastPromiseInfo] =
@@ -82,13 +83,11 @@ const History = ({navigation}) => {
               refreshControl={
                 <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
               }
-              ListEmptyComponent={() => {
-                return (
-                  <Text className="font-sans text-center font-semibold">
-                    No Data
-                  </Text>
-                );
-              }}
+              ListEmptyComponent={() => (
+                <View className="pt-44">
+                  <Empty />
+                </View>
+              )}
               renderItem={({item}) => (
                 <HistoryCard
                   date={item.date}

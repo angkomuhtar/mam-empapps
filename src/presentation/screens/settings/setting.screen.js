@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Pressable} from 'react-native';
 import React from 'react';
 import Layout from '../../components/layout.component';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -7,6 +7,7 @@ import {useGetProfileQuery} from '@slices/user.slice';
 import {useDispatch} from 'react-redux';
 import Header from '../../components/navigation/header.component';
 import {logout} from '../../../applications/actions/auth.action';
+import ReactNativeVersionInfo from 'react-native-version-info';
 
 const ButtonB = ({text, icon, onPress}) => (
   <TouchableOpacity
@@ -45,13 +46,18 @@ const Setting = () => {
             }
           />
         </View>
-        <VStack className="justify-center py-4 items-center ">
-          <Avatar
-            size="2xl"
-            className="bg-transparent"
-            source={require('../../assets/images/avatar.png')}>
-            MM
-          </Avatar>
+        <VStack className="justify-center py-4 px-5 items-center ">
+          <VStack className="relative">
+            <Avatar
+              size="2xl"
+              className="bg-transparent"
+              source={require('../../assets/images/avatar.png')}>
+              MM
+            </Avatar>
+            <TouchableOpacity className="bg-primary-500 self-start p-2 rounded-full absolute bottom-0 right-0">
+              <Icon name="camera-reverse" size={20} color="#fff" />
+            </TouchableOpacity>
+          </VStack>
           <Text
             style={{fontFamily: 'Inter-Bold'}}
             className="text-lg mt-4 text-primary-950">
@@ -67,6 +73,17 @@ const Setting = () => {
             className="text-xs text-primary-950">
             {users?.employee?.position.position}
           </Text>
+
+          <TouchableOpacity
+            className="flex-row space-x-2 bg-primary-500 w-full py-3 justify-center items-center rounded-md mt-5"
+            onPress={() => console.log()}>
+            <Text
+              className="text-primary-50 text-base"
+              style={{fontFamily: 'Inter-SemiBold'}}>
+              Edit Profile
+            </Text>
+            <Icon name="pencil-sharp" color="#fff" size={20} />
+          </TouchableOpacity>
         </VStack>
         <View className="p-5 pb-10">
           <VStack className="space-y-2 bg-white px-4 rounded-lg border-2 border-primary-100/50">
@@ -77,8 +94,8 @@ const Setting = () => {
                 alert();
               }}
             />
-            <ButtonB icon="ios-card-outline" text="Data Pengguna" />
-            <ButtonB icon="ios-tv-outline" text="Data karyawan" />
+            <ButtonB icon="ios-key-outline" text="Ganti Password" />
+            {/* <ButtonB icon="ios-tv-outline" text="Data karyawan" /> */}
             <ButtonB icon="trail-sign-outline" text="Term & Condition" />
             <ButtonB icon="shield-checkmark-outline" text="Privacy Policy" />
             <TouchableOpacity
@@ -101,6 +118,12 @@ const Setting = () => {
             </TouchableOpacity>
           </VStack>
         </View>
+
+        <Text
+          className="text-primary-950/70 text-center py-14"
+          style={{fontFamily: 'Montserrat-Bold'}}>
+          Mitra Abadi Mahakam - EmpApps v{ReactNativeVersionInfo.appVersion}
+        </Text>
       </ScrollView>
     </Layout>
   );

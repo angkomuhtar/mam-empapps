@@ -12,12 +12,12 @@ const LeaveCard = () => {
           <View className="justify-center flex-1">
             <Text
               style={{fontFamily: 'Inter-Light'}}
-              className="text-xs capitalize mb-2">
+              className="text-xs capitalize mb-2 text-primary-950">
               Tanggal
             </Text>
             <Text
               style={{fontFamily: 'Inter-SemiBold'}}
-              className="text-sm capitalize ">
+              className="text-sm capitalize text-primary-950 ">
               {moment().format('MMM DD, YYYY')} -{' '}
               {moment().add('5', 'd').format('MMM DD, YYYY')}
             </Text>
@@ -32,26 +32,38 @@ const LeaveCard = () => {
         </HStack>
         <HStack className="space-x-2 mt-4">
           <View className="flex-1">
-            <Text className="text-xs mb-2" style={{fontFamily: 'Inter-Light'}}>
+            <Text
+              className="text-xs mb-2 text-primary-950"
+              style={{fontFamily: 'Inter-Light'}}>
               jumlah hari
             </Text>
-            <Text style={{fontFamily: 'Inter-Medium'}} className="text-md">
+            <Text
+              style={{fontFamily: 'Inter-Medium'}}
+              className="text-md text-primary-950">
               3 Hari
             </Text>
           </View>
           <View className="flex-1">
-            <Text className="text-xs mb-2" style={{fontFamily: 'Inter-Light'}}>
+            <Text
+              className="text-xs mb-2 text-primary-950"
+              style={{fontFamily: 'Inter-Light'}}>
               jenis Izin
             </Text>
-            <Text style={{fontFamily: 'Inter-Medium'}} className="text-md">
+            <Text
+              style={{fontFamily: 'Inter-Medium'}}
+              className="text-md text-primary-950">
               Izin Sakit
             </Text>
           </View>
           <View className="flex-1">
-            <Text className="text-xs mb-2" style={{fontFamily: 'Inter-Light'}}>
+            <Text
+              className="text-xs mb-2 text-primary-950"
+              style={{fontFamily: 'Inter-Light'}}>
               atasan
             </Text>
-            <Text style={{fontFamily: 'Inter-Medium'}} className="text-md">
+            <Text
+              style={{fontFamily: 'Inter-Medium'}}
+              className="text-md text-primary-950">
               Martin
             </Text>
           </View>

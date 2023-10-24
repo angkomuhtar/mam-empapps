@@ -5,18 +5,23 @@ import {
   ScrollView,
   Dimensions,
   Image,
+  Pressable,
+  Modal,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Avatar, Button, HStack, VStack} from 'native-base';
 import Header from '@components/navigation/header.component';
 import {goBack} from '@utils/RootNavigation';
 import moment from 'moment';
 import DetailValue from '../../components/detail-value.component';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import DetailImage from '../../components/detail-image.component';
 
 const LeaveDetails = ({route}) => {
   const height = Dimensions.get('screen').height;
   const {reviewer} = route.params;
+
   return (
     <VStack className="min-h-screen p-5">
       <Header
@@ -46,12 +51,12 @@ const LeaveDetails = ({route}) => {
                 <View className="justify-center">
                   <Text
                     style={{fontFamily: 'Inter-SemiBold'}}
-                    className="text-lg capitalize ">
+                    className="text-lg capitalize  text-primary-950">
                     Lesley AlexaNDER
                   </Text>
                   <Text
                     style={{fontFamily: 'Inter-Light'}}
-                    className="text-md capitalize mb-2">
+                    className="text-md capitalize mb-2 text-primary-950">
                     PENGRAJIN KAYU
                   </Text>
                 </View>
@@ -65,8 +70,8 @@ const LeaveDetails = ({route}) => {
           <DetailValue
             label="Tanggal"
             value={[
-              moment().format('dddd, DD MMM YY'),
-              moment().add(12, 'days').format('dddd, DD MMM YY'),
+              moment().format('ddd, DD MMM YY'),
+              moment().add(12, 'days').format('ddd, DD MMM YY'),
             ]}
           />
           <DetailValue label="lama ijin/Cuti" value={'12 Hari'} />
@@ -78,20 +83,7 @@ const LeaveDetails = ({route}) => {
             label="catatan"
             value={'Pengen Liburan ke maldives bareng keluarga bla bla bla '}
           />
-          <VStack space={2}>
-            <Text
-              className="text-md text-primary-950 capitalize"
-              style={{fontFamily: 'Inter-Light'}}>
-              Attachment
-            </Text>
-            <View className="bg-white rounded-md p-4 justify-center items-center">
-              <Image
-                resizeMode="contain"
-                source={require('../../assets/images/avatar.png')}
-                className="w-28 h-24"
-              />
-            </View>
-          </VStack>
+          <DetailImage source={require('../../assets/images/avatar.png')} />
         </VStack>
         <VStack py={5} space={3} pb={32}>
           {reviewer ? (

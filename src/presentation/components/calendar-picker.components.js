@@ -11,8 +11,6 @@ const Calendar = ({value, onChange, range = false}) => {
     end: null,
   });
   const [visible, setVisible] = useState(false);
-
-  console.log('date>>>>', value);
   return (
     <Pressable onPress={() => setVisible(true)}>
       <HStack className="border border-primary-300 py-2 px-4 rounded-md">
@@ -45,9 +43,12 @@ const Calendar = ({value, onChange, range = false}) => {
                 color: '#000000',
                 fontSize: 15,
               }}
+              selectedStartDate={value?.start}
+              selectedEndDate={value?.end}
               minDate={new Date()}
               selectedDayColor="#08b"
               allowRangeSelection={range}
+              startFromMonday={true}
               weekdays={['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min']}
               onDateChange={(date, type) => {
                 if (type == 'START_DATE') {
@@ -68,6 +69,7 @@ const Calendar = ({value, onChange, range = false}) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
+                disabled={dates.start ? false : true}
                 onPress={() => {
                   setVisible(false);
                   onChange(dates);

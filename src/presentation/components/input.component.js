@@ -10,6 +10,7 @@ const Input = props => {
       }
     }),
   );
+
   return (
     <HStack className="border border-primary-300 py-2 px-4 rounded-md">
       <VStack className="flex-1">

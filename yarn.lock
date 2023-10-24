@@ -2295,6 +2295,16 @@
   dependencies:
     invariant "^2.2.4"
 
+"@react-native-picker/picker@^1.8.3":
+  version "1.16.8"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-1.16.8.tgz#2126ca54d4a5a3e9ea5e3f39ad1e6643f8e4b3d4"
+  integrity sha512-pacdQDX6V6EmjF+HoiIh6u++qx4mTK0WnhgUHRc01B+Qt5eoeUwseBqmqfTSXTx/aHDEd6PiIw7UGvKgFoqgFQ==
+
+"@react-native-picker/picker@^2.5.1":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.5.1.tgz#dfa13d5b97bfbedf1f7e7c608181a82f1d58b351"
+  integrity sha512-/sADUfQsosMRYtrqqL3ZYZSECRygj0fXtpRLqxJfwuMEoqfvfn40756R6B1alzusVvDRZFI0ari0iQid56hA/Q==
+
 "@react-native/assets-registry@^0.72.0":
   version "0.72.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets-registry/-/assets-registry-0.72.0.tgz#c82a76a1d86ec0c3907be76f7faf97a32bbed05d"
@@ -8076,6 +8086,28 @@ react-native-geolocation-service@^5.3.1:
   resolved "https://registry.yarnpkg.com/react-native-geolocation-service/-/react-native-geolocation-service-5.3.1.tgz#4ce1017789da6fdfcf7576eb6f59435622af4289"
   integrity sha512-LTXPtPNmrdhx+yeWG47sAaCgQc3nG1z+HLLHlhK/5YfOgfLcAb9HAkhREPjQKPZOUx8pKZMIpdGFUGfJYtimXQ==
 
+react-native-image-pan-zoom@^2.1.12:
+  version "2.1.12"
+  resolved "https://registry.yarnpkg.com/react-native-image-pan-zoom/-/react-native-image-pan-zoom-2.1.12.tgz#eb98bf56fb5610379bdbfdb63219cc1baca98fd2"
+  integrity sha512-BF66XeP6dzuANsPmmFsJshM2Jyh/Mo1t8FsGc1L9Q9/sVP8MJULDabB1hms+eAoqgtyhMr5BuXV3E1hJ5U5H6Q==
+
+react-native-image-picker@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-7.0.1.tgz#8e7c778fe31867f2facb9e3a8fb21a5d020c5df1"
+  integrity sha512-WACwhGCGlHvRzwFS4OjVKbkVMLx95f6g3ouaZ1IQM1LO7zq4Ytn1iBkOja8KkutV10E9B+IitgoWL3VUpuRl7Q==
+
+react-native-image-viewing@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-image-viewing/-/react-native-image-viewing-0.2.2.tgz#fb26e57d7d3d9ce4559a3af3d244387c0367242b"
+  integrity sha512-osWieG+p/d2NPbAyonOMubttajtYEYiRGQaJA54slFxZ69j1V4/dCmcrVQry47ktVKy8/qpFwCpW1eT6MH5T2Q==
+
+react-native-image-zoom-viewer@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-zoom-viewer/-/react-native-image-zoom-viewer-3.0.1.tgz#a2bd5fb3bda15e0686ce88fcde8576726495d7fb"
+  integrity sha512-la6s5DNSuq4GCRLsi5CZ29FPjgTpdCuGIRdO5T9rUrAtxrlpBPhhSnHrbmPVxsdtOUvxHacTh2Gfa9+RraMZQA==
+  dependencies:
+    react-native-image-pan-zoom "^2.1.12"
+
 react-native-maps@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.7.1.tgz#e0b9d68542b4b59b5ca3df375ada7c860fb41f2e"
@@ -8094,6 +8126,14 @@ react-native-pager-view@^6.2.1:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.2.1.tgz#985d21bbb7d7bc012f4c142dedbb98ce4bdea104"
   integrity sha512-fZ8chez5J+w831nSnbtK8hwlCiMy1DgpFv8xG6ajXLsAI8uMkGvP554QDIDNlUoCuVwMf7OFyd32Y2Nm2Iaj9Q==
+
+react-native-picker-select@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-8.1.0.tgz#667a5442f783f4bcfd3f65880c6926155fd2c39c"
+  integrity sha512-iLsLv2OEWpXnQMDYJS6du5Cl1HTHy887n60Yp5OOiMny0TDB9w5CfxTUYWtpsvJJrUa/Yrv+1NMQiJy7IA4ETw==
+  dependencies:
+    "@react-native-picker/picker" "^1.8.3"
+    lodash.isequal "^4.5.0"
 
 react-native-reanimated@^3.5.4:
   version "3.5.4"
@@ -8149,6 +8189,11 @@ react-native-vector-icons@^9.2.0:
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"
+
+react-native-version-info@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-version-info/-/react-native-version-info-1.1.1.tgz#1a79a48909c13c2ecc8314d54e477da00308abf5"
+  integrity sha512-huOj2WeEtmBbGa4+5ZiaKfi1ASN73Fbz81leYDWHhFKjsRdIis3vVgSJXXhHlC5wazsu1viujnLkGXVtu4Ns9g==
 
 react-native@0.72.1:
   version "0.72.1"
