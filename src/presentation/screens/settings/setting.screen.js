@@ -8,6 +8,7 @@ import {useDispatch} from 'react-redux';
 import Header from '../../components/navigation/header.component';
 import {logout} from '../../../applications/actions/auth.action';
 import ReactNativeVersionInfo from 'react-native-version-info';
+import {navigate} from '../../../applications/utils/RootNavigation';
 
 const ButtonB = ({text, icon, onPress}) => (
   <TouchableOpacity
@@ -39,7 +40,7 @@ const Setting = () => {
           <Header
             back={
               <Text
-                className="text-xl text-primary-950"
+                className="text-2xl text-primary-950"
                 style={{fontFamily: 'Inter-Bold'}}>
                 Pengaturan
               </Text>
@@ -90,11 +91,13 @@ const Setting = () => {
             <ButtonB
               icon="ios-person-outline"
               text="Data Pribadi"
-              onPress={() => {
-                alert();
-              }}
+              onPress={() => navigate('my-profile')}
             />
-            <ButtonB icon="ios-key-outline" text="Ganti Password" />
+            <ButtonB
+              onPress={() => navigate('change-password')}
+              icon="ios-key-outline"
+              text="Ganti Password"
+            />
             {/* <ButtonB icon="ios-tv-outline" text="Data karyawan" /> */}
             <ButtonB icon="trail-sign-outline" text="Term & Condition" />
             <ButtonB icon="shield-checkmark-outline" text="Privacy Policy" />

@@ -11,7 +11,7 @@ const Header = ({back = false, title, rightIcon = false, containerStyle}) => {
       } ${containerStyle}`}>
       {back ? back : <View></View>}
       <Text
-        className="text-xl text-primary-950 ml-4"
+        className="text-2xl text-primary-950 ml-4"
         style={{fontFamily: 'Inter-Bold'}}>
         {title}
       </Text>

@@ -7,6 +7,7 @@ import {useDispatch} from 'react-redux';
 import {apiSlice} from '../../../applications/slices/api.slice';
 import {useFocusEffect} from '@react-navigation/native';
 import Empty from '../../components/empty.comnponent';
+import Layout from '../../components/layout.component';
 
 const History = ({navigation}) => {
   const [trigger, {data: history, isLoading}, lastPromiseInfo] =
@@ -61,48 +62,53 @@ const History = ({navigation}) => {
   );
 
   return (
-    <View className="flex-1 p-5">
-      <Header
-        back={
-          <Text
-            className="text-xl text-primary-950"
-            style={{fontFamily: 'Inter-Bold'}}>
-            Riwayat
-          </Text>
-        }
-        className=""
-      />
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <VStack flex={1}>
-          {!isLoading && history && (
-            <FlatList
-              data={history}
-              showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
-              }
-              ListEmptyComponent={() => (
-                <View className="pt-44">
-                  <Empty />
-                </View>
-              )}
-              renderItem={({item}) => (
-                <HistoryCard
-                  date={item.date}
-                  status={item.status}
-                  checkin={item.clock_in}
-                  checkout={item.clock_out}
-                />
-              )}
-              ListFooterComponent={() => <VStack h={10} />}
-              keyExtractor={item => item.id}
-            />
-          )}
-        </VStack>
-      )}
-    </View>
+    <Layout>
+      <View className="flex-1 pt-5 px-5">
+        <Header
+          back={
+            <Text
+              className="text-2xl text-primary-950"
+              style={{fontFamily: 'Inter-Bold'}}>
+              Riwayat
+            </Text>
+          }
+          className=""
+        />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <VStack flex={1}>
+            {!isLoading && history && (
+              <FlatList
+                data={history}
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={isLoading}
+                    onRefresh={onRefresh}
+                  />
+                }
+                ListEmptyComponent={() => (
+                  <View className="pt-44">
+                    <Empty />
+                  </View>
+                )}
+                renderItem={({item}) => (
+                  <HistoryCard
+                    date={item.date}
+                    status={item.status}
+                    checkin={item.clock_in}
+                    checkout={item.clock_out}
+                  />
+                )}
+                ListFooterComponent={() => <VStack h={10} />}
+                keyExtractor={item => item.id}
+              />
+            )}
+          </VStack>
+        )}
+      </View>
+    </Layout>
   );
 };
 

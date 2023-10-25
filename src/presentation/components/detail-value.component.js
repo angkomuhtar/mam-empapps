@@ -6,7 +6,7 @@ const DetailValue = ({label, value}) => {
   const ValueArray = ({data}) => {
     return (
       <HStack className="justify-between items-center" space={2}>
-        <View className="bg-white rounded-md p-4 flex-1">
+        <View className="flex-1">
           <Text
             style={{fontFamily: 'Inter-Medium'}}
             className="text-base text-primary-950">
@@ -30,7 +30,7 @@ const DetailValue = ({label, value}) => {
   };
 
   return (
-    <VStack space={2}>
+    <VStack space={2} className="bg-white p-3 rounded-lg">
       <Text
         className="text-md text-primary-950 capitalize"
         style={{fontFamily: 'Inter-Light'}}>
@@ -39,7 +39,7 @@ const DetailValue = ({label, value}) => {
       {Array.isArray(value) ? (
         <ValueArray data={value} />
       ) : (
-        <View className="bg-white rounded-md p-4">
+        <View className="">
           <Text
             style={{fontFamily: 'Inter-Medium'}}
             className="text-base text-primary-950">

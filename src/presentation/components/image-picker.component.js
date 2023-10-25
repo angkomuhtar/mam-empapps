@@ -28,7 +28,7 @@ const ImagePicker = ({onChange, onDelete}) => {
     });
   };
   return (
-    <HStack className="border border-primary-300 py-2 px-4 rounded-md">
+    <HStack className="border border-primary-100 bg-white py-2 px-4 rounded-md">
       <VStack className="flex-1">
         <Text
           className="text-xs text-primary-950 capitalize"

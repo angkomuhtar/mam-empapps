@@ -21,6 +21,7 @@ import SelectField from '../../components/select.component';
 import Calendar from '../../components/calendar-picker.components';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImagePicker from '../../components/image-picker.component';
+import Layout from '../../components/layout.component';
 // import DateTimePicker from '@react-native-community/datetimepicker';
 
 const LeaveAdd = () => {
@@ -92,179 +93,181 @@ const LeaveAdd = () => {
 
   console.log(errors);
   return (
-    <VStack className="min-h-screen p-5">
-      <Header
-        back={
-          <HStack alignItems={'center'} space={5}>
-            <TouchableOpacity onPress={() => goBack()}>
-              <Icon
-                name="chevron-back-outline"
-                color={'rgb(73, 6, 9)'}
-                size={30}
+    <Layout>
+      <VStack className="p-5">
+        <Header
+          back={
+            <HStack alignItems={'center'} space={5}>
+              <TouchableOpacity onPress={() => goBack()}>
+                <Icon
+                  name="chevron-back-outline"
+                  color={'rgb(73, 6, 9)'}
+                  size={30}
+                />
+              </TouchableOpacity>
+              <Text
+                className="text-xl text-primary-950"
+                style={{fontFamily: 'Inter-Bold'}}>
+                Pengajuan Ijin
+              </Text>
+            </HStack>
+          }
+        />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <VStack className="flex-1 mb-14" space={5}>
+            <VStack>
+              <Controller
+                name="leave_type"
+                control={control}
+                render={({field: {onChange, value}}) => (
+                  <SelectField
+                    label="Jenis ijin/Cuti"
+                    option={option}
+                    onChange={onChange}
+                    value={value}
+                  />
+                )}
+                rules={{
+                  required: {
+                    value: true,
+                    message: 'pilih salah satu',
+                  },
+                }}
               />
-            </TouchableOpacity>
+              {errors?.leave_type && (
+                <Text
+                  className="text-primary-500 capitalize ml-2 mt-2"
+                  style={{fontFamily: 'Inter-Medium'}}>
+                  {errors.leave_type.message}
+                </Text>
+              )}
+            </VStack>
+
+            <VStack>
+              <Controller
+                name="date"
+                defaultValue={null}
+                control={control}
+                render={({field: {value}}) => (
+                  <Calendar
+                    value={value}
+                    range={true}
+                    onChange={data => {
+                      console.log(data);
+                      setValue('date', data);
+                    }}
+                  />
+                )}
+                rules={{
+                  required: {
+                    value: true,
+                    message: 'harus diisi',
+                  },
+                }}
+              />
+              {errors?.date && (
+                <Text
+                  className="text-primary-500 capitalize ml-2 mt-2"
+                  style={{fontFamily: 'Inter-Medium'}}>
+                  {errors.date.message}
+                </Text>
+              )}
+            </VStack>
+
+            <VStack>
+              <Controller
+                control={control}
+                // defaultValue=""
+                name="tot_day"
+                render={({field: {onChange, value}}) => (
+                  <Input
+                    placeholder="Jumlah hari izin/cuti"
+                    keyboardType="default"
+                    value={value}
+                    onChangeText={onChange}
+                    editable={false}
+                    maxLength={100}
+                    title="Jumlah Hari"
+                  />
+                )}
+                rules={{
+                  required: {
+                    value: true,
+                    message: 'harus diisi',
+                  },
+                }}
+              />
+              {errors?.tot_day && (
+                <Text
+                  className="text-primary-500 capitalize ml-2 mt-2"
+                  style={{fontFamily: 'Inter-Medium'}}>
+                  {errors.tot_day.message}
+                </Text>
+              )}
+            </VStack>
+            <VStack>
+              <Controller
+                name="caretaker"
+                control={control}
+                render={({field: {onChange, value}}) => (
+                  <SelectField
+                    label="Penanggung jawab sementara"
+                    option={option}
+                    onChange={onChange}
+                    value={value}
+                  />
+                )}
+                rules={{
+                  required: {
+                    value: true,
+                    message: 'pilih salah satu',
+                  },
+                }}
+              />
+              {errors?.caretaker && (
+                <Text
+                  className="text-primary-500 capitalize ml-2 mt-2"
+                  style={{fontFamily: 'Inter-Medium'}}>
+                  {errors.caretaker.message}
+                </Text>
+              )}
+            </VStack>
+            <Input
+              placeholder="catatan untuk atasan"
+              keyboardType="default"
+              multiline={true}
+              numberOfLines={5}
+              value={note}
+              onChangeText={val => {
+                setNote(val);
+              }}
+              inputStyle={{height: 70}}
+              maxLength={100}
+              title="Catatan"
+            />
+            <Controller
+              name="attachment"
+              control={control}
+              render={({field: {onChange, value}}) => (
+                <ImagePicker
+                  onChange={data => setValue('attachment', data)}
+                  onDelete={() => setValue('attachment', null)}
+                />
+              )}
+            />
+          </VStack>
+          <TouchableOpacity
+            onPress={handleSubmit(submitForm)}
+            className="bg-green-500 p-3 justify-center items-center rounded-md mb-28">
             <Text
-              className="text-xl text-primary-950"
-              style={{fontFamily: 'Inter-Bold'}}>
-              Pengajuan Ijin
+              className="text-lg text-white"
+              style={{fontFamily: 'Inter-SemiBold'}}>
+              Kirim Pengajuan
             </Text>
-          </HStack>
-        }
-      />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <VStack className="flex-1 mb-14" space={5}>
-          <VStack>
-            <Controller
-              name="leave_type"
-              control={control}
-              render={({field: {onChange, value}}) => (
-                <SelectField
-                  label="Jenis ijin/Cuti"
-                  option={option}
-                  onChange={onChange}
-                  value={value}
-                />
-              )}
-              rules={{
-                required: {
-                  value: true,
-                  message: 'pilih salah satu',
-                },
-              }}
-            />
-            {errors?.leave_type && (
-              <Text
-                className="text-primary-500 capitalize ml-2 mt-2"
-                style={{fontFamily: 'Inter-Medium'}}>
-                {errors.leave_type.message}
-              </Text>
-            )}
-          </VStack>
-
-          <VStack>
-            <Controller
-              name="date"
-              defaultValue={null}
-              control={control}
-              render={({field: {value}}) => (
-                <Calendar
-                  value={value}
-                  range={true}
-                  onChange={data => {
-                    console.log(data);
-                    setValue('date', data);
-                  }}
-                />
-              )}
-              rules={{
-                required: {
-                  value: true,
-                  message: 'harus diisi',
-                },
-              }}
-            />
-            {errors?.date && (
-              <Text
-                className="text-primary-500 capitalize ml-2 mt-2"
-                style={{fontFamily: 'Inter-Medium'}}>
-                {errors.date.message}
-              </Text>
-            )}
-          </VStack>
-
-          <VStack>
-            <Controller
-              control={control}
-              // defaultValue=""
-              name="tot_day"
-              render={({field: {onChange, value}}) => (
-                <Input
-                  placeholder="Jumlah hari izin/cuti"
-                  keyboardType="default"
-                  value={value}
-                  onChangeText={onChange}
-                  editable={false}
-                  maxLength={100}
-                  title="Jumlah Hari"
-                />
-              )}
-              rules={{
-                required: {
-                  value: true,
-                  message: 'harus diisi',
-                },
-              }}
-            />
-            {errors?.tot_day && (
-              <Text
-                className="text-primary-500 capitalize ml-2 mt-2"
-                style={{fontFamily: 'Inter-Medium'}}>
-                {errors.tot_day.message}
-              </Text>
-            )}
-          </VStack>
-          <VStack>
-            <Controller
-              name="caretaker"
-              control={control}
-              render={({field: {onChange, value}}) => (
-                <SelectField
-                  label="Penanggung jawab sementara"
-                  option={option}
-                  onChange={onChange}
-                  value={value}
-                />
-              )}
-              rules={{
-                required: {
-                  value: true,
-                  message: 'pilih salah satu',
-                },
-              }}
-            />
-            {errors?.caretaker && (
-              <Text
-                className="text-primary-500 capitalize ml-2 mt-2"
-                style={{fontFamily: 'Inter-Medium'}}>
-                {errors.caretaker.message}
-              </Text>
-            )}
-          </VStack>
-          <Input
-            placeholder="catatan untuk atasan"
-            keyboardType="default"
-            multiline={true}
-            numberOfLines={5}
-            value={note}
-            onChangeText={val => {
-              setNote(val);
-            }}
-            inputStyle={{height: 70}}
-            maxLength={100}
-            title="Catatan"
-          />
-          <Controller
-            name="attachment"
-            control={control}
-            render={({field: {onChange, value}}) => (
-              <ImagePicker
-                onChange={data => setValue('attachment', data)}
-                onDelete={() => setValue('attachment', null)}
-              />
-            )}
-          />
-        </VStack>
-        <TouchableOpacity
-          onPress={handleSubmit(submitForm)}
-          className="bg-green-500 p-3 justify-center items-center rounded-md mb-28">
-          <Text
-            className="text-lg text-white"
-            style={{fontFamily: 'Inter-SemiBold'}}>
-            Kirim Pengajuan
-          </Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </VStack>
+          </TouchableOpacity>
+        </ScrollView>
+      </VStack>
+    </Layout>
     // <ScrollView showsHorizontalScrollIndicator={true}>
     // </ScrollView>
   );

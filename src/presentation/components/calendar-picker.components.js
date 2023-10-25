@@ -13,7 +13,7 @@ const Calendar = ({value, onChange, range = false}) => {
   const [visible, setVisible] = useState(false);
   return (
     <Pressable onPress={() => setVisible(true)}>
-      <HStack className="border border-primary-300 py-2 px-4 rounded-md">
+      <HStack className="border border-primary-100 py-2 px-4 rounded-md bg-white">
         <VStack className="flex-1 items-start">
           <Text
             className="text-xs text-primary-950 capitalize"

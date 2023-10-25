@@ -10,17 +10,18 @@ import Past from './leave-tabs/past.screen';
 import Confirm from './leave-tabs/confirm.screen';
 import TabBar from '../../components/navigation/tab-bar.component';
 import {push} from '../../../applications/utils/RootNavigation';
+import Layout from '../../components/layout.component';
 
 const Tab = createMaterialTopTabNavigator();
 
 const Leave = () => {
   return (
-    <>
+    <Layout>
       <View className="p-5">
         <Header
           back={
             <Text
-              className="text-xl text-primary-950"
+              className="text-2xl text-primary-950"
               style={{fontFamily: 'Inter-Bold'}}>
               Ijin / Cuti
             </Text>
@@ -49,12 +50,17 @@ const Leave = () => {
           </HStack>
         </View>
       </View>
-      <Tab.Navigator tabBar={props => <TabBar {...props} />}>
+      <Tab.Navigator
+        tabBar={props => (
+          <View className="px-5">
+            <TabBar {...props} />
+          </View>
+        )}>
         <Tab.Screen name="Upcoming" component={Upcoming} />
         <Tab.Screen name="Past" component={Past} />
         <Tab.Screen name="Confirm" component={Confirm} />
       </Tab.Navigator>
-    </>
+    </Layout>
   );
 };
 

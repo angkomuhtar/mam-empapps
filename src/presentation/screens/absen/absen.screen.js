@@ -295,7 +295,7 @@ const Absen = ({navigation}) => {
           <View className="flex-1">
             <Header
               containerStyle={
-                'mx-5 mt-10 pt-5 absolute top-0 z-10 left-0 right-0 bg-white rounded-lg'
+                'mx-5 mt-10 pt-5 absolute top-0 z-10 left-0 right-0 rounded-lg'
               }
               title="Absen"
             />
