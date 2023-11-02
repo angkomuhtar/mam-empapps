@@ -1,14 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Platform,
-  Button,
-  Pressable,
-  Modal,
-  Image,
-  ScrollView,
-} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {goBack} from '@utils/RootNavigation';
@@ -17,12 +7,12 @@ import moment from 'moment';
 import Header from '@components/navigation/header.component';
 import Input from '@components/input.component';
 import {Controller, useForm, useWatch} from 'react-hook-form';
-import SelectField from '../../components/select.component';
-import Calendar from '../../components/calendar-picker.components';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import ImagePicker from '../../components/image-picker.component';
-import Layout from '../../components/layout.component';
-// import DateTimePicker from '@react-native-community/datetimepicker';
+import SelectField from '@components/select.component';
+import Calendar from '@components/calendar-picker.components';
+import ImagePicker from '@components/image-picker.component';
+import Layout from '@components/layout.component';
+import {useGetProfileQuery} from '@slices/user.slice';
+import {apiSlice} from '@slices/api.slice';
 
 const LeaveAdd = () => {
   const [tipe, setTipe] = useState('');
@@ -38,30 +28,12 @@ const LeaveAdd = () => {
   const [note, setNote] = useState('');
   const [day, setDay] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
+  // apiSlice.endpoints.addLeave.usemu;
+
+  const {data: users} = useGetProfileQuery();
 
   const submitForm = data => {
-    console.log(data);
-  };
-
-  const handleCamera = () => {
-    const options = {
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-    };
-
-    launchCamera(options, response => {
-      if (response.didCancel) {
-        console.log('User cancelled camera');
-      } else if (response.error) {
-        console.log('Camera Error: ', response.error);
-      } else {
-        let imageUri = response.uri || response.assets?.[0]?.uri;
-        setSelectedImage(imageUri);
-        console.log(imageUri);
-      }
-    });
+    // console.log(data);
   };
 
   useEffect(() => {
@@ -79,8 +51,6 @@ const LeaveAdd = () => {
     }
   }, [watch('date')]);
 
-  console.log(watch('tot_day'), '<<< TOtal day');
-
   const option = [
     {label: 'Cuti Tahunan', value: 'annual'},
     {label: 'Cuti Periodik', value: 'periodik'},
@@ -91,13 +61,12 @@ const LeaveAdd = () => {
     {label: 'Cuti Alasan Penting', value: 'other'},
   ];
 
-  console.log(errors);
   return (
     <Layout>
-      <VStack className="p-5">
+      <VStack className="px-5">
         <Header
           back={
-            <HStack alignItems={'center'} space={5}>
+            <HStack alignItems={'center'} space={3}>
               <TouchableOpacity onPress={() => goBack()}>
                 <Icon
                   name="chevron-back-outline"
@@ -115,6 +84,34 @@ const LeaveAdd = () => {
         />
         <ScrollView showsVerticalScrollIndicator={false}>
           <VStack className="flex-1 mb-14" space={5}>
+            {/* <DetailValue label={'kuota cuti'} /> */}
+            <VStack className="px-4 py-2 bg-white rounded-md border border-primary-100">
+              <Text
+                style={{fontFamily: 'Inter-Regular'}}
+                className="text-primary-950 text-xs">
+                Kuota Cuti Tahunan
+              </Text>
+              {users?.leaves?.length > 0 ? (
+                <View className="py-2">
+                  {users.leaves.map((data, key) => (
+                    <Text
+                      key={key}
+                      style={{fontFamily: 'Inter-SemiBold'}}
+                      className="text-primary-950 text-xs">
+                      {data.available} hari, berlaku hingga{' '}
+                      {moment(data.exp_date, 'YYYY-MM-DD').format('DD-MM-YYYY')}{' '}
+                      (Cuti {data.year})
+                    </Text>
+                  ))}
+                </View>
+              ) : (
+                <Text
+                  style={{fontFamily: 'Inter-Medium'}}
+                  className="text-primary-950 text-center py-2 text-xs">
+                  tidak ada
+                </Text>
+              )}
+            </VStack>
             <VStack>
               <Controller
                 name="leave_type"
@@ -153,7 +150,7 @@ const LeaveAdd = () => {
                     value={value}
                     range={true}
                     onChange={data => {
-                      console.log(data);
+                      // console.log(data);
                       setValue('date', data);
                     }}
                   />
@@ -258,7 +255,7 @@ const LeaveAdd = () => {
           </VStack>
           <TouchableOpacity
             onPress={handleSubmit(submitForm)}
-            className="bg-green-500 p-3 justify-center items-center rounded-md mb-28">
+            className="bg-green-500 p-3 justify-center items-center rounded-md mb-32">
             <Text
               className="text-lg text-white"
               style={{fontFamily: 'Inter-SemiBold'}}>
@@ -268,8 +265,6 @@ const LeaveAdd = () => {
         </ScrollView>
       </VStack>
     </Layout>
-    // <ScrollView showsHorizontalScrollIndicator={true}>
-    // </ScrollView>
   );
 };
 

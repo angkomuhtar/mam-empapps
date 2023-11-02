@@ -63,11 +63,11 @@ const History = ({navigation}) => {
 
   return (
     <Layout>
-      <View className="flex-1 pt-5 px-5">
+      <View className="flex-1 px-5">
         <Header
           back={
             <Text
-              className="text-2xl text-primary-950"
+              className="text-xl text-primary-950"
               style={{fontFamily: 'Inter-Bold'}}>
               Riwayat
             </Text>
@@ -81,6 +81,7 @@ const History = ({navigation}) => {
             {!isLoading && history && (
               <FlatList
                 data={history}
+                ListFooterComponent={<View className="pb-28"></View>}
                 showsVerticalScrollIndicator={false}
                 refreshControl={
                   <RefreshControl
@@ -89,7 +90,7 @@ const History = ({navigation}) => {
                   />
                 }
                 ListEmptyComponent={() => (
-                  <View className="pt-44">
+                  <View className="">
                     <Empty />
                   </View>
                 )}
@@ -101,7 +102,6 @@ const History = ({navigation}) => {
                     checkout={item.clock_out}
                   />
                 )}
-                ListFooterComponent={() => <VStack h={10} />}
                 keyExtractor={item => item.id}
               />
             )}

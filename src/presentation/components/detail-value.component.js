@@ -30,7 +30,9 @@ const DetailValue = ({label, value}) => {
   };
 
   return (
-    <VStack space={2} className="bg-white p-3 rounded-lg">
+    <VStack
+      space={2}
+      className="bg-white p-3 rounded-lg border border-primary-100">
       <Text
         className="text-md text-primary-950 capitalize"
         style={{fontFamily: 'Inter-Light'}}>
@@ -41,8 +43,8 @@ const DetailValue = ({label, value}) => {
       ) : (
         <View className="">
           <Text
-            style={{fontFamily: 'Inter-Medium'}}
-            className="text-base text-primary-950">
+            style={{fontFamily: 'OpenSans-Medium'}}
+            className="text-md text-primary-950">
             {value}
           </Text>
         </View>

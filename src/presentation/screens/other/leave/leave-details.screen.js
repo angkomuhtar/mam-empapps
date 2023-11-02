@@ -14,10 +14,10 @@ import {Avatar, Button, HStack, VStack} from 'native-base';
 import Header from '@components/navigation/header.component';
 import {goBack} from '@utils/RootNavigation';
 import moment from 'moment';
-import DetailValue from '../../components/detail-value.component';
+import DetailValue from '@components/detail-value.component';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import DetailImage from '../../components/detail-image.component';
-import Layout from '../../components/layout.component';
+import DetailImage from '@components/detail-image.component';
+import Layout from '@components/layout.component';
 
 const LeaveDetails = ({route}) => {
   const height = Dimensions.get('screen').height;
@@ -25,10 +25,10 @@ const LeaveDetails = ({route}) => {
 
   return (
     <Layout>
-      <VStack className="min-h-screen p-5">
+      <VStack className="min-h-screen px-5">
         <Header
           back={
-            <HStack alignItems={'center'} space={5}>
+            <HStack alignItems={'center'} space={3}>
               <TouchableOpacity onPress={() => goBack()}>
                 <Icon
                   name="chevron-back-outline"
@@ -37,7 +37,7 @@ const LeaveDetails = ({route}) => {
                 />
               </TouchableOpacity>
               <Text
-                className="text-2xl text-primary-950"
+                className="text-xl text-primary-950"
                 style={{fontFamily: 'Inter-Bold'}}>
                 Detail
               </Text>
@@ -51,7 +51,7 @@ const LeaveDetails = ({route}) => {
             style={{minHeight: height - height * 0.32}}>
             {reviewer ? (
               <>
-                <HStack className="space-x-3 bg-white rounded-md p-5">
+                <HStack className="space-x-3 bg-white rounded-md p-5 border border-primary-100">
                   <Avatar size="lg">MM</Avatar>
                   <View className="justify-center">
                     <Text
@@ -88,7 +88,9 @@ const LeaveDetails = ({route}) => {
               label="catatan"
               value={'Pengen Liburan ke maldives bareng keluarga bla bla bla '}
             />
-            <DetailImage source={require('../../assets/images/avatar.png')} />
+            <DetailImage
+              source={require('../../../assets/images/avatar.png')}
+            />
           </VStack>
           <VStack py={5} space={3} pb={32}>
             {reviewer ? (

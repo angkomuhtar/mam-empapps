@@ -7,7 +7,7 @@ import {navigate} from '../../applications/utils/RootNavigation';
 const LeaveCard = () => {
   return (
     <TouchableOpacity onPress={() => navigate('leave-details', {data: 'data'})}>
-      <View className="bg-white rounded-md p-5">
+      <View className="bg-white rounded-md p-5 border border-primary-100">
         <HStack className="space-x-3 justify-between">
           <View className="justify-center flex-1">
             <Text

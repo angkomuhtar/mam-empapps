@@ -9,16 +9,15 @@ import DetailValue from '../../components/detail-value.component';
 import {useGetProfileQuery} from '@slices/user.slice';
 import moment from 'moment';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import Upcoming from '../leave/leave-tabs/upcoming.screen';
 import TabBar from '../../components/navigation/tab-bar.component';
 
 const Profile = () => {
   const {data: users} = useGetProfileQuery();
 
-  console.log(users?.employee);
-
   const Profile = () => (
-    <ScrollView className="pb-5" showsVerticalScrollIndicator={false}>
+    <ScrollView
+      className="pb-5 bg-[#fafafa]"
+      showsVerticalScrollIndicator={false}>
       <VStack space={3} mb={5}>
         <DetailValue label="nama" value={users?.profile.name} />
         <DetailValue
@@ -52,7 +51,9 @@ const Profile = () => {
   );
 
   const Karyawan = () => (
-    <ScrollView className="pb-5" showsVerticalScrollIndicator={false}>
+    <ScrollView
+      className="pb-5 bg-[#fafafa]"
+      showsVerticalScrollIndicator={false}>
       <VStack space={3} mb={5}>
         <DetailValue label="nomor induk karyawan" value={users?.employee.nip} />
         <DetailValue
@@ -73,11 +74,10 @@ const Profile = () => {
 
   return (
     <Layout>
-      <VStack className="p-5 min-h-full">
-        {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+      <VStack className="px-5 min-h-full">
         <Header
           back={
-            <HStack alignItems={'center'} space={5}>
+            <HStack alignItems={'center'} space={3}>
               <TouchableOpacity onPress={() => navigate('Setting')}>
                 <Icon
                   name="chevron-back-outline"
@@ -86,7 +86,7 @@ const Profile = () => {
                 />
               </TouchableOpacity>
               <Text
-                className="text-2xl text-primary-950"
+                className="text-xl text-primary-950"
                 style={{fontFamily: 'Inter-Bold'}}>
                 Data Pribadi
               </Text>
@@ -95,14 +95,20 @@ const Profile = () => {
         />
         <VStack space={3} mb={5}>
           <Text
-            className="py-3 text-lg text-slate-700"
+            className="text-lg text-slate-700"
             style={{fontFamily: 'Inter-SemiBold'}}>
             Data Pengguna
           </Text>
           <DetailValue label="email" value={users?.email} />
           <DetailValue label="Username" value={users?.username} />
         </VStack>
-        <Tab.Navigator tabBar={props => <TabBar {...props} />}>
+        <Tab.Navigator
+          screenOptions={{swipeEnabled: false}}
+          tabBar={props => (
+            <View className="pb-5">
+              <TabBar {...props} />
+            </View>
+          )}>
           <Tab.Screen name="Data Profil" component={Profile} />
           <Tab.Screen name="Data Karyawan" component={Karyawan} />
         </Tab.Navigator>

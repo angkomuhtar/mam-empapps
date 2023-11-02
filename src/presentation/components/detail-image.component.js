@@ -18,14 +18,18 @@ const DetailImage = ({source}) => {
 
   return (
     <VStack space={2}>
-      <Text
-        className="text-md text-primary-950 capitalize"
-        style={{fontFamily: 'Inter-Light'}}>
-        Attachment
-      </Text>
-      <View className="bg-white rounded-md p-4 justify-center items-center">
+      <View className="bg-white rounded-md p-4 justify-center items-center border border-primary-100">
+        <Text
+          className="text-md text-primary-950 capitalize self-start"
+          style={{fontFamily: 'Inter-Light'}}>
+          Attachment
+        </Text>
         <Pressable onPress={() => setViewImage(true)}>
-          <Image resizeMode="contain" source={source} className="w-28 h-24" />
+          <Image
+            resizeMode="contain"
+            source={source}
+            className="w-28 h-24 mt-5"
+          />
         </Pressable>
       </View>
       <Modal visible={viewImage} transparent={true}>

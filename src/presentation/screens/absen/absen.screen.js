@@ -24,26 +24,39 @@ import {
 import {Quote} from '../../../applications/utils/Quote';
 import {useFocusEffect} from '@react-navigation/native';
 import {apiSlice} from '../../../applications/slices/api.slice';
+import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 const requestLocationPermission = async () => {
   try {
     if (Platform.OS == 'ios') {
-      return true;
-    }
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: 'Geolocation Permission',
-        message: 'Can we access your location?',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
-    if (granted === 'granted') {
-      return true;
+      const status = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+      if (status === RESULTS.GRANTED) {
+        Geolocation.getCurrentPosition(
+          position => {
+            console.log('Current position:', position);
+          },
+          error => {
+            console.error(error);
+          },
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
+      }
     } else {
-      return false;
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Geolocation Permission',
+          message: 'Can we access your location?',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === 'granted') {
+        return true;
+      } else {
+        return false;
+      }
     }
   } catch (err) {
     return false;
@@ -85,12 +98,12 @@ const Absen = ({navigation}) => {
           setLocation(false);
           setLoading(false);
           Position = false;
-          setShowAlert({
-            show: true,
-            type: 'error',
-            title: 'Gagal',
-            message: 'Gagal Menentukan lokasi anda',
-          });
+          // setShowAlert({
+          //   show: true,
+          //   type: 'error',
+          //   title: 'Gagal',
+          //   message: 'Gagal Menentukan lokasi anda',
+          // });
         },
         {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
       );
@@ -292,13 +305,7 @@ const Absen = ({navigation}) => {
 
       {location?.coords ? (
         <VStack className="flex-1 justify-between bg-white h-full">
-          <View className="flex-1">
-            <Header
-              containerStyle={
-                'mx-5 mt-10 pt-5 absolute top-0 z-10 left-0 right-0 rounded-lg'
-              }
-              title="Absen"
-            />
+          <View className="flex-1 relative items-center">
             <MapView
               provider={PROVIDER_GOOGLE} // remove if not using Google Maps
               style={{height: '100%', width: width}}
@@ -396,6 +403,7 @@ const Absen = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           </VStack>
+          <View className="py-9" />
         </VStack>
       ) : (
         <VStack className="flex-1 justify-center items-center bg-white h-full">

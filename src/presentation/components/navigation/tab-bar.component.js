@@ -4,7 +4,7 @@ import {HStack} from 'native-base';
 
 const TabBar = ({state, descriptors, navigation}) => {
   return (
-    <HStack className="mb-5 bg-primary-100 rounded-md">
+    <HStack className="bg-primary-100 rounded-md">
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const label =

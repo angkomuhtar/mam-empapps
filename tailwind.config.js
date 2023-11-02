@@ -19,10 +19,6 @@ module.exports = {
         },
       },
     },
-    fontFamily: {
-      mont: ['Montserrat', 'sans'],
-      mono: ['Montserrat'],
-    },
   },
   plugins: [],
 };

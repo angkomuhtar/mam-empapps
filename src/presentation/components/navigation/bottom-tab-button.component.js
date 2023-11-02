@@ -4,16 +4,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const BottomTabButton = ({color, text, icon}) => {
   return (
-    <View
-      className={`flex flex-col items-center justify-center ${
-        Platform.OS == 'ios' && 'mt-2'
-      }`}>
+    <View className={`flex flex-col items-center justify-center `}>
       <Icon name={icon} size={20} color={color} />
-      <Text
-        className="text-[11px] uppercase mt-1"
-        style={{color: color, fontFamily: 'Inter-SemiBold'}}>
-        {text}
-      </Text>
     </View>
   );
 };

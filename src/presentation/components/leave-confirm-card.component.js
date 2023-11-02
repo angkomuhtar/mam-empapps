@@ -9,7 +9,7 @@ const LeaveConfirmCard = () => {
   return (
     <TouchableOpacity
       onPress={() => navigate('leave-details', {reviewer: true})}>
-      <View className="bg-white rounded-md p-5">
+      <View className="bg-white rounded-md p-5 border border-primary-100">
         <HStack className="pb-4 justify-between items-center">
           <Text
             style={{fontFamily: 'Inter-SemiBold'}}

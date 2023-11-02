@@ -6,18 +6,21 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '@screens/home/home.screen';
 import History from '@screens/history/history.screen';
 import Settings from '@screens/settings/setting.screen';
-import Leave from '@screens/leave/leave.screen';
+import Other from '@screens/other/other.screen';
 import Absen from '@screens/absen/absen.screen';
+import TabBottom from '../../presentation/components/navigation/tab-bottom.component';
 
 const Tab = createBottomTabNavigator();
 const TabHome = () => {
   return (
     <Tab.Navigator
+      tabBar={props => (
+        <View>
+          <TabBottom {...props} />
+        </View>
+      )}
       screenOptions={{
         tabBarActiveTintColor: '#fb3640',
-        tabBarStyle: {
-          height: Platform.OS == 'ios' ? 90 : 70,
-        },
         tabBarShowLabel: false,
       }}>
       <Tab.Screen
@@ -25,6 +28,7 @@ const TabHome = () => {
         component={Home}
         options={{
           headerShown: false,
+          title: 'Beranda',
           tabBarIcon: ({focused, color, size}) => {
             return (
               <BottomTabButton
@@ -41,6 +45,7 @@ const TabHome = () => {
         component={History}
         options={{
           headerShown: false,
+          title: 'riwayat',
           tabBarIcon: ({focused, color, size}) => {
             return (
               <BottomTabButton
@@ -57,30 +62,26 @@ const TabHome = () => {
         component={Absen}
         options={{
           headerShown: false,
+          title: 'absen',
           tabBarIcon: ({focused, color, size}) => {
             return (
-              <View className="relative flex flex-col items-center ">
+              <>
                 <View
                   style={{backgroundColor: '#fb3640'}}
-                  className="flex flex-row items-center p-2 rounded-full -top-7 border-4 border-primary-50">
+                  className="absolute -top-11 flex flex-row items-center p-2 rounded-full border-4 border-[#fefefe]">
                   <Icon name={'ios-barcode-outline'} size={33} color="#fff" />
                 </View>
-                <Text
-                  className={`${
-                    Platform.OS == 'ios' ? 'bottom-1' : 'bottom-[10px]'
-                  } text-[11px] uppercase mt-1 absolute`}
-                  style={{color: color, fontFamily: 'Inter-Bold'}}>
-                  Absen
-                </Text>
-              </View>
+                <View style={{height: 16}}></View>
+              </>
             );
           },
         }}
       />
       <Tab.Screen
-        name="leaves"
-        component={Leave}
+        name="others"
+        component={Other}
         options={{
+          title: 'Lainnya',
           headerShown: false,
           tabBarIcon: ({focused, color, size}) => {
             return (
@@ -97,6 +98,7 @@ const TabHome = () => {
         name="Setting"
         component={Settings}
         options={{
+          title: 'akun',
           headerShown: false,
           tabBarIcon: ({focused, color, size}) => {
             return (

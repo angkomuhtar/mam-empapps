@@ -1,14 +1,19 @@
 import {View, Text, TouchableOpacity, Pressable} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from '../../components/layout.component';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Avatar, HStack, ScrollView, VStack} from 'native-base';
+import {Avatar, HStack, ScrollView, Spinner, VStack} from 'native-base';
 import {useGetProfileQuery} from '@slices/user.slice';
 import {useDispatch} from 'react-redux';
 import Header from '../../components/navigation/header.component';
 import {logout} from '../../../applications/actions/auth.action';
 import ReactNativeVersionInfo from 'react-native-version-info';
 import {navigate} from '../../../applications/utils/RootNavigation';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {useChangeAvatarMutation} from '../../../applications/slices/user.slice';
+import ImagePicker from 'react-native-image-crop-picker';
+import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import moment from 'moment';
 
 const ButtonB = ({text, icon, onPress}) => (
   <TouchableOpacity
@@ -29,18 +34,94 @@ const ButtonB = ({text, icon, onPress}) => (
     </HStack>
   </TouchableOpacity>
 );
-const Setting = () => {
-  const {data: users} = useGetProfileQuery();
-  const dispatch = useDispatch();
 
+const requestPermission = async () => {
+  try {
+    if (Platform.OS == 'ios') {
+      const status = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
+      if (status === RESULTS.GRANTED) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Geolocation Permission',
+          message: 'Can we access your location?',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === 'granted') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  } catch (err) {
+    return false;
+  }
+};
+
+const Setting = () => {
+  const {data: users, isLoading: loading} = useGetProfileQuery();
+  const dispatch = useDispatch();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [changeAvatar, {isLoading, isError, isSuccess, error}] =
+    useChangeAvatarMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      setSelectedFile(null);
+    }
+  }, [isSuccess]);
+
+  const openImagePicker = () => {
+    const permission = requestPermission();
+    permission.then(() => {
+      const options = {
+        mediaType: 'photo',
+        maxHeight: 2000,
+        maxWidth: 2000,
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+      };
+
+      ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        cropping: true,
+        cropperCircleOverlay: true,
+      }).then(response => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        } else {
+          // this.setState({response, modalVisible: false});
+          console.log(response);
+          setSelectedFile(response);
+        }
+      });
+    });
+  };
+
+  console.log(isSuccess, error, users.avatar_url);
   return (
     <Layout>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="p-5">
+        <View className="px-5">
           <Header
             back={
               <Text
-                className="text-2xl text-primary-950"
+                className="text-xl text-primary-950"
                 style={{fontFamily: 'Inter-Bold'}}>
                 Pengaturan
               </Text>
@@ -48,16 +129,78 @@ const Setting = () => {
           />
         </View>
         <VStack className="justify-center py-4 px-5 items-center ">
-          <VStack className="relative">
-            <Avatar
-              size="2xl"
-              className="bg-transparent"
-              source={require('../../assets/images/avatar.png')}>
-              MM
-            </Avatar>
-            <TouchableOpacity className="bg-primary-500 self-start p-2 rounded-full absolute bottom-0 right-0">
-              <Icon name="camera-reverse" size={20} color="#fff" />
-            </TouchableOpacity>
+          <VStack space="3" className="relative">
+            {isLoading || loading ? (
+              <>
+                <View className="absolute top-0 bottom-0 right-0 left-0 bg-white/40 z-30 justify-center items-center">
+                  <Spinner size={'lg'} />
+                </View>
+                <VStack className="relative">
+                  <Avatar size="2xl" className="bg-black">
+                    EU
+                  </Avatar>
+                </VStack>
+              </>
+            ) : (
+              <VStack className="relative">
+                {selectedFile ? (
+                  <Avatar
+                    size="2xl"
+                    className="bg-transparent"
+                    source={{
+                      uri: selectedFile.path,
+                    }}>
+                    EU
+                  </Avatar>
+                ) : users?.avatar ? (
+                  <Avatar
+                    size="2xl"
+                    className="bg-transparent"
+                    source={{uri: users.avatar_url}}>
+                    EU
+                  </Avatar>
+                ) : (
+                  <Avatar
+                    size="2xl"
+                    className="bg-transparent"
+                    source={require('../../assets/images/avatar.png')}>
+                    MM
+                  </Avatar>
+                )}
+                <TouchableOpacity
+                  onPress={openImagePicker}
+                  className="bg-primary-500 self-start p-2 rounded-full absolute bottom-0 right-0">
+                  <Icon name="camera-reverse" size={20} color="#fff" />
+                </TouchableOpacity>
+              </VStack>
+            )}
+            {selectedFile && (
+              <HStack space={3} className="justify-center">
+                <TouchableOpacity
+                  onPress={openImagePicker}
+                  className="bg-primary-200 self-start p-2 rounded-lg justify-center items-center">
+                  <Icon name="close-circle" size={15} color="#000" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    var formData = new FormData();
+                    var name = (selectedFile?.path).split('.');
+                    formData.append('file', {
+                      uri: selectedFile?.path,
+                      type: selectedFile?.mime, // or photo.type
+                      name:
+                        'EmpApps-' +
+                        moment().format('X') +
+                        '.' +
+                        name[name.length - 1],
+                    });
+                    changeAvatar(formData);
+                  }}
+                  className="bg-primary-500 self-start p-2 rounded-lg  justify-center items-center">
+                  <Icon name="checkmark-done-circle" size={15} color="#fff" />
+                </TouchableOpacity>
+              </HStack>
+            )}
           </VStack>
           <Text
             style={{fontFamily: 'Inter-Bold'}}
@@ -79,7 +222,7 @@ const Setting = () => {
             className="flex-row space-x-2 bg-primary-500 w-full py-3 justify-center items-center rounded-md mt-5"
             onPress={() => console.log()}>
             <Text
-              className="text-primary-50 text-base"
+              className="text-primary-50 text-base uppercase"
               style={{fontFamily: 'Inter-SemiBold'}}>
               Edit Profile
             </Text>
@@ -123,10 +266,11 @@ const Setting = () => {
         </View>
 
         <Text
-          className="text-primary-950/70 text-center py-14"
+          className="text-primary-950/50 text-center py-10"
           style={{fontFamily: 'Montserrat-Bold'}}>
           Mitra Abadi Mahakam - EmpApps v{ReactNativeVersionInfo.appVersion}
         </Text>
+        <View className="h-20" />
       </ScrollView>
     </Layout>
   );

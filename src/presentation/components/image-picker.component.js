@@ -64,7 +64,7 @@ const ImagePicker = ({onChange, onDelete}) => {
             </View>
           ) : (
             <Pressable onPress={openImagePicker}>
-              <Icon name="camera" size={35} />
+              <Icon name="camera" size={35} color={'rgb(73, 6, 9)'} />
             </Pressable>
           )}
         </HStack>

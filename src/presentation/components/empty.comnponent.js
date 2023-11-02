@@ -5,7 +5,7 @@ import {VStack} from 'native-base';
 
 const Empty = () => {
   return (
-    <VStack space="5" className="flex-1 justify-center items-center">
+    <VStack space="5" className="flex-1 items-center py-10">
       <LottieView
         style={{
           height: 150,

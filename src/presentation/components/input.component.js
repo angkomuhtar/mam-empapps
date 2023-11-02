@@ -16,7 +16,7 @@ const Input = props => {
       <VStack className="flex-1">
         <Text
           className="text-xs text-primary-950 capitalize"
-          style={{fontFamily: 'Inter-Regular'}}>
+          style={{fontFamily: 'OpenSans-Regular'}}>
           {props.title}
         </Text>
         <TextInput
@@ -24,7 +24,7 @@ const Input = props => {
           className={`${
             Platform.OS == 'ios' ? 'py-2' : 'py-0'
           } text-primary-950 text-sm`}
-          style={[{fontFamily: 'Inter-Light'}, props.inputStyle]}
+          style={[{fontFamily: 'OpenSans-Light'}, props.inputStyle]}
         />
       </VStack>
       <View className="justify-center items-center">{props?.rightIcon}</View>

@@ -3,7 +3,6 @@ import {
   Text,
   Dimensions,
   ScrollView,
-  Platform,
   TouchableOpacity,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
@@ -17,8 +16,6 @@ import {useGetProfileQuery} from '@slices/user.slice';
 import {useGetClockRecapQuery, useGetTodayQuery} from '@slices/clock.slice';
 import moment from 'moment';
 import 'moment/locale/id';
-import LottieView from 'lottie-react-native';
-import Loading from '../../components/loading.component';
 
 const Home = ({navigation}) => {
   let width = Dimensions.get('screen').width;
@@ -28,15 +25,17 @@ const Home = ({navigation}) => {
   const {data} = useGetClockRecapQuery();
 
   return (
-    <Layout>
-      <ScrollView showsHorizontalScrollIndicator={true}>
-        <View
-          className={`bg-primary-500 rounded-bl-[70px] radiu px-5 pb-20 ${
-            Platform.OS == 'ios' ? 'pt-10' : 'pt-5'
-          }`}>
-          <HStack className="justify-between items-center py-5">
+    <Layout bg="bg-primary-500">
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View className={`bg-primary-500 rounded-bl-[70px] radiu px-5 pb-20 `}>
+          <HStack space={5} className="justify-between items-center py-5">
             {users?.avatar ? (
-              ''
+              <Avatar
+                size="2xl"
+                className="bg-transparent"
+                source={{uri: users.avatar_url}}>
+                EU
+              </Avatar>
             ) : (
               <Avatar
                 size="lg"
@@ -45,7 +44,7 @@ const Home = ({navigation}) => {
                 MM
               </Avatar>
             )}
-            <View className="">
+            <View className="flex-1">
               <Text
                 className="text-xl text-primary-50 capitalize"
                 style={{fontFamily: 'Inter-Bold'}}>
@@ -123,6 +122,7 @@ const Home = ({navigation}) => {
             </HStack>
           </VStack>
         </VStack>
+        <View className="h-12" />
       </ScrollView>
     </Layout>
   );

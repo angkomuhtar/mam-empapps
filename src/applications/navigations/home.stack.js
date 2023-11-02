@@ -1,8 +1,8 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TabHome from './tab-home.stack';
-import LeaveAdd from '@screens/leave/leave-add.screen';
-import LeaveDetails from '@screens/leave/leave-details.screen';
+import LeaveAdd from '@screens/other/leave/leave-add.screen';
+import LeaveDetails from '@screens/other/leave/leave-details.screen';
 import ChangePassword from '@screens/settings/password.screen';
 import Profile from '@screens/settings/profile.screen';
 

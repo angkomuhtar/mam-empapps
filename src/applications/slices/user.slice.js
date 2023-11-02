@@ -18,7 +18,33 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       //     // ...result.ids.user.map(id => ({type: 'User', id})),
       //   ],
     }),
+    changePass: builder.mutation({
+      query: body => ({
+        url: `change_password`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Users'],
+      transformErrorResponse: responseData => {
+        return responseData.data;
+      },
+    }),
+    changeAvatar: builder.mutation({
+      query: body => ({
+        url: `change_avatar`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Users'],
+      transformErrorResponse: responseData => {
+        return responseData.data;
+      },
+    }),
   }),
 });
 
-export const {useGetProfileQuery} = usersApiSlice;
+export const {
+  useGetProfileQuery,
+  useChangePassMutation,
+  useChangeAvatarMutation,
+} = usersApiSlice;

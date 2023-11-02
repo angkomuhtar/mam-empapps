@@ -20,16 +20,16 @@ const Calendar = ({value, onChange, range = false}) => {
             style={{fontFamily: 'Inter-Regular'}}>
             Tanggal
           </Text>
-
           <Text
-            className={`py-2 text-xs ${
+            style={{fontFamily: 'OpenSans-Light'}}
+            className={`py-2 text-sm ${
               value ? 'text-primary-950' : 'text-gray-300'
             } `}>
             {value ? moment(value.start).format('D-M-Y') : 'pilih tanggal'}
           </Text>
         </VStack>
         <View className="justify-center items-center">
-          <Icon name="calendar-outline" size={25} />
+          <Icon name="calendar-outline" size={25} color={'rgb(73, 6, 9)'} />
         </View>
       </HStack>
       <Modal visible={visible} transparent={true}>
