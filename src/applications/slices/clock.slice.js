@@ -30,7 +30,7 @@ export const clockApiSlice = apiSlice.injectEndpoints({
     getShift: builder.query({
       query: () => 'clock/shift',
       transformResponse: responseData => {
-        return responseData.data;
+        return responseData;
       },
     }),
     getAbsenLocation: builder.query({

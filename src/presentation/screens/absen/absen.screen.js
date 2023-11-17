@@ -33,7 +33,7 @@ const requestLocationPermission = async () => {
       if (status === RESULTS.GRANTED) {
         Geolocation.getCurrentPosition(
           position => {
-            console.log('Current position:', position);
+            // console.log('Current position:', position);
           },
           error => {
             console.error(error);
@@ -82,7 +82,12 @@ const Absen = ({navigation}) => {
   });
   const [trigger, {data: today, isLoading}] =
     apiSlice.endpoints.getToday.useLazyQuery();
-  const {data: shift, isLoading: shiftLoading} = useGetShiftQuery();
+  const {
+    data: shift,
+    isLoading: shiftLoading,
+    error,
+    isSuccess,
+  } = useGetShiftQuery();
   const {data: ab_location, isLoading: locLoading} = useGetAbsenLocationQuery();
   const [setClockIn, {isLoading: postLoading}] = useSetClockInMutation();
 
@@ -98,12 +103,6 @@ const Absen = ({navigation}) => {
           setLocation(false);
           setLoading(false);
           Position = false;
-          // setShowAlert({
-          //   show: true,
-          //   type: 'error',
-          //   title: 'Gagal',
-          //   message: 'Gagal Menentukan lokasi anda',
-          // });
         },
         {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
       );
@@ -225,7 +224,6 @@ const Absen = ({navigation}) => {
               time: moment().format('HH:mm:ss'),
               date: moment().format('YYYY-MM-DD'),
             }).then(res => {
-              console.log(res);
               if (res.error) {
                 setAlert({
                   show: true,
@@ -279,8 +277,7 @@ const Absen = ({navigation}) => {
     );
   };
 
-  // useEffect(() => {
-  // }, []);
+  // console.log(shift, error, isSuccess);
 
   useFocusEffect(
     useCallback(() => {
@@ -349,7 +346,7 @@ const Absen = ({navigation}) => {
                   }}
                   onValueChange={itemValue => setSelectedShift(itemValue)}>
                   {shift &&
-                    shift.map((data, key) => (
+                    shift?.data.map((data, key) => (
                       <Select.Item
                         key={key}
                         fontFamily={'OpenSans-Bold'}
@@ -359,7 +356,7 @@ const Absen = ({navigation}) => {
                         ).format('HH:mm')} - ${moment(
                           data.end,
                           'HH:mm:ss',
-                        ).format('HH:mm')} )`}
+                        ).format('HH:mm')} ) (${data.shift_code})`}
                         value={data.id}
                       />
                     ))}

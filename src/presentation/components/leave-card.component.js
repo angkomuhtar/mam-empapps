@@ -1,35 +1,36 @@
 import {View, Text, TouchableOpacity, Pressable} from 'react-native';
 import React from 'react';
-import {HStack} from 'native-base';
+import {HStack, VStack} from 'native-base';
 import moment from 'moment';
 import {navigate} from '../../applications/utils/RootNavigation';
+import Status from './status-badge.components';
 
-const LeaveCard = () => {
+const LeaveCard = ({data, reviewer = false}) => {
   return (
-    <TouchableOpacity onPress={() => navigate('leave-details', {data: 'data'})}>
-      <View className="bg-white rounded-md p-5 border border-primary-100">
-        <HStack className="space-x-3 justify-between">
-          <View className="justify-center flex-1">
+    <TouchableOpacity
+      onPress={() =>
+        navigate('leave-details', {data: data, reviewer: reviewer})
+      }>
+      <View className="bg-white rounded-md p-5 border border-primary-100 mb-5 drop-shadow-lg">
+        <VStack>
+          <HStack className="space-x-3 justify-between">
             <Text
               style={{fontFamily: 'Inter-Light'}}
               className="text-xs capitalize mb-2 text-primary-950">
               Tanggal
             </Text>
-            <Text
-              style={{fontFamily: 'Inter-SemiBold'}}
-              className="text-sm capitalize text-primary-950 ">
-              {moment().format('MMM DD, YYYY')} -{' '}
-              {moment().add('5', 'd').format('MMM DD, YYYY')}
-            </Text>
-          </View>
-          <View className="bg-green-100 self-start py-1 px-2 rounded-md">
-            <Text
-              style={{fontFamily: 'Inter-Medium'}}
-              className="text-green-500">
-              disetujui
-            </Text>
-          </View>
-        </HStack>
+            <Status data={data.status} />
+          </HStack>
+          <Text
+            style={{fontFamily: 'Inter-SemiBold'}}
+            className="text-sm capitalize text-primary-950 ">
+            {data.s_date == data.e_date
+              ? moment(data.s_date, 'YYYY-MM-DD').format('DD MMM YY')
+              : moment(data.s_date, 'YYYY-MM-DD').format('DD MMM YY') +
+                ' - ' +
+                moment(data.e_date, 'YYYY-MM-DD').format('DD MMM YY')}
+          </Text>
+        </VStack>
         <HStack className="space-x-2 mt-4">
           <View className="flex-1">
             <Text
@@ -40,7 +41,7 @@ const LeaveCard = () => {
             <Text
               style={{fontFamily: 'Inter-Medium'}}
               className="text-md text-primary-950">
-              3 Hari
+              {data.tot_day} Hari
             </Text>
           </View>
           <View className="flex-1">
@@ -51,8 +52,8 @@ const LeaveCard = () => {
             </Text>
             <Text
               style={{fontFamily: 'Inter-Medium'}}
-              className="text-md text-primary-950">
-              Izin Sakit
+              className="text-md text-primary-950 capitalize">
+              {data.leave_type.value}
             </Text>
           </View>
           <View className="flex-1">
@@ -64,7 +65,7 @@ const LeaveCard = () => {
             <Text
               style={{fontFamily: 'Inter-Medium'}}
               className="text-md text-primary-950">
-              Martin
+              {data?.approver?.profile?.name}
             </Text>
           </View>
         </HStack>

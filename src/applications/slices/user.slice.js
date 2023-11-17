@@ -13,10 +13,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         return responseData.user;
       },
       providesTags: ['Users'],
-      //   providesTags: (result, error, arg) => [
-      //     {type: 'User', id: 'LIST'},
-      //     // ...result.ids.user.map(id => ({type: 'User', id})),
-      //   ],
+    }),
+    getTeam: builder.query({
+      query: () => '/team',
+      transformResponse: responseData => {
+        return responseData.user;
+      },
+      // providesTags: ['Users'],
     }),
     changePass: builder.mutation({
       query: body => ({
@@ -47,4 +50,5 @@ export const {
   useGetProfileQuery,
   useChangePassMutation,
   useChangeAvatarMutation,
+  useGetTeamQuery,
 } = usersApiSlice;

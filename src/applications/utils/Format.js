@@ -1,7 +1,6 @@
 import moment from 'moment';
 
 export const cDuration = (start, end) => {
-  // console.log(start, end);
   var mins = '',
     st = start ? moment(start, 'HH:mm:ss') : null,
     et = end ? moment(end, 'HH:mm:ss') : moment();

@@ -5,11 +5,10 @@ import moment from 'moment';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CalendarPicker from 'react-native-calendar-picker';
 
-const Calendar = ({value, onChange, range = false}) => {
-  const [dates, setDates] = useState({
-    start: null,
-    end: null,
-  });
+const Calendar = ({value, onChange, range = false, backDate = false}) => {
+  const [start, setStart] = useState(null);
+  const [end, setEnd] = useState(null);
+
   const [visible, setVisible] = useState(false);
   return (
     <Pressable onPress={() => setVisible(true)}>
@@ -25,11 +24,17 @@ const Calendar = ({value, onChange, range = false}) => {
             className={`py-2 text-sm ${
               value ? 'text-primary-950' : 'text-gray-300'
             } `}>
-            {value ? moment(value.start).format('D-M-Y') : 'pilih tanggal'}
+            {!value
+              ? 'Pilih Tanggal'
+              : value.start == value.end
+              ? moment(value.start).format('DD-M-Y')
+              : moment(value.start).format('DD-M-Y') +
+                ' - ' +
+                moment(value.end).format('DD-M-Y')}
           </Text>
         </VStack>
         <View className="justify-center items-center">
-          <Icon name="calendar-outline" size={25} color={'rgb(73, 6, 9)'} />
+          <Icon name="calendar-outline" size={20} color={'rgb(73, 6, 9)'} />
         </View>
       </HStack>
       <Modal visible={visible} transparent={true}>
@@ -45,16 +50,16 @@ const Calendar = ({value, onChange, range = false}) => {
               }}
               selectedStartDate={value?.start}
               selectedEndDate={value?.end}
-              minDate={new Date()}
+              // minDate={new Date()}
               selectedDayColor="#08b"
               allowRangeSelection={range}
               startFromMonday={true}
               weekdays={['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min']}
               onDateChange={(date, type) => {
                 if (type == 'START_DATE') {
-                  setDates({...dates, start: date});
-                } else {
-                  setDates({...dates, end: date});
+                  setStart(date);
+                } else if (type == 'END_DATE') {
+                  setEnd(date);
                 }
               }}
             />
@@ -69,12 +74,20 @@ const Calendar = ({value, onChange, range = false}) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                disabled={dates.start ? false : true}
+                disabled={
+                  !range && start ? false : range && start && end ? false : true
+                }
                 onPress={() => {
                   setVisible(false);
-                  onChange(dates);
+                  onChange({start, end});
                 }}
-                className="bg-green-500 p-2 flex-1 justify-center items-center rounded-md">
+                className={`${
+                  !range && start
+                    ? 'bg-green-500'
+                    : range && start && end
+                    ? 'bg-green-500'
+                    : 'bg-green-200'
+                }  p-2 flex-1 justify-center items-center rounded-md`}>
                 <Text
                   className="text-lg text-white"
                   style={{fontFamily: 'Inter-Medium'}}>

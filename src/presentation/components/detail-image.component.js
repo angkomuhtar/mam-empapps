@@ -9,10 +9,7 @@ const DetailImage = ({source}) => {
 
   const images = [
     {
-      url: '',
-      props: {
-        source: source,
-      },
+      url: source,
     },
   ];
 
@@ -27,21 +24,23 @@ const DetailImage = ({source}) => {
         <Pressable onPress={() => setViewImage(true)}>
           <Image
             resizeMode="contain"
-            source={source}
+            source={{uri: source}}
             className="w-28 h-24 mt-5"
           />
         </Pressable>
       </View>
       <Modal visible={viewImage} transparent={true}>
-        <HStack
-          className={`relative bg-black justify-end ${
-            Platform.OS == 'ios' ? 'pt-10' : ''
-          }  px-10`}>
-          <Pressable onPress={() => setViewImage(false)}>
-            <Icon name="close" color="#fff" size={35} />
-          </Pressable>
-        </HStack>
-        <ImageViewer imageUrls={images} />
+        <VStack className="relative w-full h-full">
+          <HStack
+            className={`relative bg-black justify-end ${
+              Platform.OS == 'ios' ? 'pt-10' : ''
+            } px-10`}>
+            <Pressable onPress={() => setViewImage(false)}>
+              <Icon name="close" color="#fff" size={35} />
+            </Pressable>
+          </HStack>
+          <ImageViewer imageUrls={images} />
+        </VStack>
       </Modal>
     </VStack>
   );

@@ -5,26 +5,22 @@ import {HStack, VStack} from 'native-base';
 const DetailValue = ({label, value}) => {
   const ValueArray = ({data}) => {
     return (
-      <HStack className="justify-between items-center" space={2}>
-        <View className="flex-1">
-          <Text
-            style={{fontFamily: 'Inter-Medium'}}
-            className="text-base text-primary-950">
-            {data[0]}
-          </Text>
-        </View>
+      <HStack className="items-center" space={2}>
         <Text
-          style={{fontFamily: 'Inter-Medium'}}
-          className="text-base text-primary-950">
-          s/d
+          style={{fontFamily: 'OpenSans-Medium'}}
+          className="text-sm text-primary-950">
+          {data[0]}
         </Text>
-        <View className="bg-white rounded-md p-4 flex-1">
-          <Text
-            style={{fontFamily: 'Inter-Medium'}}
-            className="text-base text-primary-950">
-            {data[1]}
-          </Text>
-        </View>
+        <Text
+          style={{fontFamily: 'OpenSans-Medium'}}
+          className="text-base text-center text-primary-950">
+          -
+        </Text>
+        <Text
+          style={{fontFamily: 'OpenSans-Medium'}}
+          className="text-sm text-primary-950">
+          {data[1]}
+        </Text>
       </HStack>
     );
   };
@@ -44,7 +40,7 @@ const DetailValue = ({label, value}) => {
         <View className="">
           <Text
             style={{fontFamily: 'OpenSans-Medium'}}
-            className="text-md text-primary-950">
+            className="text-sm text-primary-950">
             {value}
           </Text>
         </View>

@@ -4,13 +4,22 @@ const leaveApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getLeaves: builder.query({
       query: () => 'leave',
+      transformResponse: responseData => {
+        return responseData.data;
+      },
       providesTags: result =>
         result
           ? [
-              ...result.map(({id}) => ({type: 'Post', id})),
+              ...result.map(({id}) => ({type: 'Leave', id})),
               {type: 'Leave', id: 'LIST'},
             ]
           : [{type: 'Leave', id: 'LIST'}],
+    }),
+    getLeaveType: builder.query({
+      query: () => 'leave/leave_type',
+      transformResponse: response => {
+        return response.data;
+      },
     }),
     addLeave: builder.mutation({
       query: body => ({
@@ -21,18 +30,19 @@ const leaveApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: [{type: 'Leave', id: 'LIST'}],
     }),
     getLeave: builder.query({
-      query: id => `leaves/${id}`,
+      query: id => `leave/${id}`,
       providesTags: (result, error, id) => [{type: 'Leave', id}],
     }),
     updateLeave: builder.mutation({
-      query: ({id, ...patch}) => ({
-        url: `leave/${id}`,
-        method: 'PUT',
-        body: patch,
+      query: body => ({
+        url: `leave/change_status`,
+        method: 'POST',
+        body: body,
       }),
+
       async onQueryStarted({id, ...patch}, {dispatch, queryFulfilled}) {
         const patchResult = dispatch(
-          api.util.updateQueryData('getLeave', id, draft => {
+          apiSlice.util.updateQueryData('getLeave', id, draft => {
             Object.assign(draft, patch);
           }),
         );
@@ -43,6 +53,20 @@ const leaveApiSlice = apiSlice.injectEndpoints({
         }
       },
       invalidatesTags: (result, error, {id}) => [{type: 'Leave', id}],
+    }),
+    getLeaveRequest: builder.query({
+      query: () => '/leave/leave_request/request',
+      transformResponse: responseData => {
+        return responseData.data;
+      },
+      providesTags: 'LeaveReq',
+    }),
+    getLeaveRequestHistory: builder.query({
+      query: () => '/leave/leave_request/history',
+      transformResponse: responseData => {
+        return responseData.data;
+      },
+      providesTags: 'LeaveReqHist',
     }),
     deletePost: builder.mutation({
       query(id) {
@@ -56,4 +80,11 @@ const leaveApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const {useAddLeaveMutation} = leaveApiSlice;
+export const {
+  useAddLeaveMutation,
+  useGetLeaveTypeQuery,
+  useLazyGetLeaveQuery,
+  useLazyGetLeaveRequestQuery,
+  useLazyGetLeaveRequestHistoryQuery,
+  useUpdateLeaveMutation,
+} = leaveApiSlice;

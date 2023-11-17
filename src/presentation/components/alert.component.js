@@ -1,10 +1,20 @@
-import {View, Text, TouchableOpacity, Modal} from 'react-native';
+import {View, Text, TouchableOpacity, Modal, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import {HStack, VStack} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LottieView from 'lottie-react-native';
 
-const Alert = ({visible, onOk, onDissmiss, type, message, title, quote}) => {
+const Alert = ({
+  visible,
+  onOk,
+  onDissmiss,
+  type,
+  message,
+  title,
+  quote,
+  onChangeText,
+  errText = false,
+}) => {
   let alertType = '';
   switch (type) {
     case 'warning':
@@ -31,46 +41,71 @@ const Alert = ({visible, onOk, onDissmiss, type, message, title, quote}) => {
 
   return (
     <Modal transparent={true} visible={visible}>
-      <VStack className="absolute h-full w-full bg-black/50 items-center justify-center">
-        <VStack className="bg-white p-5 rounded-xl w-3/4 relative space-y-3">
-          <View className="rounded-full p-5 bg-primary-50 self-center">
-            <View className="rounded-full p-2 bg-primary-200 self-center">
+      <VStack className="absolute h-screen w-full bg-black/50 items-center justify-center">
+        <VStack className="bg-white p-3 rounded-xl w-3/4 relative">
+          <View className="rounded-full p-3 bg-primary-50 self-center">
+            <View className="rounded-full p-3 bg-primary-200 self-center">
               <LottieView
                 source={alertType.icon}
                 loop
                 autoPlay
-                style={{height: 100, width: 100}}
+                style={{height: 70, width: 70}}
               />
             </View>
           </View>
-          <Text
-            style={{fontFamily: 'Inter-SemiBold'}}
-            className="text-lg text-center text-primary-950 mt-3 uppercase">
-            {title}
-          </Text>
-          {message && (
+          <VStack mb={5} space={1} mt={3}>
             <Text
-              style={{fontFamily: 'Inter-Regular'}}
+              style={{fontFamily: 'Inter-Bold'}}
               className="text-sm text-center text-primary-950 uppercase">
-              {message}
+              {title}
             </Text>
-          )}
-
-          {quote && (
-            <Text
-              style={{fontFamily: 'Roboto-Regular'}}
-              className="text-sm text-center text-primary-950 italic">
-              {quote}
-            </Text>
-          )}
-          <HStack className="pt-4 space-x-3">
-            <TouchableOpacity
-              onPress={onOk}
-              className="flex-1 bg-primary-500 p-4 rounded-md items-center">
-              <Text style={{fontFamily: 'Inter-Bold'}} className="text-white">
-                Oke
+            {message && (
+              <Text
+                style={{fontFamily: 'Inter-Regular'}}
+                className="text-xs text-center text-primary-950 capitalize">
+                {message}
               </Text>
-            </TouchableOpacity>
+            )}
+
+            {quote && (
+              <Text
+                style={{fontFamily: 'Roboto-Regular'}}
+                className="text-xs text-center text-primary-950 italic">
+                {quote}
+              </Text>
+            )}
+            {onChangeText && (
+              <>
+                <HStack className="border border-primary-100 py-2 px-4 rounded-md bg-white mt-4">
+                  <VStack className="flex-1">
+                    <Text
+                      className="text-xs text-primary-950 capitalize"
+                      style={{fontFamily: 'OpenSans-Regular'}}>
+                      catatan
+                    </Text>
+                    <TextInput
+                      multiline={true}
+                      placeholder="Catatan untuk requestor"
+                      autoComplete="off"
+                      onChangeText={onChangeText}
+                      className={`${
+                        Platform.OS == 'ios' ? 'py-2' : 'py-0'
+                      } text-primary-950 text-xs h-12`}
+                      style={{fontFamily: 'OpenSans-Light'}}
+                    />
+                  </VStack>
+                </HStack>
+                {errText && (
+                  <Text
+                    style={{fontFamily: 'OpenSans-MediumItalic'}}
+                    className="text-xs text-primary-500 pt-2 italic">
+                    Tidak Boleh Kosong
+                  </Text>
+                )}
+              </>
+            )}
+          </VStack>
+          <HStack className="pt-4 space-x-3">
             {onDissmiss && (
               <TouchableOpacity
                 onPress={onDissmiss}
@@ -82,6 +117,13 @@ const Alert = ({visible, onOk, onDissmiss, type, message, title, quote}) => {
                 </Text>
               </TouchableOpacity>
             )}
+            <TouchableOpacity
+              onPress={onOk}
+              className="flex-1 bg-primary-500 p-4 rounded-md items-center">
+              <Text style={{fontFamily: 'Inter-Bold'}} className="text-white">
+                Oke
+              </Text>
+            </TouchableOpacity>
           </HStack>
         </VStack>
       </VStack>

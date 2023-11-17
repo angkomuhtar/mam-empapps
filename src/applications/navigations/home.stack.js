@@ -5,6 +5,8 @@ import LeaveAdd from '@screens/other/leave/leave-add.screen';
 import LeaveDetails from '@screens/other/leave/leave-details.screen';
 import ChangePassword from '@screens/settings/password.screen';
 import Profile from '@screens/settings/profile.screen';
+import Leave from '@screens/other/leave/leave.screen';
+import ApprovalTab from './approval-tab.stack';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,8 +14,10 @@ const HomeBase = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={TabHome} name="home" />
+      <Stack.Screen component={Leave} name="leave" />
       <Stack.Screen component={LeaveAdd} name="leave-add" />
       <Stack.Screen component={LeaveDetails} name="leave-details" />
+      <Stack.Screen component={ApprovalTab} name="approval-request" />
       {/* settings */}
       <Stack.Screen component={ChangePassword} name="change-password" />
       <Stack.Screen component={ChangePassword} name="edit-profile" />

@@ -4,16 +4,26 @@ import {HStack, Select, VStack} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Dropdown} from 'react-native-element-dropdown';
 
-const SelectField = ({onChange, value, placeholder, label, option}) => {
+const SelectField = ({
+  onChange,
+  value,
+  placeholder,
+  valueField = 'value',
+  labelField = 'label',
+  label,
+  option = [],
+}) => {
   const renderItem = item => (
-    <View className="py-3 px-4">
+    <HStack className="py-3 px-4 justify-between items-center">
       <Text
-        className="text-sm text-primary-950"
+        className="text-sm text-primary-950 capitalize"
         style={{fontFamily: 'Inter-Medium'}}>
-        {item.label}
+        {item[labelField]}
       </Text>
-      {item.value === value && <Icon color="black" name="camera" size={20} />}
-    </View>
+      {item[valueField] === value && (
+        <Icon color="black" name="checkmark-done" size={20} />
+      )}
+    </HStack>
   );
 
   return (
@@ -36,12 +46,13 @@ const SelectField = ({onChange, value, placeholder, label, option}) => {
               color: '#490609',
               fontFamily: 'OpenSans-Light',
               fontSize: 14,
+              textTransform: 'capitalize',
             }}
             data={option}
             search={false}
             maxHeight={500}
-            labelField="label"
-            valueField="value"
+            labelField={labelField}
+            valueField={valueField}
             placeholder="pilih salah satu"
             value={value}
             onChange={onChange}

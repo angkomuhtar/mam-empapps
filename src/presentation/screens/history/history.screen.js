@@ -49,8 +49,6 @@ const History = ({navigation}) => {
     );
   };
 
-  // console.log('im here >>>', result);
-
   const onRefresh = () => {
     trigger();
   };

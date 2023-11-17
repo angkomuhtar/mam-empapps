@@ -57,7 +57,11 @@ const Other = () => {
             <Button
               title="Perintah Lembur"
               icon={
-                <Entypo name="stopwatch" size={20} color={'rgb(73, 6, 9)'} />
+                <Icon
+                  name="speedometer-outline"
+                  size={20}
+                  color={'rgb(73, 6, 9)'}
+                />
               }
               onPress={() => {
                 alert('Under Construction');
@@ -74,7 +78,7 @@ const Other = () => {
                 />
               }
               onPress={() => {
-                alert('Under Construction');
+                push('approval-request');
               }}
             />
 
@@ -90,7 +94,7 @@ const Other = () => {
                 <Icon name="walk-outline" size={20} color={'rgb(73, 6, 9)'} />
               }
               onPress={() => {
-                push('leave-add');
+                push('leave');
               }}
             />
             <Button

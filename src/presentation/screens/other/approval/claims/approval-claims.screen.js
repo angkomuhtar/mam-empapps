@@ -6,16 +6,17 @@ import {
   ScrollView,
 } from 'react-native';
 import React from 'react';
-import Header from '../../../components/navigation/header.component';
+import Header from '../../../../components/navigation/header.component';
 import {HStack, VStack} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import TabBar from '../../../components/navigation/tab-bar.component';
+import TabBar from '../../../../components/navigation/tab-bar.component';
 import {goBack, push} from '@utils/RootNavigation';
-import Layout from '../../../components/layout.component';
-import LeaveAdd from './leave-add.screen';
-import LeaveHistory from './leave-history.screen';
+import Layout from '../../../../components/layout.component';
+import {navigate} from '../../../../../applications/utils/RootNavigation';
+import ApprovalClaimHistory from './approval-claims-history.screen';
+import ApprovalClaimNew from './approval-claims-new.screen';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -35,7 +36,7 @@ const Button = ({icon, onPress, title}) => (
   </Pressable>
 );
 
-const Leave = () => {
+const ApprovalClaim = () => {
   return (
     <Layout>
       {/* <ScrollView showsVerticalScrollIndicator={false}> */}
@@ -43,7 +44,7 @@ const Leave = () => {
         <Header
           back={
             <HStack alignItems={'center'} space={3}>
-              <TouchableOpacity onPress={() => goBack()}>
+              <TouchableOpacity onPress={() => navigate('others')}>
                 <Icon
                   name="chevron-back-outline"
                   color={'rgb(73, 6, 9)'}
@@ -53,7 +54,7 @@ const Leave = () => {
               <Text
                 className="text-base text-primary-950"
                 style={{fontFamily: 'OpenSans-Bold'}}>
-                Cuti dan Ijin
+                Claim and Reimbursement
               </Text>
             </HStack>
           }
@@ -74,16 +75,17 @@ const Leave = () => {
         <Tab.Screen
           name="leaveadd"
           options={{tabBarLabel: 'Baru'}}
-          component={LeaveAdd}
+          component={ApprovalClaimNew}
         />
         <Tab.Screen
           name="leaveList"
           options={{tabBarLabel: 'Riwayat'}}
-          component={LeaveHistory}
+          component={ApprovalClaimHistory}
         />
       </Tab.Navigator>
+      <VStack height={12}></VStack>
     </Layout>
   );
 };
 
-export default Leave;
+export default ApprovalClaim;
