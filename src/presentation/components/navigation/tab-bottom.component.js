@@ -56,7 +56,7 @@ const TabBottom = ({state, descriptors, navigation, size = '11px'}) => {
                   style={{
                     fontFamily: isFocused ? 'Inter-Bold' : 'Inter-Medium',
                   }}
-                  className={`text-[${size}] text-primary-${
+                  className={`text-[10px] text-primary-${
                     isFocused ? '500' : '950'
                   } uppercase`}>
                   {label}
