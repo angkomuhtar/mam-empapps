@@ -4,7 +4,14 @@ import Layout from '@components/layout.component';
 import Logo from '@images/logo-land.png';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {VStack, useToast} from 'native-base';
-import {getUniqueId} from 'react-native-device-info';
+import {
+  getUniqueId,
+  getDevice,
+  getCodename,
+  getBrand,
+  getDeviceId,
+  getModel,
+} from 'react-native-device-info';
 import {useDispatch, useSelector} from 'react-redux';
 import Loading from '@components/loading.component';
 import Input from '@components/input.component';
@@ -31,9 +38,25 @@ const Login = () => {
   const {loading, token, error, success} = useSelector(state => state.auth);
   useEffect(() => {
     getUniqueId().then(uniqueId => {
-      setData({...data, phone_id: uniqueId});
+      getDevice().then(device_type => {
+        getCodename().then(code_name => {
+          let brand = getBrand();
+          let device_id = getDeviceId();
+          let model = getModel();
+          setData({
+            ...data,
+            device_brand: brand,
+            device_id: device_id,
+            device_type: device_type,
+            phone_id: uniqueId,
+            model: model,
+          });
+        });
+      });
     });
   }, []);
+
+  console.log(data);
 
   const loginHandle = () => {
     if (data.email == '' || data.password == '') {
@@ -42,21 +65,22 @@ const Login = () => {
       dispatch(login(data));
     }
   };
-
   useEffect(() => {
     if (error) {
       toast.show({
         render: () => (
           <View className="px-4 py-2 bg-primary-600 rounded-lg">
             <Text className="font-sans font-semibold text-white capitalize">
-              {error?.statusCode == 422
-                ? error?.msg?.password[0]
-                : error?.message}
+              {error?.status == 422
+                ? error?.message?.password[0]
+                : error?.status == 401
+                ? error?.message
+                : 'Terjadi Kesalahan periksa koneksi anda'}
             </Text>
           </View>
         ),
         placement: 'bottom',
-        duration: 1000,
+        duration: 3000,
       });
     }
   }, [error]);

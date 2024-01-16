@@ -8,8 +8,9 @@ import moment from 'moment';
 const api =
   Platform.OS == 'ios'
     ? 'http://localhost:8000/api/v1'
-    : 'http://10.0.2.2:8000/api/v1';
-const api_url = 'https://ang-co.my.id/api/v1';
+    : 'http://10.0.3.2:8000/api/v1';
+// const api_url = 'https://ang-co.my.id/api/v1';
+const api_url = api;
 // let dispatch = useDispatch();
 
 export const apiClient = axios.create({

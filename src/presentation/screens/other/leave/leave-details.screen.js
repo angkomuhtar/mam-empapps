@@ -4,9 +4,6 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
-  Image,
-  Pressable,
-  Modal,
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';

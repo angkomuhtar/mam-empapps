@@ -10,7 +10,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Box, CheckIcon, HStack, Image, Select, VStack} from 'native-base';
 import MapView, {Circle, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-import Header from '@components/navigation/header.component';
 import {isPointWithinRadius} from 'geolib';
 import Loading from '@components/loading.component';
 import moment from 'moment';
@@ -25,6 +24,7 @@ import {Quote} from '../../../applications/utils/Quote';
 import {useFocusEffect} from '@react-navigation/native';
 import {apiSlice} from '../../../applications/slices/api.slice';
 import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import JailMonkey from 'jail-monkey';
 
 const requestLocationPermission = async () => {
   try {
@@ -128,7 +128,7 @@ const Absen = ({navigation}) => {
               latitude: data.latitude,
               longitude: data.longitude,
             },
-            30,
+            data.radius,
           );
           if (chekAvail) {
             loc = true;
@@ -136,131 +136,144 @@ const Absen = ({navigation}) => {
           }
         });
 
-        if (loc) {
-          if (today) {
-            setAlert({
-              show: true,
-              type: 'warning',
-              title: 'Absen pulang',
-              message: 'ingin melakukan absen pulang sekarang.?',
-              onOK: () => {
-                setAlert({...alert, show: false});
-                setClockIn({
-                  shift: today.work_hours_id,
-                  type: 'out',
-                  location: location,
-                  time: moment().format('HH:mm:ss'),
-                  date: moment().format('YYYY-MM-DD'),
-                }).then(res => {
-                  if (res.error) {
-                    setAlert({
-                      show: true,
-                      type: 'error',
-                      title: 'Data tidak lengkap',
-                      message:
-                        res.error.status == '422'
-                          ? 'pilih jenis shift'
-                          : 'terjadi kesalahan',
-                      onOK: () => {
-                        setAlert({show: false});
-                      },
-                    });
-                  } else if (res.data.success) {
-                    setAlert({
-                      show: true,
-                      type: 'success',
-                      title: 'ABSEN Pulang berhasil',
-                      message: false,
-                      quote: Quote[Math.floor(Math.random() * Quote.length)],
-                      onOK: () => {
-                        setAlert({show: false});
-                      },
-                    });
-                  }
-                });
-              },
-              onDissmiss: () => {
-                setAlert({show: false});
-              },
-            });
-            // setClockIn({
-            //   shift: today.work_hours_id,
-            //   type: 'out',
-            //   location: location,
-            //   time: moment().format('HH:mm:ss'),
-            //   date: moment().format('YYYY-MM-DD'),
-            // }).then(res => {
-            //   if (res.error) {
-            //     setAlert({
-            //       show: true,
-            //       type: 'error',
-            //       title: 'Data tidak lengkap',
-            //       message:
-            //         res.error.status == '422'
-            //           ? 'pilih jenis shift'
-            //           : 'terjadi kesalahan',
-            //       onOK: () => {
-            //         setAlert({show: false});
-            //       },
-            //     });
-            //   } else if (res.data.success) {
-            //     setAlert({
-            //       show: true,
-            //       type: 'success',
-            //       title: 'ABSEN Pulang berhasil',
-            //       message: false,
-            //       quote: Quote[Math.floor(Math.random() * Quote.length)],
-            //       onOK: () => {
-            //         setAlert({show: false});
-            //       },
-            //     });
-            //   }
-            // });
-          } else {
-            setClockIn({
-              shift: selectedShift,
-              type: 'in',
-              location: location,
-              time: moment().format('HH:mm:ss'),
-              date: moment().format('YYYY-MM-DD'),
-            }).then(res => {
-              if (res.error) {
-                setAlert({
-                  show: true,
-                  type: 'error',
-                  title: 'Data tidak lengkap',
-                  message:
-                    res.error.status == '422'
-                      ? 'pilih jenis shift'
-                      : 'terjadi kesalahan',
-                  onOK: () => {
-                    setAlert({show: false});
-                  },
-                });
-              } else if (res.data.success) {
-                setAlert({
-                  show: true,
-                  type: 'success',
-                  title: 'ABSEN Masuk berhasil',
-                  message: false,
-                  quote: Quote[Math.floor(Math.random() * Quote.length)],
-                  onOK: () => {
-                    setAlert({show: false});
-                  },
-                });
-              }
-            });
-          }
-        } else {
+        if (JailMonkey.trustFall()) {
           setAlert({
             show: true,
-            type: 'warning',
-            title: 'Diluar area',
-            message: 'anda tidak berada dalam radius absen',
+            type: 'error',
+            title: 'Oops, Panik Gak.?',
+            message: 'Device Anda Menggunakan Lokasi Palsu',
             onOK: () => {
               setAlert({show: false});
             },
           });
+        } else {
+          if (loc) {
+            if (today) {
+              console.log(today);
+              setAlert({
+                show: true,
+                type: 'warning',
+                title: 'Absen pulang',
+                message: 'ingin melakukan absen pulang sekarang.?',
+                onOK: () => {
+                  setAlert({...alert, show: false});
+                  setClockIn({
+                    shift: today.work_hours_id,
+                    type: 'out',
+                    location: location,
+                    time: moment().format('HH:mm:ss'),
+                    date: today.date,
+                  }).then(res => {
+                    if (res.error) {
+                      setAlert({
+                        show: true,
+                        type: 'error',
+                        title: 'Data tidak lengkap',
+                        message:
+                          res.error.status == '422'
+                            ? 'pilih jenis shift'
+                            : 'terjadi kesalahan',
+                        onOK: () => {
+                          setAlert({show: false});
+                        },
+                      });
+                    } else if (res.data.success) {
+                      setAlert({
+                        show: true,
+                        type: 'success',
+                        title: 'ABSEN Pulang berhasil',
+                        message: false,
+                        quote: Quote[Math.floor(Math.random() * Quote.length)],
+                        onOK: () => {
+                          setAlert({show: false});
+                        },
+                      });
+                    }
+                  });
+                },
+                onDissmiss: () => {
+                  setAlert({show: false});
+                },
+              });
+              // setClockIn({
+              //   shift: today.work_hours_id,
+              //   type: 'out',
+              //   location: location,
+              //   time: moment().format('HH:mm:ss'),
+              //   date: moment().format('YYYY-MM-DD'),
+              // }).then(res => {
+              //   if (res.error) {
+              //     setAlert({
+              //       show: true,
+              //       type: 'error',
+              //       title: 'Data tidak lengkap',
+              //       message:
+              //         res.error.status == '422'
+              //           ? 'pilih jenis shift'
+              //           : 'terjadi kesalahan',
+              //       onOK: () => {
+              //         setAlert({show: false});
+              //       },
+              //     });
+              //   } else if (res.data.success) {
+              //     setAlert({
+              //       show: true,
+              //       type: 'success',
+              //       title: 'ABSEN Pulang berhasil',
+              //       message: false,
+              //       quote: Quote[Math.floor(Math.random() * Quote.length)],
+              //       onOK: () => {
+              //         setAlert({show: false});
+              //       },
+              //     });
+              //   }
+              // });
+            } else {
+              setClockIn({
+                shift: selectedShift,
+                type: 'in',
+                location: location,
+                time: moment().format('HH:mm:ss'),
+                date: moment().format('YYYY-MM-DD'),
+              }).then(res => {
+                if (res.error) {
+                  setAlert({
+                    show: true,
+                    type: 'error',
+                    title: 'Data tidak lengkap',
+                    message:
+                      res.error.status == '422'
+                        ? 'pilih jenis shift'
+                        : 'terjadi kesalahan',
+                    onOK: () => {
+                      setAlert({show: false});
+                    },
+                  });
+                } else if (res.data.success) {
+                  setAlert({
+                    show: true,
+                    type: 'success',
+                    title: 'ABSEN Masuk berhasil',
+                    message: false,
+                    quote: Quote[Math.floor(Math.random() * Quote.length)],
+                    onOK: () => {
+                      setAlert({show: false});
+                    },
+                  });
+                }
+              });
+            }
+          } else {
+            setAlert({
+              show: true,
+              type: 'warning',
+              title: 'Diluar area',
+              message: 'anda tidak berada dalam radius absen',
+              onOK: () => {
+                setAlert({show: false});
+              },
+            });
+          }
         }
       },
       error => {
@@ -277,14 +290,15 @@ const Absen = ({navigation}) => {
     );
   };
 
-  // console.log(shift, error, isSuccess);
-
   useFocusEffect(
     useCallback(() => {
+      console.log('adb', JailMonkey.AdbEnabled());
+      console.log('jaibroken', JailMonkey.canMockLocation());
       getCurrent();
       trigger();
     }, [navigation]),
   );
+
   return (
     <View className="flex-1 relative">
       {(postLoading || isLoading || loading || shiftLoading || locLoading) && (
@@ -323,7 +337,7 @@ const Absen = ({navigation}) => {
                   }}
                   fillColor="rgba(243, 21, 89, .5)"
                   strokeColor="rgba(243, 21, 89, .5)"
-                  radius={30}
+                  radius={parseFloat(data.radius)}
                 />
               ))}
             </MapView>

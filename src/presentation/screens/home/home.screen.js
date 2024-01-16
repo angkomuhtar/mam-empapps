@@ -16,6 +16,7 @@ import {useGetProfileQuery} from '@slices/user.slice';
 import {useGetClockRecapQuery, useGetTodayQuery} from '@slices/clock.slice';
 import moment from 'moment';
 import 'moment/locale/id';
+import {navigate} from '../../../applications/utils/RootNavigation';
 
 const Home = ({navigation}) => {
   let width = Dimensions.get('screen').width;
@@ -70,7 +71,7 @@ const Home = ({navigation}) => {
                 style={{fontFamily: 'Inter-Bold'}}>
                 Rekap Presensi
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigate('history')}>
                 <Text
                   className="text-blue-800 underline"
                   style={{fontFamily: 'Inter-SemiBold'}}>

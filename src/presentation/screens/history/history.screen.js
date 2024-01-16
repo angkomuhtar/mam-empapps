@@ -8,6 +8,7 @@ import {apiSlice} from '../../../applications/slices/api.slice';
 import {useFocusEffect} from '@react-navigation/native';
 import Empty from '../../components/empty.comnponent';
 import Layout from '../../components/layout.component';
+import moment from 'moment';
 
 const History = ({navigation}) => {
   const [trigger, {data: history, isLoading}, lastPromiseInfo] =
@@ -70,6 +71,15 @@ const History = ({navigation}) => {
               Riwayat
             </Text>
           }
+          rightIcon={
+            <View className="flex justify-end items-center">
+              <Text
+                className="text-sm text-primary-950"
+                style={{fontFamily: 'Inter-semibold'}}>
+                {moment().format('MMMM')}
+              </Text>
+            </View>
+          }
           className=""
         />
         {isLoading ? (
@@ -98,6 +108,8 @@ const History = ({navigation}) => {
                     status={item.status}
                     checkin={item.clock_in}
                     checkout={item.clock_out}
+                    late={item.late}
+                    early={item.early}
                   />
                 )}
                 keyExtractor={item => item.id}

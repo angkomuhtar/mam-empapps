@@ -54,7 +54,7 @@ const ApprovalLeave = () => {
               <Text
                 className="text-base text-primary-950"
                 style={{fontFamily: 'OpenSans-Bold'}}>
-                Permmohonan Cuti / Ijin
+                Permohonan Cuti / Ijin
               </Text>
             </HStack>
           }

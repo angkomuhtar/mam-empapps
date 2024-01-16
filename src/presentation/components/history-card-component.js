@@ -4,7 +4,7 @@ import moment from 'moment';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {HStack} from 'native-base';
 
-const HistoryCard = ({date, checkin, checkout, status}) => {
+const HistoryCard = ({date, checkin, checkout, status, late, early}) => {
   return (
     <View className="flex-row items-center bg-white rounded-md border border-primary-100 mb-2">
       <View
@@ -30,7 +30,10 @@ const HistoryCard = ({date, checkin, checkout, status}) => {
           <HStack className="items-center space-x-2 flex-1">
             {status == 'H' ? (
               <>
-                <View className="rounded-md p-[4px] bg-green-400">
+                <View
+                  className={`rounded-md p-[4px] ${
+                    late == null ? 'bg-green-400' : 'bg-red-400'
+                  }`}>
                   <Icon name="enter-outline" size={18} color="#FFF" />
                 </View>
                 <Text
@@ -57,7 +60,10 @@ const HistoryCard = ({date, checkin, checkout, status}) => {
           <HStack className="items-center space-x-2 flex-1">
             {status == 'H' ? (
               <>
-                <View className="rounded-md p-[4px] bg-green-400">
+                <View
+                  className={`rounded-md p-[4px] ${
+                    early == null ? 'bg-green-400' : 'bg-red-400'
+                  }`}>
                   <Icon name="exit-outline" size={18} color="#FFF" />
                 </View>
                 <Text

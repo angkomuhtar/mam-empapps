@@ -13,15 +13,19 @@ import {accessToken} from '../slices/auth.slice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import HomeBase from './home.stack';
 import AuthBase from './auth.stack';
+import {getVersion} from 'react-native-device-info';
 
 const Stack = createNativeStackNavigator();
 
 const MainNavigation = ({navigation}) => {
   const token = useSelector(accessToken);
+  const [version, setVersion] = useState('');
   const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    let version = getVersion();
+    console.log('this is version', version);
     const getToken = async () => {
       try {
         const value = await AsyncStorage.getItem('token');
@@ -36,8 +40,10 @@ const MainNavigation = ({navigation}) => {
   }, [navigation]);
 
   useEffect(() => {
+    const getversion = async () => {};
     setTimeout(() => {
       setloading(false);
+      getversion();
     }, 2000);
   }, []);
 
