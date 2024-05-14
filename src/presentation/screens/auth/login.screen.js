@@ -17,6 +17,7 @@ import Loading from '@components/loading.component';
 import Input from '@components/input.component';
 import Alert from '@components/alert.component';
 import {login} from '../../../applications/actions/auth.action';
+import {API_URL} from '@env';
 
 const Login = () => {
   const toast = useToast();
@@ -55,8 +56,6 @@ const Login = () => {
       });
     });
   }, []);
-
-  console.log(data);
 
   const loginHandle = () => {
     if (data.email == '' || data.password == '') {

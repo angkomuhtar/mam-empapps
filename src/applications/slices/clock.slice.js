@@ -21,7 +21,13 @@ export const clockApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['Today', 'History', 'Rekap'],
     }),
     getClock: builder.query({
-      query: () => '/clock',
+      query: month => {
+        console.log('data from Slice:', month);
+        return {
+          url: `/clock/${month}/history`,
+          // params: '',
+        };
+      },
       transformResponse: responseData => {
         return responseData.data;
       },
@@ -41,6 +47,7 @@ export const clockApiSlice = apiSlice.injectEndpoints({
     }),
     getClockRecap: builder.query({
       query: () => 'clock/rekap',
+      overrideExisting: true,
       transformResponse: responseData => {
         return responseData.data;
       },

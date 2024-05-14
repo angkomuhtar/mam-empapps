@@ -1,12 +1,6 @@
 PODS:
-  - Base64 (1.1.2)
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
-  - CodePush (8.1.0):
-    - Base64 (~> 1.1)
-    - JWT (~> 3.0.0-beta.12)
-    - React-Core
-    - SSZipArchive (~> 2.2.2)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.72.1)
   - FBReactNativeSpec (0.72.1):
@@ -103,8 +97,8 @@ PODS:
   - hermes-engine (0.72.1):
     - hermes-engine/Pre-built (= 0.72.1)
   - hermes-engine/Pre-built (0.72.1)
-  - JWT (3.0.0-beta.14):
-    - Base64 (~> 1.1.2)
+  - jail-monkey (2.8.0):
+    - React-Core
   - libevent (2.1.12)
   - lottie-ios (4.3.3)
   - lottie-react-native (6.3.1):
@@ -422,6 +416,8 @@ PODS:
     - React-Core
   - react-native-maps (1.7.1):
     - React-Core
+  - react-native-month-year-picker (1.9.0):
+    - React
   - react-native-pager-view (6.2.1):
     - React-Core
   - react-native-safe-area-context (4.7.1):
@@ -594,7 +590,6 @@ PODS:
   - RNVectorIcons (9.2.0):
     - React-Core
   - SocketRocket (0.6.1)
-  - SSZipArchive (2.2.3)
   - TOCropViewController (2.6.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -602,7 +597,6 @@ PODS:
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
-  - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
@@ -629,6 +623,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Google-Maps-iOS-Utils (from `https://github.com/Simon-TechForm/google-maps-ios-utils.git`, branch `feat/support-apple-silicon`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - jail-monkey (from `../node_modules/jail-monkey`)
   - libevent (~> 2.1.12)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - OpenSSL-Universal (= 1.1.1100)
@@ -654,6 +649,7 @@ DEPENDENCIES:
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - react-native-month-year-picker (from `../node_modules/react-native-month-year-picker`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-version-info (from `../node_modules/react-native-version-info`)
@@ -688,7 +684,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Base64
     - CocoaAsyncSocket
     - Flipper
     - Flipper-Boost-iOSX
@@ -700,20 +695,16 @@ SPEC REPOS:
     - FlipperKit
     - fmt
     - GoogleMaps
-    - JWT
     - libevent
     - lottie-ios
     - OpenSSL-Universal
     - SocketRocket
-    - SSZipArchive
     - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
-  CodePush:
-    :path: "../node_modules/react-native-code-push"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   FBLazyVector:
@@ -728,6 +719,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-03-20-RNv0.72.0-49794cfc7c81fb8f69fd60c3bbf85a7480cc5a77
+  jail-monkey:
+    :path: "../node_modules/jail-monkey"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
   RCT-Folly:
@@ -770,6 +763,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-month-year-picker:
+    :path: "../node_modules/react-native-month-year-picker"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
@@ -839,10 +834,8 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Simon-TechForm/google-maps-ios-utils.git
 
 SPEC CHECKSUMS:
-  Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  CodePush: 255d7607f428dcbec39085f81a206b170e01d012
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 55cd4593d570bd9e5e227488d637ce6a9581ce51
   FBReactNativeSpec: 799b0e1a1561699cd0e424e24fe5624da38402f0
@@ -859,7 +852,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: d3fdfd57db799771418f06189e33981597553aa8
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: 9df83855a0fd15ef8eb61694652bae636b0c466e
-  JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
+  jail-monkey: a71b35d482a70ecba844a90f002994012cf12a5d
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   lottie-ios: 25e7b2675dad5c3ddad369ac9baab03560c5bfdd
   lottie-react-native: c9f1db4f4124dcce9f8159e65d8dc6e8bcb11fb4
@@ -884,6 +877,7 @@ SPEC CHECKSUMS:
   react-native-google-maps: dd12cdd86b8e3fedbbb671676aedaa2f656e2ccd
   react-native-image-picker: 1569cfade34b3a011191ce262423e6ce2f8db5a1
   react-native-maps: 667f9b975549c6fa9b1631bf859440f68ebd3b8f
+  react-native-month-year-picker: 948797e981ca502427024a34b17f545eb321bbff
   react-native-pager-view: d211379f61895b6349bd7e571b44a26d005c2975
   react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
   react-native-version-info: a106f23009ac0db4ee00de39574eb546682579b9
@@ -915,11 +909,10 @@ SPEC CHECKSUMS:
   RNSVG: 80584470ff1ffc7994923ea135a3e5ad825546b9
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 65286bb6a07edce5e4fe8c90774da977ae8fc009
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: b2af96913a137174852c4437eaea1f1ffc7eff35
+PODFILE CHECKSUM: 45cbf552cd78f0ea3ddbad5199472a438ec97f2c
 
 COCOAPODS: 1.12.1

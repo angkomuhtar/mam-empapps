@@ -5,16 +5,9 @@ import {Platform} from 'react-native';
 import jwtDecode from 'jwt-decode';
 import moment from 'moment';
 
-const api =
-  Platform.OS == 'ios'
-    ? 'http://localhost:8000/api/v1'
-    : 'http://10.0.3.2:8000/api/v1';
-// const api_url = 'https://ang-co.my.id/api/v1';
-const api_url = api;
-// let dispatch = useDispatch();
+const api_url = API_URL;
 
 export const apiClient = axios.create({
-  baseURL: api_url,
   headers: {
     'Content-type': 'application/json',
     'Cache-Control': 'no-cache',
@@ -54,6 +47,7 @@ apiClient.interceptors.request.use(async function (config, data) {
 
 export const errHandle = error => {
   var err = {};
+  console.log(error);
   if (error.response) {
     err = {
       status: error.response.data.Error,

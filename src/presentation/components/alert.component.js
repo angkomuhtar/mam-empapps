@@ -32,6 +32,11 @@ const Alert = ({
         icon: require('../assets/images/error.json'),
       };
       break;
+    case 'danger':
+      alertType = {
+        icon: require('../assets/images/robot.json'),
+      };
+      break;
     default:
       alertType = {
         icon: require('../assets/images/success.json'),
@@ -43,16 +48,29 @@ const Alert = ({
     <Modal transparent={true} visible={visible}>
       <VStack className="absolute h-screen w-full bg-black/50 items-center justify-center">
         <VStack className="bg-white p-3 rounded-xl w-3/4 relative">
-          <View className="rounded-full p-3 bg-primary-50 self-center">
-            <View className="rounded-full p-3 bg-primary-200 self-center">
+          {type != 'danger' ? (
+            <View className="rounded-full p-3 bg-primary-50 self-center">
+              <View className="rounded-full p-3 bg-primary-200 self-center">
+                <LottieView
+                  source={alertType.icon}
+                  loop
+                  autoPlay
+                  style={{height: 70, width: 70}}
+                />
+              </View>
+            </View>
+          ) : (
+            <View className="rounded-full self-center relative h-36">
               <LottieView
                 source={alertType.icon}
                 loop
                 autoPlay
-                style={{height: 70, width: 70}}
+                className="-top-20 absoute"
+                style={{height: 250, width: 250}}
               />
             </View>
-          </View>
+          )}
+
           <VStack mb={5} space={1} mt={3}>
             <Text
               style={{fontFamily: 'Inter-Bold'}}

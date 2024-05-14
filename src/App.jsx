@@ -5,7 +5,7 @@ import {store} from './applications/root.state';
 import MainNavigation from './applications/navigations/root.stack';
 import {NativeBaseProvider, extendTheme} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import codePush from 'react-native-code-push';
+// import codePush from 'react-native-code-push';
 
 Icon.loadFont();
 const Stack = createNativeStackNavigator();
@@ -35,4 +35,4 @@ function App() {
   );
 }
 
-export default codePush(App);
+export default App;
