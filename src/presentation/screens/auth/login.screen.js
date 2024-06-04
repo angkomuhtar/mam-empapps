@@ -17,9 +17,22 @@ import Loading from '@components/loading.component';
 import Input from '@components/input.component';
 import Alert from '@components/alert.component';
 import {login} from '../../../applications/actions/auth.action';
-import {API_URL} from '@env';
+import {Controller, useForm} from 'react-hook-form';
 
-const Login = () => {
+const Login = ({navigation}) => {
+  const {
+    control,
+    handleSubmit,
+    formState: {errors: validError},
+    setValue,
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+      phone_id: '',
+    },
+  });
+
   const toast = useToast();
   const dispatch = useDispatch();
   const [eye, setEye] = useState(true);
@@ -34,9 +47,23 @@ const Login = () => {
     message: '',
   });
   const [user, setUser] = useState(null);
-  //   const [login, {isLoading}] = useLoginMutation();
 
   const {loading, token, error, success} = useSelector(state => state.auth);
+
+  const toatsShow = ({message = 'terjadi kesalahan', errno = '500'}) => {
+    toast.show({
+      render: () => (
+        <View className="px-4 py-2 bg-primary-600 rounded-lg">
+          <Text className="font-sans font-semibold text-white capitalize">
+            {errno + ' : ' + message}
+          </Text>
+        </View>
+      ),
+      placement: 'bottom',
+      duration: 3000,
+    });
+  };
+
   useEffect(() => {
     getUniqueId().then(uniqueId => {
       getDevice().then(device_type => {
@@ -44,6 +71,7 @@ const Login = () => {
           let brand = getBrand();
           let device_id = getDeviceId();
           let model = getModel();
+          setValue('phone_id', uniqueId);
           setData({
             ...data,
             device_brand: brand,
@@ -56,16 +84,12 @@ const Login = () => {
       });
     });
   }, []);
-
-  const loginHandle = () => {
-    if (data.email == '' || data.password == '') {
-      setAlert({...alert, visible: true});
-    } else {
-      dispatch(login(data));
-    }
+  const loginHandle = data => {
+    dispatch(login(data));
   };
   useEffect(() => {
     if (error) {
+      console.log(error);
       toast.show({
         render: () => (
           <View className="px-4 py-2 bg-primary-600 rounded-lg">
@@ -87,7 +111,6 @@ const Login = () => {
   return (
     <Layout>
       {Platform.OS == 'ios' && <View className="h-8" />}
-      {/* {alert.visible && ( */}
       <Alert
         visible={alert.visible}
         type="error"
@@ -95,14 +118,13 @@ const Login = () => {
         message="Data tidak lengkap"
         onOk={() => setAlert({...alert, visible: false})}
       />
-      {/* )} */}
 
       {loading && <Loading />}
-      <VStack space="5" m={5} className="flex-1 py-8">
-        <View className="flex">
+      <VStack m={5} className="flex-1 py-8">
+        <View className="flex mb-4">
           <Image source={Logo} resizeMode="contain" className="w-36 h-14" />
         </View>
-        <VStack space={2}>
+        <VStack className="space-y-2 mb-4">
           <Text
             className="text-3xl text-primary-950"
             style={{fontFamily: 'Inter-Black'}}>
@@ -114,43 +136,80 @@ const Login = () => {
             di <Text className="text-primary-500">EMPLOYEE APPS</Text>
           </Text>
         </VStack>
-        <VStack space={6}>
-          <Input
-            placeholder="Username / Email"
-            style={{fontFamily: 'Inter-Light'}}
-            keyboardType="default"
-            value={data.email}
-            onChangeText={text => {
-              setData({...data, email: text});
+        <VStack>
+          <Controller
+            control={control}
+            rules={{
+              required: {
+                message: 'tidak boleh kosong',
+                value: true,
+              },
             }}
-            title="Email/Username"
+            name="email"
+            render={({field: {onChange, onBlur, value}}) => (
+              <Input
+                placeholder="Username / Email"
+                style={{fontFamily: 'Inter-Light'}}
+                keyboardType="default"
+                onBlur={onBlur}
+                value={value}
+                onChangeText={onChange}
+                title="Email/Username"
+              />
+            )}
           />
-          <Input
-            placeholder="Password"
-            keyboardType="default"
-            value={data.password}
-            onChangeText={text => {
-              setData({...data, password: text});
+          {validError.email && (
+            <Text className="text-red-500 text-xs ml-2 mt-1">
+              {validError.email?.message}
+            </Text>
+          )}
+          <Controller
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: 'tidak boleh kosong',
+              },
+              minLength: {
+                message: 'password minimal 6 karakter',
+                value: 6,
+              },
             }}
-            style={{fontFamily: 'Inter-Light'}}
-            secureTextEntry={eye}
-            title="Password"
-            rightIcon={
-              <TouchableOpacity
-                onPress={() => {
-                  setEye(!eye);
-                }}
-                className="justify-center bg-transparent top-1 bottom-1">
-                <Icon
-                  color={'rgb(73, 6, 9)'}
-                  name={eye ? 'ios-eye-off-outline' : 'ios-eye-outline'}
-                  size={30}
-                />
-              </TouchableOpacity>
-            }></Input>
+            name="password"
+            render={({field: {onChange, onBlur, value}}) => (
+              <Input
+                placeholder="Password"
+                keyboardType="default"
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+                style={{fontFamily: 'Inter-Light'}}
+                secureTextEntry={eye}
+                title="Password"
+                rightIcon={
+                  <TouchableOpacity
+                    onPress={() => {
+                      setEye(!eye);
+                    }}
+                    className="justify-center bg-transparent top-1 bottom-1">
+                    <Icon
+                      color={'rgb(73, 6, 9)'}
+                      name={eye ? 'ios-eye-off-outline' : 'ios-eye-outline'}
+                      size={30}
+                    />
+                  </TouchableOpacity>
+                }></Input>
+            )}
+          />
+          {validError.password && (
+            <Text className="text-red-500 text-xs ml-2 mt-1">
+              {validError.password?.message}
+            </Text>
+          )}
+
           <TouchableOpacity
-            onPress={() => loginHandle()}
-            className="bg-primary-500 p-3 rounded-md items-center">
+            onPress={handleSubmit(loginHandle)}
+            className="bg-primary-500 p-3 rounded-md items-center mt-8">
             <Text
               className="text-primary-50 text-sm"
               style={{fontFamily: 'Inter-Regular'}}>

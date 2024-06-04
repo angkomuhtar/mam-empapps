@@ -6,30 +6,33 @@ import {useDispatch, useSelector} from 'react-redux';
 
 // screen
 import Splash from '@screens/auth/splash.screen';
-import Login from '@screens/auth/login.screen';
 import {Text, View} from 'react-native';
 import {refresh} from '../actions/auth.action';
-import {accessToken} from '../slices/auth.slice';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import HomeBase from './home.stack';
 import AuthBase from './auth.stack';
 import {getVersion} from 'react-native-device-info';
-
+import {apiClient} from '../utils/ApiCall';
 const Stack = createNativeStackNavigator();
 
+// const asynctoken = await AsyncStorage.getItem('token');
+
 const MainNavigation = ({navigation}) => {
-  const token = useSelector(accessToken);
+  const {getItem} = useAsyncStorage('@token');
   const [version, setVersion] = useState('');
   const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
 
+  const {isLogin, error, success, refLoading} = useSelector(
+    state => state.auth,
+  );
+
   useEffect(() => {
     let version = getVersion();
-    console.log('this is version', version);
     const getToken = async () => {
       try {
-        const value = await AsyncStorage.getItem('token');
-        if (value !== null) {
+        const value = await getItem();
+        if (value) {
           dispatch(refresh());
         }
       } catch (error) {
@@ -47,21 +50,13 @@ const MainNavigation = ({navigation}) => {
     }, 2000);
   }, []);
 
-  const HOME = () => {
-    return (
-      <View>
-        <Text>Home</Text>
-      </View>
-    );
-  };
-
-  if (loading) {
+  if (loading || refLoading) {
     return <Splash />;
   }
 
   return (
     <NavigationContainer ref={navigationRef}>
-      {token ? <HomeBase /> : <AuthBase />}
+      {isLogin ? <HomeBase /> : <AuthBase />}
     </NavigationContainer>
   );
 };

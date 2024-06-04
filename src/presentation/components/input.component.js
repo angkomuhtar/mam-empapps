@@ -12,7 +12,7 @@ const Input = props => {
   );
 
   return (
-    <HStack className="border border-primary-100 py-2 px-4 rounded-md bg-white">
+    <HStack className="border border-primary-100 py-2 px-4 rounded-md bg-white mt-4">
       <VStack className="flex-1">
         <Text
           className="text-xs text-primary-950 capitalize"

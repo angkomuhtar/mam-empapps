@@ -8,6 +8,7 @@ import moment from 'moment';
 const api_url = API_URL;
 
 export const apiClient = axios.create({
+  baseURL: api_url,
   headers: {
     'Content-type': 'application/json',
     'Cache-Control': 'no-cache',
@@ -23,18 +24,17 @@ export const apiPublic = axios.create({
 });
 
 apiClient.interceptors.request.use(async function (config, data) {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem('@token');
   if (token) {
     let {exp} = jwtDecode(token);
     if (exp < moment().format('X')) {
       await apiPublic
-        .post('auth/refresh', {Authorization: 'Bearer my-token'})
-        .then(({data}) => {
-          AsyncStorage.setItem('token', data.accessToken);
+        .post('auth/refresh', {Authorization: 'Bearer ' + token})
+        .then(async ({data}) => {
+          await AsyncStorage.setItem('@token', data.accessToken);
           config.headers['Authorization'] = 'Bearer ' + data.accessToken;
         })
         .catch(err => {
-          // dispatch(expired());
           console.log(err.toJSON());
           console.log('error in intercept');
         });

@@ -3,9 +3,11 @@ import {login, refresh, logout} from '../actions/auth.action';
 
 const initialState = {
   loading: false,
+  refLoading: false,
   error: null,
   token: null,
   success: false,
+  isLogin: false,
   users: {},
 };
 
@@ -21,25 +23,29 @@ const authSlice = createSlice({
     [login.fulfilled]: (state, {payload}) => {
       state.loading = false;
       state.success = true;
+      state.isLogin = true;
       state.token = payload.authorisation.token;
       state.users = payload.user;
     },
     [login.rejected]: (state, {payload}) => {
       state.loading = false;
+      state.isLogin = false;
       state.error = payload;
     },
     [refresh.pending]: state => {
-      state.loading = true;
+      state.refLoading = true;
       state.error = null;
     },
     [refresh.fulfilled]: (state, {payload}) => {
-      state.loading = false;
+      state.refLoading = false;
+      state.isLogin = true;
       state.success = true;
       state.token = payload.authorisation.token;
       state.users = payload.user;
     },
     [refresh.rejected]: (state, {payload}) => {
-      state.loading = false;
+      state.isLogin = false;
+      state.refLoading = false;
       state.error = payload;
     },
     [logout.pending]: state => {
@@ -50,6 +56,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.success = true;
       state.token = null;
+      state.isLogin = false;
       state.users = {};
     },
     [logout.rejected]: (state, {payload}) => {

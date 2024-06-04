@@ -116,17 +116,6 @@ const Absen = ({navigation}) => {
 
   const takeAbsens = async () => {
     console.log('from take absens');
-    // if (JailMonkey.trustFall()) {
-    //   setAlert({
-    //     show: true,
-    //     type: 'danger',
-    //     title: 'Oops, Tidak di izinkan.?',
-    //     message: 'Device Anda Telah di root / jailbreak',
-    //     onOK: () => {
-    //       setAlert({show: false});
-    //     },
-    //   });
-    // } else {
     Geolocation.getCurrentPosition(
       position => {
         let loc = false;
@@ -149,7 +138,7 @@ const Absen = ({navigation}) => {
           }
         });
         if (loc) {
-          if (today) {
+          if (today?.clock_in) {
             setAlert({
               show: true,
               type: 'warning',
@@ -353,7 +342,7 @@ const Absen = ({navigation}) => {
                   selectedValue={selectedShift}
                   accessibilityLabel="Pilih Shift"
                   placeholder="Pilih Shift"
-                  isDisabled={today ? true : false}
+                  isDisabled={today?.clock_in ? true : false}
                   fontFamily={'OpenSans-Bold'}
                   borderRadius={'full'}
                   dropdownIcon={<></>}
@@ -412,7 +401,7 @@ const Absen = ({navigation}) => {
                 today?.clock_out ? 'bg-primary-200' : ' bg-primary-500'
               }`}>
               <Text className="font-bold text-white font-sans uppercase">
-                {today ? 'Absen Pulang' : 'Absen Datang'}
+                {today?.clock_in ? 'Absen Pulang' : 'Absen Datang'}
               </Text>
             </TouchableOpacity>
           </VStack>

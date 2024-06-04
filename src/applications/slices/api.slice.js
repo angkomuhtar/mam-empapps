@@ -1,8 +1,9 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {API_URL} from '@env';
 // import {setCredentials, logOut} from './auth.slice';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://empapps.mitraabadimahakam.id/api/v1',
+  baseUrl: API_URL,
   credentials: 'include',
   prepareHeaders: (headers, {getState}) => {
     const token = getState().auth.token;
@@ -15,6 +16,6 @@ const baseQuery = fetchBaseQuery({
 
 export const apiSlice = createApi({
   baseQuery: baseQuery,
-  tagTypes: ['Users', 'Today', 'Rekap', 'History', 'Leave'],
+  tagTypes: ['Users', 'Today', 'Rekap', 'History', 'Leave', 'Login'],
   endpoints: builder => ({}),
 });

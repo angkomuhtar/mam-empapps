@@ -1,18 +1,18 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {apiClient, apiPublic} from '../utils/ApiCall';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage, {
+  useAsyncStorage,
+} from '@react-native-async-storage/async-storage';
+
+const {setItem, removeItem} = useAsyncStorage('@token');
 
 export const login = createAsyncThunk(
   'auth/login',
   async (data, {rejectWithValue}) => {
     try {
       const response = await apiPublic.post(`auth/login`, data);
-      await AsyncStorage.setItem('token', response.data.authorisation.token);
-      await EncryptedStorage.setItem(
-        'user_session',
-        JSON.stringify(response.data.user),
-      );
+      await setItem(response.data.authorisation.token);
       return response.data;
     } catch (error) {
       if (error.response && error.response.data) {
@@ -30,18 +30,17 @@ export const refresh = createAsyncThunk(
   async (data, {rejectWithValue}) => {
     try {
       const response = await apiClient.post('/auth/refresh');
-      await AsyncStorage.setItem('token', response.data.authorisation.token);
-      await EncryptedStorage.setItem(
-        'user_session',
-        JSON.stringify(response.data.user),
-      );
+      await setItem(response.data.authorisation.token);
       return response.data;
     } catch (error) {
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-        store;
+      if (error.response) {
+        console.log('Error response:', error.response);
+        return rejectWithValue(error.response);
+      } else if (error.request) {
+        console.log('Error request:', error.request);
+        return rejectWithValue(error.request);
       } else {
-        return rejectWithValue(error.message);
+        console.log('Error message:', error.message);
       }
     }
   },
@@ -50,6 +49,7 @@ export const refresh = createAsyncThunk(
 export const logout = createAsyncThunk('auth/logout', async thunkAPI => {
   try {
     const response = await apiClient.post('/auth/logout');
+    await removeItem();
     return response.data;
   } catch (err) {
     return thunkAPI.rejectWithValue(err.response.data);
