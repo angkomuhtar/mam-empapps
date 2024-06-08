@@ -5,8 +5,13 @@ import {Platform} from 'react-native';
 import jwtDecode from 'jwt-decode';
 import moment from 'moment';
 
-const api_url = API_URL;
-
+const api_url =
+  APP_ENV == 'production'
+    ? API_URL
+    : Platform.OS == 'android'
+    ? 'http://10.0.3.2:8000/api/v1'
+    : API_URL_DEV_IOS;
+console.log('Environment', APP_ENV);
 export const apiClient = axios.create({
   baseURL: api_url,
   headers: {

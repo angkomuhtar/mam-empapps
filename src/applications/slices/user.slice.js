@@ -21,6 +21,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       },
       // providesTags: ['Users'],
     }),
+    getAppVersion: builder.query({
+      query: device => '/version?device=' + device,
+      transformResponse: responseData => {
+        console.log(responseData.data);
+        return responseData.data;
+      },
+      // providesTags: ['Users'],
+    }),
     changePass: builder.mutation({
       query: body => ({
         url: `change_password`,
@@ -51,4 +59,5 @@ export const {
   useChangePassMutation,
   useChangeAvatarMutation,
   useGetTeamQuery,
+  useGetAppVersionQuery,
 } = usersApiSlice;

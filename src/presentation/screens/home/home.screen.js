@@ -4,20 +4,34 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  Platform,
+  Modal,
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Layout from '../../components/layout.component';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Avatar, FlatList, HStack, VStack} from 'native-base';
+import {
+  Avatar,
+  Box,
+  Button,
+  FlatList,
+  HStack,
+  Progress,
+  VStack,
+} from 'native-base';
 import RecapItem from '../../components/home/rekap-item.component';
 import ClockTime from '../../components/home/clock-time.component';
 import {cDuration} from '../../../applications/utils/Format';
-import {useGetProfileQuery} from '@slices/user.slice';
+import {useGetProfileQuery, useGetAppVersionQuery} from '@slices/user.slice';
 import {useGetClockRecapQuery, useGetTodayQuery} from '@slices/clock.slice';
 import moment from 'moment';
 import 'moment/locale/id';
 import {navigate} from '../../../applications/utils/RootNavigation';
 import {useFocusEffect} from '@react-navigation/native';
+import {getVersion} from 'react-native-device-info';
+import Loading from '../../components/loading.component';
+import RNFS from 'react-native-fs';
+import LottieView from 'lottie-react-native';
 
 const Home = ({navigation}) => {
   let width = Dimensions.get('screen').width;
@@ -25,40 +39,18 @@ const Home = ({navigation}) => {
   const {data: today, refetch} = useGetTodayQuery();
   const {data} = useGetClockRecapQuery();
   const [sleepDuration, setSleepDuration] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [download, setDownload] = useState(false);
 
-  const bottomSheetRef = useRef();
+  const iconSuccess = require('../../assets/images/success.json');
 
-  const datatest = [
-    {
-      icon: 'finger-print',
-      title: 'Jam Masuk',
-      data:
-        today?.clock_in != null
-          ? moment(today?.clock_in, 'HH:mm::ss').locale('en').format('hh:mm a')
-          : '--:-- --',
-    },
-    {
-      icon: 'hand-left',
-      title: 'Jam Pulang',
-      data:
-        today?.clock_out != null
-          ? moment(today?.clock_out, 'HH:mm::ss').locale('en').format('hh:mm a')
-          : '--:-- --',
-    },
-    {
-      icon: 'hourglass',
-      title: 'Lama Bekerja',
-      subtitle: 'Avg. 8 jam',
-      data: cDuration(today?.clock_in, today?.clock_out),
-    },
-    {
-      icon: 'moon',
-      title: 'Lembur',
-      data: '--:-- --',
-      subtitle: 'min. 1 jam',
-    },
-  ];
-
+  let version = getVersion();
+  let device = Platform.OS;
+  const {
+    data: versionApp,
+    isLoading: versionLoad,
+    error,
+  } = useGetAppVersionQuery(device);
   const renderData = durasi => {
     if (durasi > 0) {
       let jam = Math.floor(durasi / 60),
@@ -101,7 +93,6 @@ const Home = ({navigation}) => {
   useFocusEffect(
     useCallback(() => {
       refetch();
-      console.log('refetch');
     }, [navigation]),
   );
 
@@ -116,135 +107,211 @@ const Home = ({navigation}) => {
       });
       setSleepDuration(dur);
     }
-    console.log('re calc');
   }, [today]);
 
+  const downloadFile = () => {
+    setDownload(true);
+    setProgress(0);
+    const url = versionApp?.download;
+    const filePath = RNFS.DownloadDirectoryPath + '/empapps.apk';
+
+    RNFS.downloadFile({
+      fromUrl: url,
+      toFile: filePath,
+      background: true, // Enable downloading in the background (iOS only)
+      discretionary: true, // Allow the OS to control the timing and speed (iOS only)
+      progress: res => {
+        const progressx = (res.bytesWritten / res.contentLength) * 100;
+        setProgress(Math.floor(progressx));
+      },
+    })
+      .promise.then(response => {
+        setDownload(false);
+      })
+      .catch(err => {
+        console.log('Download error:', err);
+      });
+  };
+
+  if (versionLoad) {
+    return (
+      <Modal>
+        <Loading />
+      </Modal>
+    );
+  }
+
   return (
-    <Layout bg="bg-primary-500">
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View className={`bg-primary-500 rounded-bl-[70px] radiu px-5 pb-20 `}>
-          <HStack space={5} className="justify-between items-center py-5">
-            {users?.avatar ? (
-              <Avatar
-                size="2xl"
-                className="bg-transparent"
-                source={{uri: users.avatar_url}}>
-                EU
-              </Avatar>
-            ) : (
-              <Avatar
-                size="lg"
-                className="bg-transparent"
-                source={require('../../assets/images/avatar.png')}>
-                MM
-              </Avatar>
-            )}
-            <View className="flex-1">
+    <>
+      {Platform.OS == 'android' && version != versionApp?.version && (
+        <Modal transparent={true}>
+          <View className="flex-1 h-full justify-center items-center">
+            <View className="bg-white rounded-md py-4 px-6 border border-primary-500 items-center">
               <Text
-                className="text-xl text-primary-50 capitalize"
-                style={{fontFamily: 'Inter-Bold'}}>
-                {users?.profile?.name}
+                className="text-xl text-primary-950"
+                style={{fontFamily: 'OpenSans-Bold'}}>
+                Versi Outdated
               </Text>
               <Text
-                className="text-sm text-primary-50"
-                style={{fontFamily: 'Inter-Light'}}>
-                {`${users?.employee?.division?.division} - ${users?.employee?.position?.position}`}
+                style={{fontFamily: 'OpenSans-Medium'}}
+                className="text-sm my-4">
+                Versi Aplikasi Anda harus di perbaharui
               </Text>
-            </View>
-            <TouchableOpacity className="relative border border-white rounded-full p-1">
-              <Icon name="notifications" color="#fff" size={20} />
-              <View className="absolute border border-white bg-primary-500 self-start rounded-full p-[5px] -top-[2px] -right-[3px]" />
-            </TouchableOpacity>
-          </HStack>
-        </View>
-        <VStack className="mx-5 space-y-5" top={-70}>
-          <View className="bg-white p-3 rounded-lg border border-primary-100">
-            <View className="flex-row justify-between mb-3">
-              <Text
-                className=" text-primary-950 text-base"
-                style={{fontFamily: 'Inter-Bold'}}>
-                Rekap Presensi
-              </Text>
-              <TouchableOpacity onPress={() => navigate('history')}>
-                <Text
-                  className="text-blue-800 underline"
-                  style={{fontFamily: 'Inter-SemiBold'}}>
-                  Details
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View className="flex-row justify-between">
-              <RecapItem type="Hadir" value={data?.rekap?.hadir} />
-              <RecapItem type="Alpha" value={data?.rekap?.alpa} />
-              <RecapItem type="Izin/Sakit" value={data?.rekap?.izin} />
-            </View>
-          </View>
-          <VStack className="">
-            <Text
-              className="pb-3 text-primary-950 text-base"
-              style={{fontFamily: 'Inter-Bold'}}>
-              Presensi Hari Ini
-            </Text>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'space-between',
-              }}>
-              {datatest.map((item, key) => (
-                <ClockTime
-                  key={key}
-                  icon={item.icon}
-                  title={item.title}
-                  subtitle={item.subtitle}>
-                  {item.data}
-                </ClockTime>
-              ))}
-              <VStack
-                className="justify-center bg-white rounded-lg p-5 border border-primary-100 my-2 flex-2"
-                style={{width: width * 0.5 - 28}}>
-                <HStack className="items-center space-x-2 flex-1 justify-between">
-                  <View className="rounded-full p-1.5 bg-red-500">
-                    <Icon name="bed" size={14} color="#FFF" />
-                  </View>
-                  <TouchableOpacity>
-                    <View className="flex justify-end space-x-1 flex-row items-center border border-primary-500 rounded-full px-2 py-0.5">
-                      <Text
-                        className="text-xs text-primary-950"
-                        style={{fontFamily: 'OpenSans-Bold'}}>
-                        add
+              {progress == 100 ? (
+                <>
+                  <LottieView
+                    source={iconSuccess}
+                    loop={false}
+                    autoPlay
+                    style={{height: 70, width: 70}}
+                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      setProgress(0);
+                    }}>
+                    <View className="py-2 px-4 border border-primary-500 rounded-md">
+                      <Text className="font-extrabold text-primary-500 text-[10px]">
+                        OKE
                       </Text>
-                      <Icon
-                        name="add-circle-sharp"
-                        size={18}
-                        color="rgb(239, 68, 68)"
-                      />
                     </View>
                   </TouchableOpacity>
-                </HStack>
-                <Text
-                  className="capitalize text-primary-950 text-sm mt-2"
-                  style={{fontFamily: 'OpenSans-SemiBold'}}>
-                  Durasi Tidur
-                </Text>
-                <Text
-                  className="text-primary-950 text-2xl my-2"
-                  style={{fontFamily: 'Inter-Bold'}}>
-                  {renderData(sleepDuration)}
-                </Text>
-                <Text
-                  className="text-primary-950 capitalize text-xs"
-                  style={{fontFamily: 'OpenSans-SemiBold'}}>
-                  avg. 6 jam
-                </Text>
-              </VStack>
+                </>
+              ) : download ? (
+                <View className="w-64 bg-primary-100 h-2 rounded-full my-4">
+                  <View
+                    className={`h-full bg-red-500 rounded-full`}
+                    style={{width: progress + '%'}}
+                  />
+                </View>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    downloadFile();
+                  }}>
+                  <View className="bg-primary-500 px-4 py-2 rounded-md mt-4">
+                    <Text
+                      className="text-white"
+                      style={{fontFamily: 'Inter-Bold'}}>
+                      Unduh Sekarang
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )}
             </View>
+          </View>
+        </Modal>
+      )}
+      <Layout bg="bg-primary-500">
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View
+            className={`bg-primary-500 rounded-bl-[70px] radiu px-5 pb-20 `}>
+            <HStack space={5} className="justify-between items-center py-5">
+              {users?.avatar ? (
+                <Avatar
+                  size="2xl"
+                  className="bg-transparent"
+                  source={{uri: users.avatar_url}}>
+                  EU
+                </Avatar>
+              ) : (
+                <Avatar
+                  size="lg"
+                  className="bg-transparent"
+                  source={require('../../assets/images/avatar.png')}>
+                  MM
+                </Avatar>
+              )}
+              <View className="flex-1">
+                <Text
+                  className="text-xl text-primary-50 capitalize"
+                  style={{fontFamily: 'Inter-Bold'}}>
+                  {users?.profile?.name}
+                </Text>
+                <Text
+                  className="text-sm text-primary-50"
+                  style={{fontFamily: 'Inter-Light'}}>
+                  {`${users?.employee?.division?.division} - ${users?.employee?.position?.position}`}
+                </Text>
+              </View>
+              <TouchableOpacity className="relative border border-white rounded-full p-1">
+                <Icon name="notifications" color="#fff" size={20} />
+                <View className="absolute border border-white bg-primary-500 self-start rounded-full p-[5px] -top-[2px] -right-[3px]" />
+              </TouchableOpacity>
+            </HStack>
+          </View>
+          <VStack className="mx-5 space-y-5" top={-70}>
+            <View className="bg-white p-3 rounded-lg border border-primary-100">
+              <View className="flex-row justify-between mb-3">
+                <Text
+                  className=" text-primary-950 text-base"
+                  style={{fontFamily: 'Inter-Bold'}}>
+                  Rekap Presensi
+                </Text>
+                <TouchableOpacity onPress={() => navigate('history')}>
+                  <Text
+                    className="text-blue-800 underline"
+                    style={{fontFamily: 'Inter-SemiBold'}}>
+                    Details
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View className="flex-row justify-between">
+                <RecapItem type="Hadir" value={data?.rekap?.hadir} />
+                <RecapItem type="Alpha" value={data?.rekap?.alpa} />
+                <RecapItem type="Izin/Sakit" value={data?.rekap?.izin} />
+              </View>
+            </View>
+            <VStack className="">
+              <Text
+                className="pb-3 text-primary-950 text-base"
+                style={{fontFamily: 'Inter-Bold'}}>
+                Presensi Hari Ini
+              </Text>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-between',
+                }}>
+                <ClockTime icon="finger-print" title="Jam Masuk">
+                  {today?.clock_in != null
+                    ? moment(today?.clock_in, 'HH:mm::ss')
+                        .locale('en')
+                        .format('hh:mm a')
+                    : '--:-- --'}
+                </ClockTime>
+                <ClockTime icon="hand-left" title="Jam Pulang">
+                  {today?.clock_out != null
+                    ? moment(today?.clock_out, 'HH:mm::ss')
+                        .locale('en')
+                        .format('hh:mm a')
+                    : '--:-- --'}
+                </ClockTime>
+                <ClockTime
+                  icon="hourglass"
+                  title="Lama Bekerja"
+                  subtitle="Avg. 8 jam">
+                  {cDuration(today?.clock_in, today?.clock_out)}
+                </ClockTime>
+                <ClockTime icon="moon" title="Lembur" subtitle="min. 1 jam">
+                  {'--:-- --'}
+                </ClockTime>
+                <ClockTime
+                  icon="bed"
+                  title="Durasi Tidur"
+                  subtitle="avg. 6 jam"
+                  button={today?.sleep.length == 0 ? true : false}
+                  onpress={() => navigate('add-sleep')}>
+                  {renderData(sleepDuration)}
+                </ClockTime>
+              </View>
+            </VStack>
           </VStack>
-        </VStack>
-        <View className="h-12" />
-      </ScrollView>
-    </Layout>
+          <View className="h-12" />
+        </ScrollView>
+      </Layout>
+    </>
   );
 };
 

@@ -1,4 +1,11 @@
-import {View, Text, TouchableOpacity, TextInput, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  Dimensions,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Layout from '@components/layout.component';
 import Logo from '@images/logo-land.png';
@@ -34,6 +41,7 @@ const Login = ({navigation}) => {
   });
 
   const toast = useToast();
+  const height = Dimensions.get('screen').height;
   const dispatch = useDispatch();
   const [eye, setEye] = useState(true);
   const [data, setData] = useState({
@@ -120,23 +128,21 @@ const Login = ({navigation}) => {
       />
 
       {loading && <Loading />}
-      <VStack m={5} className="flex-1 py-8">
+      <VStack className="mx-5 mt-10" style={{height: height}}>
         <View className="flex mb-4">
           <Image source={Logo} resizeMode="contain" className="w-36 h-14" />
         </View>
-        <VStack className="space-y-2 mb-4">
-          <Text
-            className="text-3xl text-primary-950"
-            style={{fontFamily: 'Inter-Black'}}>
-            Selamat Datang,
-          </Text>
-          <Text
-            className="text-3xl text-primary-950"
-            style={{fontFamily: 'Inter-Black'}}>
-            di <Text className="text-primary-500">EMPLOYEE APPS</Text>
-          </Text>
-        </VStack>
-        <VStack>
+        <Text
+          className="text-3xl text-primary-950"
+          style={{fontFamily: 'Inter-Black'}}>
+          Selamat Datang,
+        </Text>
+        <Text
+          className="text-3xl text-primary-950 mb-5"
+          style={{fontFamily: 'Inter-Black'}}>
+          di <Text className="text-primary-500">EMPLOYEE APPS</Text>
+        </Text>
+        <View className="min-h-[190px]">
           <Controller
             control={control}
             rules={{
@@ -154,15 +160,11 @@ const Login = ({navigation}) => {
                 onBlur={onBlur}
                 value={value}
                 onChangeText={onChange}
+                error={validError?.email?.message}
                 title="Email/Username"
               />
             )}
           />
-          {validError.email && (
-            <Text className="text-red-500 text-xs ml-2 mt-1">
-              {validError.email?.message}
-            </Text>
-          )}
           <Controller
             control={control}
             rules={{
@@ -186,6 +188,7 @@ const Login = ({navigation}) => {
                 style={{fontFamily: 'Inter-Light'}}
                 secureTextEntry={eye}
                 title="Password"
+                error={validError?.password?.message}
                 rightIcon={
                   <TouchableOpacity
                     onPress={() => {
@@ -201,22 +204,16 @@ const Login = ({navigation}) => {
                 }></Input>
             )}
           />
-          {validError.password && (
-            <Text className="text-red-500 text-xs ml-2 mt-1">
-              {validError.password?.message}
-            </Text>
-          )}
-
-          <TouchableOpacity
-            onPress={handleSubmit(loginHandle)}
-            className="bg-primary-500 p-3 rounded-md items-center mt-8">
-            <Text
-              className="text-primary-50 text-sm"
-              style={{fontFamily: 'Inter-Regular'}}>
-              MASUK
-            </Text>
-          </TouchableOpacity>
-        </VStack>
+        </View>
+        <TouchableOpacity
+          onPress={handleSubmit(loginHandle)}
+          className="bg-primary-500 p-3 rounded-md items-center mt-8">
+          <Text
+            className="text-primary-50 text-sm"
+            style={{fontFamily: 'Inter-Regular'}}>
+            MASUK
+          </Text>
+        </TouchableOpacity>
       </VStack>
     </Layout>
   );

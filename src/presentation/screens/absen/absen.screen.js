@@ -115,7 +115,6 @@ const Absen = ({navigation}) => {
   };
 
   const takeAbsens = async () => {
-    console.log('from take absens');
     Geolocation.getCurrentPosition(
       position => {
         let loc = false;
@@ -287,8 +286,6 @@ const Absen = ({navigation}) => {
 
     return () => {};
   }, [today]);
-
-  // console.log(selectedShift);
 
   return (
     <View className="flex-1 relative">

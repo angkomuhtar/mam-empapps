@@ -5,7 +5,8 @@
   "scripts": {
     "android": "react-native run-android",
     "android-dev": "adb reverse tcp:8081 tcp:8081 && react-native run-android",
-    "android-release": "react-native build-android --mode=release",
+    "android:release": "react-native build-android --mode=release",
+    "android:apk": "react-native run-android --mode=release",
     "code-push": "appcenter codepush release-react -a angkomuhtar-gmail.com/mamapps -d Production",
     "ios": "react-native run-ios",
     "lint": "eslint .",
@@ -40,6 +41,7 @@
     "react-native-dotenv": "^3.4.9",
     "react-native-element-dropdown": "^2.10.0",
     "react-native-encrypted-storage": "^4.0.3",
+    "react-native-fs": "^2.20.0",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-image-crop-picker": "^0.40.1",
     "react-native-image-picker": "^7.0.1",
