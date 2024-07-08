@@ -25,6 +25,8 @@ import Input from '@components/input.component';
 import Alert from '@components/alert.component';
 import {login} from '../../../applications/actions/auth.action';
 import {Controller, useForm} from 'react-hook-form';
+import {getVersion} from 'react-native-device-info';
+// import {API_URL, APP_ENV, API_URL_DEV_IOS, API_URL_DEV_AND} from '@env';
 
 const Login = ({navigation}) => {
   const {
@@ -40,6 +42,7 @@ const Login = ({navigation}) => {
     },
   });
 
+  let version = getVersion();
   const toast = useToast();
   const height = Dimensions.get('screen').height;
   const dispatch = useDispatch();
@@ -131,6 +134,11 @@ const Login = ({navigation}) => {
       <VStack className="mx-5 mt-10" style={{height: height}}>
         <View className="flex mb-4">
           <Image source={Logo} resizeMode="contain" className="w-36 h-14" />
+          <Text
+            className="text-[12px] text-primary-400 ml-[50px] -mt-3"
+            style={{fontFamily: 'OpenSans-ExtraBold'}}>
+            v {version}
+          </Text>
         </View>
         <Text
           className="text-3xl text-primary-950"
@@ -214,6 +222,7 @@ const Login = ({navigation}) => {
             MASUK
           </Text>
         </TouchableOpacity>
+        {/* <Text>{API_URL}</Text> */}
       </VStack>
     </Layout>
   );

@@ -54,8 +54,8 @@ const ChangePassword = () => {
             </HStack>
           }
         />
-        <VStack className="flex-1 mb-5" space={5}>
-          <View>
+        <VStack className="mb-5" space={5}>
+          <View className="h-20">
             <Input
               placeholder="Password"
               keyboardType="default"
@@ -91,7 +91,7 @@ const ChangePassword = () => {
               </Text>
             )}
           </View>
-          <View>
+          <View className="h-20">
             <Input
               placeholder="Password"
               keyboardType="default"

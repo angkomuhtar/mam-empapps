@@ -114,6 +114,7 @@ const Home = ({navigation}) => {
     setProgress(0);
     const url = versionApp?.download;
     const filePath = RNFS.DownloadDirectoryPath + '/empapps.apk';
+    console.log('URL DOWNl', versionApp);
 
     RNFS.downloadFile({
       fromUrl: url,

@@ -26,6 +26,7 @@ import {apiSlice} from '../../../applications/slices/api.slice';
 import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import JailMonkey from 'jail-monkey';
 import RNMockLocationDetector from 'react-native-mock-location-detector';
+import {getVersion} from 'react-native-device-info';
 
 const requestLocationPermission = async () => {
   try {
@@ -114,6 +115,7 @@ const Absen = ({navigation}) => {
     });
   };
 
+  let version = getVersion();
   const takeAbsens = async () => {
     Geolocation.getCurrentPosition(
       position => {
@@ -151,6 +153,7 @@ const Absen = ({navigation}) => {
                   location: location,
                   time: moment().format('HH:mm:ss'),
                   date: today.date,
+                  version: version,
                 }).then(res => {
                   if (res.error) {
                     setAlert({
@@ -187,6 +190,7 @@ const Absen = ({navigation}) => {
               location: location,
               time: moment().format('HH:mm:ss'),
               date: moment().format('YYYY-MM-DD'),
+              version: version,
             }).then(res => {
               if (res.error) {
                 setAlert({
@@ -259,7 +263,7 @@ const Absen = ({navigation}) => {
           show: true,
           type: 'danger',
           title: 'Oops, Tidak di izinkan.?',
-          message: 'Device Anda Menggunakan Lokasi Palsu',
+          message: 'Anda berada di luar lokasi',
           onOK: () => {
             setAlert({show: false});
           },

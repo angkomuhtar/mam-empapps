@@ -1,4 +1,4 @@
-package com.test;
+package com.mitraabadimahakam.eapps;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Platform,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -17,6 +18,7 @@ import Input from '@components/input.component';
 import {Controller, useForm} from 'react-hook-form';
 import {useSetSleepMutation} from '@slices/sleep.slice';
 import moment from 'moment';
+import Layout from '../../components/layout.component';
 
 const AddSleep = ({route}) => {
   const height = Dimensions.get('screen').height;
@@ -72,110 +74,114 @@ const AddSleep = ({route}) => {
           setError(false);
         }}
       />
-      <VStack className="px-5 pt-3 bg-[#fafafa] flex-1">
-        {isLoading && <Loading />}
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Header
-            back={
-              <HStack alignItems={'center'} space={3}>
-                <TouchableOpacity onPress={() => goBack()}>
-                  <Icon
-                    name="chevron-back-outline"
-                    color={'rgb(73, 6, 9)'}
-                    size={30}
-                  />
-                </TouchableOpacity>
-                <Text
-                  className="text-xl text-primary-950"
-                  style={{fontFamily: 'Inter-Bold'}}>
-                  Durasi Tidur
-                </Text>
+      <Layout>
+        <VStack className={`px-5 bg-[#fafafa] flex-1`}>
+          {isLoading && <Loading />}
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Header
+              back={
+                <HStack alignItems={'center'} space={3}>
+                  <TouchableOpacity onPress={() => goBack()}>
+                    <Icon
+                      name="chevron-back-outline"
+                      color={'rgb(73, 6, 9)'}
+                      size={30}
+                    />
+                  </TouchableOpacity>
+                  <Text
+                    className="text-xl text-primary-950"
+                    style={{fontFamily: 'Inter-Bold'}}>
+                    Durasi Tidur
+                  </Text>
+                </HStack>
+              }
+            />
+            <VStack
+              // space={3}
+              flex={1}
+              mb={5}
+              style={{minHeight: height - height * 0.25}}>
+              <Text
+                className="text-lg"
+                style={{fontFamily: 'OpenSans-SemiBold'}}>
+                Jumlah jam tidur
+              </Text>
+              <HStack className="justify-between">
+                <Controller
+                  control={control}
+                  // defaultValue=""
+                  name="jam"
+                  render={({field: {onChange, value}}) => (
+                    <Input
+                      placeholder="Jumlah jam tidur"
+                      keyboardType="number-pad"
+                      value={value}
+                      onChangeText={onChange}
+                      maxLength={100}
+                      title="Jam"
+                      error={errors?.jam?.message}
+                    />
+                  )}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: 'harus diisi',
+                    },
+                    max: {
+                      value: 24,
+                      message: 'maksimal 24 jam',
+                    },
+                    pattern: {
+                      value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                      message: 'hanya boleh angka bilangan bulat',
+                    },
+                  }}
+                />
+                <View className="w-4"></View>
+                <Controller
+                  control={control}
+                  // defaultValue=""
+                  name="menit"
+                  render={({field: {onChange, value}}) => (
+                    <Input
+                      placeholder="Menit"
+                      keyboardType="number-pad"
+                      value={value}
+                      onChangeText={onChange}
+                      maxLength={100}
+                      title="menit"
+                      error={errors?.menit?.message}
+                    />
+                  )}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: 'harus diisi',
+                    },
+                    max: {
+                      value: 59,
+                      message: 'maksimal 59',
+                    },
+                    pattern: {
+                      value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                      message: 'hanya boleh angka bilangan bulat',
+                    },
+                  }}
+                />
               </HStack>
-            }
-          />
-          <VStack
-            // space={3}
-            flex={1}
-            mb={5}
-            style={{minHeight: height - height * 0.25}}>
-            <Text className="text-lg" style={{fontFamily: 'OpenSans-SemiBold'}}>
-              Jumlah jam tidur
-            </Text>
-            <HStack className="justify-between">
-              <Controller
-                control={control}
-                // defaultValue=""
-                name="jam"
-                render={({field: {onChange, value}}) => (
-                  <Input
-                    placeholder="Jumlah jam tidur"
-                    keyboardType="number-pad"
-                    value={value}
-                    onChangeText={onChange}
-                    maxLength={100}
-                    title="Jam"
-                    error={errors?.jam?.message}
-                  />
-                )}
-                rules={{
-                  required: {
-                    value: true,
-                    message: 'harus diisi',
-                  },
-                  max: {
-                    value: 24,
-                    message: 'maksimal 24 jam',
-                  },
-                  pattern: {
-                    value: /^(0|[1-9]\d*)(\.\d+)?$/,
-                    message: 'hanya boleh angka bilangan bulat',
-                  },
-                }}
-              />
-              <View className="w-4"></View>
-              <Controller
-                control={control}
-                // defaultValue=""
-                name="menit"
-                render={({field: {onChange, value}}) => (
-                  <Input
-                    placeholder="Menit"
-                    keyboardType="number-pad"
-                    value={value}
-                    onChangeText={onChange}
-                    maxLength={100}
-                    title="menit"
-                    error={errors?.menit?.message}
-                  />
-                )}
-                rules={{
-                  required: {
-                    value: true,
-                    message: 'harus diisi',
-                  },
-                  max: {
-                    value: 59,
-                    message: 'maksimal 59',
-                  },
-                  pattern: {
-                    value: /^(0|[1-9]\d*)(\.\d+)?$/,
-                    message: 'hanya boleh angka bilangan bulat',
-                  },
-                }}
-              />
-            </HStack>
-          </VStack>
-          <TouchableOpacity
-            onPress={handleSubmit(postTidur)}
-            className="bg-green-500 p-3 justify-center items-center rounded-md mb-5">
-            <Text
-              className="text-lg text-white"
-              style={{fontFamily: 'Inter-SemiBold'}}>
-              Simpan
-            </Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </VStack>
+            </VStack>
+            <TouchableOpacity
+              onPress={handleSubmit(postTidur)}
+              className="bg-green-500 p-3 justify-center items-center rounded-md mb-5">
+              <Text
+                className="text-lg text-white"
+                style={{fontFamily: 'Inter-SemiBold'}}>
+                Simpan
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </VStack>
+      </Layout>
     </>
   );
 };

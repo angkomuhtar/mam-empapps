@@ -8,7 +8,7 @@
     "android:release": "react-native build-android --mode=release",
     "android:apk": "react-native run-android --mode=release",
     "code-push": "appcenter codepush release-react -a angkomuhtar-gmail.com/mamapps -d Production",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --scheme 'MAM E-Apps'",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest"
