@@ -1,22 +1,16 @@
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {goBack} from '@utils/RootNavigation';
-import {HStack, Select, VStack} from 'native-base';
+import {VStack} from 'native-base';
 import moment from 'moment';
-import Header from '@components/navigation/header.component';
 import Input from '@components/input.component';
-import {Controller, useForm, useWatch} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import SelectField from '@components/select.component';
 import Calendar from '@components/calendar-picker.components';
 import ImagePicker from '@components/image-picker.component';
-import Layout from '@components/layout.component';
 import {useGetProfileQuery} from '@slices/user.slice';
-import {apiSlice} from '@slices/api.slice';
 import {useAddLeaveMutation, useGetLeaveTypeQuery} from '@slices/leave.slice';
 import Loading from '../../../components/loading.component';
 import {useGetTeamQuery} from '../../../../applications/slices/user.slice';
-import {Dropdown} from 'react-native-element-dropdown';
 import Alert from '../../../components/alert.component';
 
 const LeaveAdd = () => {

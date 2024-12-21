@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const TabBottom = ({state, descriptors, navigation, size = '11px'}) => {
   return (
-    <View className="absolute bottom-0 left-0 right-0 px-3 pb-2">
+    <View className="absolute bottom-0 left-0 right-0 px-3 pb-2 pt-1 bg-[#fafafa]">
       <HStack className="relative py-4 bg-white rounded-lg border border-primary-100">
         {state.routes.map((route, index) => {
           const {options} = descriptors[route.key];

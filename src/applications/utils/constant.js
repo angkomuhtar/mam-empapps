@@ -1,3 +1,5 @@
+import {navigate} from './RootNavigation';
+
 export const Quote = [
   '"Satu-satunya cara untuk melakukan pekerjaan hebat yaitu dengan mencintai apa yang sedang kamu lakukan." -Steve Jobs',
   '"Jangan biarkan perasaan putus asa menyerang dirimu. Yakinlah, pada akhirnya, kamu pasti akan berhasil." -Abraham Lincoln',
@@ -10,4 +12,27 @@ export const Quote = [
   '"Jika kesempatan tidak mengetukmu, bangunlah sebuah pintu sendiri." -Milton Berle',
   '"Semakin kamu berbicara tentang hal-hal negatif dalam hidup, maka kamu akan semakin memiliki pikiran negatif. Bicaralah kemenangan bukan kekalahan." -Joel Osteen',
   '"Jangan merasa tertinggal, setiap orang punya proses dan rezeki nya masing-masing." - QS Maryam : 4',
+];
+
+export const listMenu = [
+  {
+    label: 'Durasi Tidur',
+    source: require('@images/features/sleepDuration.png'),
+    onpress: () => navigate('add-sleep'),
+  },
+  {
+    label: 'Laporkan Bahaya',
+    source: require('@images/features/pelaporan-bahaya.png'),
+    onpress: () => navigate('hazard'),
+  },
+  {
+    label: 'laporan Bahaya',
+    source: require('@images/features/list-hazard.png'),
+    onpress: () => navigate('hazard-list'),
+  },
+  {
+    label: 'Menu Lainnya',
+    source: require('@images/features/allFeature.png'),
+    onpress: () => navigate('others'),
+  },
 ];

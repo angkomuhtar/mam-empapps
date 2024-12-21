@@ -1,6 +1,6 @@
 import {View, Text, TouchableOpacity, Pressable} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Layout from '../../components/layout.component';
+import Layout from '@components/layout.component';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Avatar, HStack, ScrollView, Spinner, VStack} from 'native-base';
 import {useGetProfileQuery} from '@slices/user.slice';
@@ -9,11 +9,16 @@ import Header from '../../components/navigation/header.component';
 import {logout} from '../../../applications/actions/auth.action';
 import ReactNativeVersionInfo from 'react-native-version-info';
 import {navigate} from '../../../applications/utils/RootNavigation';
-import {launchImageLibrary} from 'react-native-image-picker';
+// import {launchImageLibrary} from 'react-native-image-picker';
 import {useChangeAvatarMutation} from '../../../applications/slices/user.slice';
 import ImagePicker from 'react-native-image-crop-picker';
 import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import moment from 'moment';
+import {useSetLogOutMutation} from '../../../applications/slices/auths.slice';
+import Loading from '../../components/loading.component';
+import {setLogin} from '../../../applications/slices/login.slice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {checkImage} from '../../../applications/utils/utils';
 
 const ButtonB = ({text, icon, onPress}) => (
   <TouchableOpacity
@@ -68,6 +73,10 @@ const requestPermission = async () => {
 
 const Setting = () => {
   const {data: users, isLoading: loading} = useGetProfileQuery();
+  const [
+    LogOut,
+    {isLoading: logoutLoading, isError: logOutFalse, isSuccess: logOutTrue},
+  ] = useSetLogOutMutation();
   const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState(null);
   const [changeAvatar, {isLoading, isError, isSuccess, error}] =
@@ -78,6 +87,17 @@ const Setting = () => {
       setSelectedFile(null);
     }
   }, [isSuccess]);
+
+  useEffect(() => {
+    const LogOutEvent = async () => {
+      await AsyncStorage.removeItem('@token');
+      dispatch(setLogin(false));
+    };
+
+    if (logOutTrue) {
+      LogOutEvent();
+    }
+  }, [logOutTrue]);
 
   const openImagePicker = () => {
     const permission = requestPermission();
@@ -113,20 +133,15 @@ const Setting = () => {
     });
   };
 
-  console.log(isSuccess, error, users.avatar_url);
+  if (logoutLoading) {
+    return <Loading />;
+  }
+
   return (
-    <Layout>
+    <Layout bg={false}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="px-5">
-          <Header
-            back={
-              <Text
-                className="text-xl text-primary-950"
-                style={{fontFamily: 'Inter-Bold'}}>
-                Pengaturan
-              </Text>
-            }
-          />
+        <View className="flex-1 px-5">
+          <Header back={false} title={'Settings'} />
         </View>
         <VStack className="justify-center py-4 px-5 items-center ">
           <VStack space="3" className="relative">
@@ -152,7 +167,7 @@ const Setting = () => {
                     }}>
                     EU
                   </Avatar>
-                ) : users?.avatar ? (
+                ) : users?.avatar && checkImage(users.avatar_url) ? (
                   <Avatar
                     size="2xl"
                     className="bg-transparent"
@@ -244,11 +259,7 @@ const Setting = () => {
             {/* <ButtonB icon="ios-tv-outline" text="Data karyawan" /> */}
             <ButtonB icon="trail-sign-outline" text="Term & Condition" />
             <ButtonB icon="shield-checkmark-outline" text="Privacy Policy" />
-            <TouchableOpacity
-              className="py-2"
-              onPress={() => {
-                dispatch(logout());
-              }}>
+            <TouchableOpacity className="py-2" onPress={LogOut}>
               <HStack className="items-center space-x-4 ">
                 <View className="bg-slate-500/10 p-2 rounded-full">
                   <Icon name="exit-outline" size={18} color="#000" />

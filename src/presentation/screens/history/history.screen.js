@@ -15,7 +15,11 @@ import {useFocusEffect} from '@react-navigation/native';
 import Empty from '../../components/empty.comnponent';
 import Layout from '../../components/layout.component';
 import moment from 'moment';
-import MonthPicker from 'react-native-month-year-picker';
+import MonthPicker, {
+  ACTION_DATE_SET,
+  ACTION_DISMISSED,
+  ACTION_NEUTRAL,
+} from 'react-native-month-year-picker';
 
 const History = ({navigation}) => {
   const [date, setDate] = useState(
@@ -35,65 +39,65 @@ const History = ({navigation}) => {
 
   const Loading = () => {
     return (
-      <VStack space={3} p={4}>
-        <Skeleton h={6} rounded="full" w="20" mb={2} />
-        <HStack className="bg-white p-4 px-4 rounded-lg justify-between border border-primary-100 shadow-sm shadow-primary-100">
-          <Skeleton w={'16'} h={'16'} rounded="md" />
-          <VStack flex={1}>
-            <Skeleton.Text px={4} />
-          </VStack>
-          <VStack flex={1}>
-            <Skeleton.Text px={4} />
-          </VStack>
-        </HStack>
-        <HStack className="bg-white p-4 px-4 rounded-lg justify-between border border-primary-100 shadow-sm shadow-primary-100">
-          <Skeleton w={'16'} h={'16'} rounded="md" />
-          <VStack flex={1}>
-            <Skeleton.Text px={4} />
-          </VStack>
-          <VStack flex={1}>
-            <Skeleton.Text px={4} />
-          </VStack>
-        </HStack>
-        <HStack className="bg-white p-4 px-4 rounded-lg justify-between border border-primary-100 shadow-sm shadow-primary-100">
-          <Skeleton w={'16'} h={'16'} rounded="md" />
-          <VStack flex={1}>
-            <Skeleton.Text px={4} />
-          </VStack>
-          <VStack flex={1}>
-            <Skeleton.Text px={4} />
-          </VStack>
-        </HStack>
-      </VStack>
+      <Layout>
+        <VStack space={3} p={4}>
+          <Skeleton h={6} rounded="full" w="20" mb={2} />
+          <HStack className="bg-white p-4 px-4 rounded-lg justify-between border border-primary-100 shadow-sm shadow-primary-100">
+            <Skeleton w={'16'} h={'16'} rounded="md" />
+            <VStack flex={1}>
+              <Skeleton.Text px={4} />
+            </VStack>
+            <VStack flex={1}>
+              <Skeleton.Text px={4} />
+            </VStack>
+          </HStack>
+          <HStack className="bg-white p-4 px-4 rounded-lg justify-between border border-primary-100 shadow-sm shadow-primary-100">
+            <Skeleton w={'16'} h={'16'} rounded="md" />
+            <VStack flex={1}>
+              <Skeleton.Text px={4} />
+            </VStack>
+            <VStack flex={1}>
+              <Skeleton.Text px={4} />
+            </VStack>
+          </HStack>
+          <HStack className="bg-white p-4 px-4 rounded-lg justify-between border border-primary-100 shadow-sm shadow-primary-100">
+            <Skeleton w={'16'} h={'16'} rounded="md" />
+            <VStack flex={1}>
+              <Skeleton.Text px={4} />
+            </VStack>
+            <VStack flex={1}>
+              <Skeleton.Text px={4} />
+            </VStack>
+          </HStack>
+        </VStack>
+      </Layout>
     );
   };
   const onRefresh = () => {
     refetch();
   };
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     trigger();
-  //   }, [navigation]),
-  // );
 
   const onValueChange = (event, newDate) => {
+    console.log(event);
     setShow(false);
-    setDateD(newDate);
-    setDate(moment(newDate).subtract(1, 'month').format('Y-MM-26'));
-    // trigger();
+
+    switch (event) {
+      case 'dateSetAction':
+        setDateD(newDate);
+        setDate(moment(newDate).subtract(1, 'month').format('Y-MM-26'));
+        break;
+      case 'dismissedAction':
+      default:
+        break;
+    }
   };
 
   return (
-    <Layout>
+    <Layout bg={false}>
       <View className="flex-1 px-5">
         <Header
-          back={
-            <Text
-              className="text-xl text-primary-950"
-              style={{fontFamily: 'Inter-Bold'}}>
-              Riwayat
-            </Text>
-          }
+          back={false}
+          title="Riwayat"
           rightIcon={
             <TouchableOpacity
               onPress={() => {
@@ -131,6 +135,7 @@ const History = ({navigation}) => {
                 )}
                 renderItem={({item}) => (
                   <HistoryCard
+                    key={item.id}
                     date={item.date}
                     status={item.status}
                     checkin={item.clock_in}

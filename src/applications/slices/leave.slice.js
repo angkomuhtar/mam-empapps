@@ -81,9 +81,10 @@ const leaveApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
+  useGetLeavesQuery,
+  useLazyGetLeavesQuery,
   useAddLeaveMutation,
   useGetLeaveTypeQuery,
-  useLazyGetLeaveQuery,
   useLazyGetLeaveRequestQuery,
   useLazyGetLeaveRequestHistoryQuery,
   useUpdateLeaveMutation,

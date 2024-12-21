@@ -8,6 +8,8 @@ import Profile from '@screens/settings/profile.screen';
 import Leave from '@screens/other/leave/leave.screen';
 import ApprovalTab from './approval-tab.stack';
 import AddSleep from '@screens/home/add-sleep.screen';
+import Hazard from '@screens/hazard/hazard.stack';
+import HazardList from '../../presentation/screens/hazard/hazard-list.stack';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +22,11 @@ const HomeBase = () => {
       <Stack.Screen component={LeaveAdd} name="leave-add" />
       <Stack.Screen component={LeaveDetails} name="leave-details" />
       <Stack.Screen component={ApprovalTab} name="approval-request" />
+
+      {/* hazard report */}
+      <Stack.Screen component={Hazard} name="hazard" />
+      <Stack.Screen component={HazardList} name="hazard-list" />
+
       {/* settings */}
       <Stack.Screen component={ChangePassword} name="change-password" />
       <Stack.Screen component={ChangePassword} name="edit-profile" />

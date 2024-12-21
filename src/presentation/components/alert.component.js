@@ -79,8 +79,8 @@ const Alert = ({
             </Text>
             {message && (
               <Text
-                style={{fontFamily: 'Inter-Regular'}}
-                className="text-xs text-center text-primary-950 capitalize">
+                style={{fontFamily: 'Inter-Medium'}}
+                className="text-sm text-center text-primary-950 capitalize">
                 {message}
               </Text>
             )}

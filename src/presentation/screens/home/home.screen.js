@@ -7,21 +7,22 @@ import {
   Platform,
   Modal,
 } from 'react-native';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import Layout from '../../components/layout.component';
+import React, {useCallback, useEffect, useState} from 'react';
+import Layout from '@components/layout.component';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {
   Avatar,
-  Box,
-  Button,
+  Divider,
   FlatList,
   HStack,
-  Progress,
+  Image,
+  Spacer,
+  Stack,
   VStack,
 } from 'native-base';
 import RecapItem from '../../components/home/rekap-item.component';
-import ClockTime from '../../components/home/clock-time.component';
-import {cDuration} from '../../../applications/utils/Format';
+import {cDuration, checkImage} from '../../../applications/utils/utils';
 import {useGetProfileQuery, useGetAppVersionQuery} from '@slices/user.slice';
 import {useGetClockRecapQuery, useGetTodayQuery} from '@slices/clock.slice';
 import moment from 'moment';
@@ -32,9 +33,11 @@ import {getVersion} from 'react-native-device-info';
 import Loading from '../../components/loading.component';
 import RNFS from 'react-native-fs';
 import LottieView from 'lottie-react-native';
+import HomeCard from '../../components/home-card';
+import {listMenu} from '../../../applications/utils/constant';
+import {Menu, TimeCard} from './home-components';
 
 const Home = ({navigation}) => {
-  let width = Dimensions.get('screen').width;
   const {data: users} = useGetProfileQuery();
   const {data: today, refetch} = useGetTodayQuery();
   const {data} = useGetClockRecapQuery();
@@ -51,6 +54,7 @@ const Home = ({navigation}) => {
     isLoading: versionLoad,
     error,
   } = useGetAppVersionQuery(device);
+
   const renderData = durasi => {
     if (durasi > 0) {
       let jam = Math.floor(durasi / 60),
@@ -114,7 +118,6 @@ const Home = ({navigation}) => {
     setProgress(0);
     const url = versionApp?.download;
     const filePath = RNFS.DownloadDirectoryPath + '/empapps.apk';
-    console.log('URL DOWNl', versionApp);
 
     RNFS.downloadFile({
       fromUrl: url,
@@ -130,7 +133,7 @@ const Home = ({navigation}) => {
         setDownload(false);
       })
       .catch(err => {
-        console.log('Download error:', err);
+        // console.log('Download error:', err);
       });
   };
 
@@ -202,114 +205,135 @@ const Home = ({navigation}) => {
           </View>
         </Modal>
       )}
-      <Layout bg="bg-primary-500">
+      <Layout>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View
-            className={`bg-primary-500 rounded-bl-[70px] radiu px-5 pb-20 `}>
-            <HStack space={5} className="justify-between items-center py-5">
-              {users?.avatar ? (
-                <Avatar
-                  size="2xl"
-                  className="bg-transparent"
-                  source={{uri: users.avatar_url}}>
-                  EU
-                </Avatar>
-              ) : (
-                <Avatar
-                  size="lg"
-                  className="bg-transparent"
-                  source={require('../../assets/images/avatar.png')}>
-                  MM
-                </Avatar>
-              )}
-              <View className="flex-1">
-                <Text
-                  className="text-xl text-primary-50 capitalize"
-                  style={{fontFamily: 'Inter-Bold'}}>
-                  {users?.profile?.name}
-                </Text>
-                <Text
-                  className="text-sm text-primary-50"
-                  style={{fontFamily: 'Inter-Light'}}>
-                  {`${users?.employee?.division?.division} - ${users?.employee?.position?.position}`}
-                </Text>
-              </View>
-              <TouchableOpacity className="relative border border-white rounded-full p-1">
-                <Icon name="notifications" color="#fff" size={20} />
-                <View className="absolute border border-white bg-primary-500 self-start rounded-full p-[5px] -top-[2px] -right-[3px]" />
-              </TouchableOpacity>
-            </HStack>
-          </View>
-          <VStack className="mx-5 space-y-5" top={-70}>
-            <View className="bg-white p-3 rounded-lg border border-primary-100">
-              <View className="flex-row justify-between mb-3">
-                <Text
-                  className=" text-primary-950 text-base"
-                  style={{fontFamily: 'Inter-Bold'}}>
-                  Rekap Presensi
-                </Text>
-                <TouchableOpacity onPress={() => navigate('history')}>
-                  <Text
-                    className="text-blue-800 underline"
-                    style={{fontFamily: 'Inter-SemiBold'}}>
-                    Details
-                  </Text>
+          <View className="bg-[#fafafa]">
+            <View className="px-5 pb-8 pt-12 bg-primary-600 rounded-br-[60px] gap-5">
+              <View className="flex flex-row justify-between items-center">
+                <View className="flex-row items-center gap-2">
+                  {users?.avatar && checkImage(users.avatar_url) ? (
+                    <Avatar
+                      size="sm"
+                      className="bg-white text-black"
+                      source={{uri: users.avatar_url}}>
+                      EU
+                    </Avatar>
+                  ) : (
+                    <Avatar
+                      size="sm"
+                      className="bg-transparent"
+                      source={require('../../assets/images/avatar.png')}>
+                      MM
+                    </Avatar>
+                  )}
+                  <View>
+                    <Text
+                      className="text-sm text-white"
+                      style={{fontFamily: 'OpenSans-Bold'}}>
+                      {users?.profile?.name}
+                    </Text>
+                    <Text
+                      className="text-[10px] text-white"
+                      style={{fontFamily: 'OpenSans-Medium'}}>
+                      {`${users?.employee?.division?.division} - ${users?.employee?.position?.position}`}
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity className="relative">
+                  <Icon name="notifications-outline" color="#fff" size={25} />
+                  <View className="absolute border-[1.3px] border-white bg-primary-500 self-start rounded-full p-[4px] top-0 right-0.5" />
                 </TouchableOpacity>
               </View>
-              <View className="flex-row justify-between">
-                <RecapItem type="Hadir" value={data?.rekap?.hadir} />
-                <RecapItem type="Alpha" value={data?.rekap?.alpa} />
-                <RecapItem type="Izin/Sakit" value={data?.rekap?.izin} />
+              <View className="bg-white/30 rounded-xl px-3 py-3 space-y-2">
+                <TouchableOpacity
+                  className="flex-row justify-between items-center"
+                  onPress={() => navigate('history')}>
+                  <View>
+                    <Text
+                      className="text-xs text-white"
+                      style={{fontFamily: 'OpenSans-Regular'}}>
+                      Presensi
+                    </Text>
+                    <Text
+                      className="text-sm text-white"
+                      style={{fontFamily: 'Inter-Bold'}}>
+                      {`${moment(data?.rekap?.start, 'YYYY-MM-DD').format(
+                        'DD MMMM',
+                      )} - ${moment(data?.rekap?.end, 'YYYY-MM-DD').format(
+                        'DD MMMM',
+                      )}`}
+                    </Text>
+                  </View>
+                  <Entypo name="chevron-right" size={20} color="#fff" />
+                </TouchableOpacity>
+                <Divider />
+                <View className="flex-row items-center">
+                  <RecapItem type="Hadir" value={data?.rekap?.hadir} />
+                  <RecapItem type="Alpha" value={data?.rekap?.alpa} />
+                  <RecapItem type="Izin/Sakit" value={data?.rekap?.izin} />
+                </View>
               </View>
             </View>
-            <VStack className="">
-              <Text
-                className="pb-3 text-primary-950 text-base"
-                style={{fontFamily: 'Inter-Bold'}}>
-                Presensi Hari Ini
-              </Text>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  justifyContent: 'space-between',
-                }}>
-                <ClockTime icon="finger-print" title="Jam Masuk">
-                  {today?.clock_in != null
-                    ? moment(today?.clock_in, 'HH:mm::ss')
-                        .locale('en')
-                        .format('hh:mm a')
-                    : '--:-- --'}
-                </ClockTime>
-                <ClockTime icon="hand-left" title="Jam Pulang">
-                  {today?.clock_out != null
-                    ? moment(today?.clock_out, 'HH:mm::ss')
-                        .locale('en')
-                        .format('hh:mm a')
-                    : '--:-- --'}
-                </ClockTime>
-                <ClockTime
-                  icon="hourglass"
-                  title="Lama Bekerja"
-                  subtitle="Avg. 8 jam">
-                  {cDuration(today?.clock_in, today?.clock_out)}
-                </ClockTime>
-                <ClockTime icon="moon" title="Lembur" subtitle="min. 1 jam">
-                  {'--:-- --'}
-                </ClockTime>
-                <ClockTime
-                  icon="bed"
-                  title="Durasi Tidur"
-                  subtitle="avg. 6 jam"
-                  button={today?.sleep.length == 0 ? true : false}
-                  onpress={() => navigate('add-sleep')}>
-                  {renderData(sleepDuration)}
-                </ClockTime>
-              </View>
-            </VStack>
-          </VStack>
-          <View className="h-12" />
+          </View>
+          <View className="bg-primary-600">
+            <View className="bg-[#fafafa] rounded-tl-[60px] min-h-[100px] py-7 px-5 pb-40">
+              <HomeCard title="Semua Fitur">
+                <FlatList
+                  data={listMenu}
+                  renderItem={({item}) => {
+                    return (
+                      <Menu
+                        label={item.label}
+                        onpress={() => item.onpress()}
+                        source={item.source}
+                      />
+                    );
+                  }}
+                  numColumns={5}
+                  keyExtractor={index => index}
+                />
+              </HomeCard>
+
+              <HomeCard title="Presensi Hari Ini">
+                <HStack className="w-full" flexWrap="wrap">
+                  <TimeCard
+                    icon="finger-print"
+                    label="jam masuk"
+                    value={
+                      today?.clock_in != null
+                        ? moment(today?.clock_in, 'YYYY-MM-DD HH:mm::ss')
+                            .locale('en')
+                            .format('HH:mm')
+                        : '--:--'
+                    }
+                  />
+                  <Spacer />
+                  <TimeCard
+                    icon="hand-left"
+                    label="jam pulang"
+                    value={
+                      today?.clock_out != null
+                        ? moment(today?.clock_out, 'YYYY-MM-DD HH:mm::ss')
+                            .locale('en')
+                            .format('HH:mm')
+                        : '--:--'
+                    }
+                  />
+                  <TimeCard
+                    icon="hourglass"
+                    label="Lama Kerja"
+                    value={cDuration(today?.clock_in, today?.clock_out)}
+                  />
+                  <Spacer />
+                  <TimeCard
+                    icon="bed"
+                    label="Durasi Tidur"
+                    value={renderData(sleepDuration)}
+                  />
+                </HStack>
+              </HomeCard>
+            </View>
+          </View>
         </ScrollView>
       </Layout>
     </>

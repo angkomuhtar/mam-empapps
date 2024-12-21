@@ -23,10 +23,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import Loading from '@components/loading.component';
 import Input from '@components/input.component';
 import Alert from '@components/alert.component';
-import {login} from '../../../applications/actions/auth.action';
 import {Controller, useForm} from 'react-hook-form';
 import {getVersion} from 'react-native-device-info';
-// import {API_URL, APP_ENV, API_URL_DEV_IOS, API_URL_DEV_AND} from '@env';
+import {useSetLogInMutation} from '@slices/auths.slice';
+import {setAsync, getAsync} from '@utils/SecureStore';
+import {setLogin} from '../../../applications/slices/login.slice';
 
 const Login = ({navigation}) => {
   const {
@@ -45,7 +46,6 @@ const Login = ({navigation}) => {
   let version = getVersion();
   const toast = useToast();
   const height = Dimensions.get('screen').height;
-  const dispatch = useDispatch();
   const [eye, setEye] = useState(true);
   const [data, setData] = useState({
     email: '',
@@ -59,7 +59,9 @@ const Login = ({navigation}) => {
   });
   const [user, setUser] = useState(null);
 
-  const {loading, token, error, success} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const [setLogIn, {isLoading, isSuccess, data: loginData, error}] =
+    useSetLogInMutation();
 
   const toatsShow = ({message = 'terjadi kesalahan', errno = '500'}) => {
     toast.show({
@@ -75,6 +77,7 @@ const Login = ({navigation}) => {
     });
   };
 
+  // phone uniqueId
   useEffect(() => {
     getUniqueId().then(uniqueId => {
       getDevice().then(device_type => {
@@ -95,12 +98,9 @@ const Login = ({navigation}) => {
       });
     });
   }, []);
-  const loginHandle = data => {
-    dispatch(login(data));
-  };
+
   useEffect(() => {
     if (error) {
-      console.log(error);
       toast.show({
         render: () => (
           <View className="px-4 py-2 bg-primary-600 rounded-lg">
@@ -119,6 +119,16 @@ const Login = ({navigation}) => {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (isSuccess) {
+      setAsync('@token', loginData.authorisation.token);
+      dispatch(setLogin(true));
+    }
+    return () => {
+      isSuccess;
+    };
+  }, [isSuccess]);
+
   return (
     <Layout>
       {Platform.OS == 'ios' && <View className="h-8" />}
@@ -130,7 +140,7 @@ const Login = ({navigation}) => {
         onOk={() => setAlert({...alert, visible: false})}
       />
 
-      {loading && <Loading />}
+      {isLoading && <Loading />}
       <VStack className="mx-5 mt-10" style={{height: height}}>
         <View className="flex mb-4">
           <Image source={Logo} resizeMode="contain" className="w-36 h-14" />
@@ -141,12 +151,12 @@ const Login = ({navigation}) => {
           </Text>
         </View>
         <Text
-          className="text-3xl text-primary-950"
+          className="text-3xl text-green-500"
           style={{fontFamily: 'Inter-Black'}}>
           Selamat Datang,
         </Text>
         <Text
-          className="text-3xl text-primary-950 mb-5"
+          className="text-3xl text-green-500 mb-5"
           style={{fontFamily: 'Inter-Black'}}>
           di <Text className="text-primary-500">EMPLOYEE APPS</Text>
         </Text>
@@ -214,7 +224,7 @@ const Login = ({navigation}) => {
           />
         </View>
         <TouchableOpacity
-          onPress={handleSubmit(loginHandle)}
+          onPress={handleSubmit(setLogIn)}
           className="bg-primary-500 p-3 rounded-md items-center mt-8">
           <Text
             className="text-primary-50 text-sm"

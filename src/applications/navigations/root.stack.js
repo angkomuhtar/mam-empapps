@@ -5,49 +5,50 @@ import {useDispatch, useSelector} from 'react-redux';
 
 // screen
 import Splash from '@screens/auth/splash.screen';
-import {refresh} from '../actions/auth.action';
 import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import HomeBase from './home.stack';
 import AuthBase from './auth.stack';
-
-// const asynctoken = await AsyncStorage.getItem('token');
+import {setLogin} from '@slices/login.slice';
+import {useGetProfileQuery} from '@slices/user.slice';
+import {refreshToken} from '../utils/ApiCall';
 
 const MainNavigation = ({navigation}) => {
   const {getItem} = useAsyncStorage('@token');
   const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
+  // const {data: userData, error, isLoading, isSuccess} = useGetProfileQuery();
 
-  const {isLogin, error, success, refLoading} = useSelector(
-    state => state.auth,
-  );
+  const {isLoggedIn} = useSelector(state => state.login);
 
   useEffect(() => {
+    setloading(true);
     const getToken = async () => {
       try {
         const value = await getItem();
         if (value) {
-          dispatch(refresh());
+          const tok = await refreshToken();
+          if (tok) {
+            dispatch(setLogin(true));
+          }
         }
       } catch (error) {
         console.error('Error retrieving data:', error);
+      } finally {
+        setTimeout(() => {
+          setloading(false);
+        }, 1000);
       }
     };
     getToken();
   }, [navigation]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setloading(false);
-    }, 2000);
-  }, []);
-
-  if (loading || refLoading) {
+  if (loading) {
     return <Splash />;
   }
 
   return (
     <NavigationContainer ref={navigationRef}>
-      {isLogin ? <HomeBase /> : <AuthBase />}
+      {isLoggedIn ? <HomeBase /> : <AuthBase />}
     </NavigationContainer>
   );
 };

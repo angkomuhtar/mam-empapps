@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-native-mock-location-detector/android/build.gradle b/node_modules/react-native-mock-location-detector/android/build.gradle
+index f80562d..9863a77 100644
+--- a/node_modules/react-native-mock-location-detector/android/build.gradle
++++ b/node_modules/react-native-mock-location-detector/android/build.gradle
+@@ -13,8 +13,8 @@ buildscript {
+ apply plugin: 'com.android.library'
+ 
+ android {
+-    compileSdkVersion 29
+-    buildToolsVersion = "29.0.2"
++    compileSdkVersion 30
++    buildToolsVersion = "30.0.2"
+ 
+     defaultConfig {
+         minSdkVersion 

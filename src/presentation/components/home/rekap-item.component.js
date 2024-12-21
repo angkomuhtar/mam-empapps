@@ -3,16 +3,14 @@ import React from 'react';
 
 const RecapItem = ({type, value}) => {
   return (
-    <View className="justify-between items-center flex-1">
+    <View className="flex-1">
       <Text
-        className="text-4xl text-black"
-        style={{fontFamily: 'OpenSans-Bold'}}>
-        {value}
-      </Text>
-      <Text
-        className="text-center text-slate-500"
-        style={{fontFamily: 'OpenSans-Medium'}}>
+        className="text-xs text-white"
+        style={{fontFamily: 'OpenSans-Regular'}}>
         {type}
+      </Text>
+      <Text className="text-2xl text-white" style={{fontFamily: 'Inter-Bold'}}>
+        {value}
       </Text>
     </View>
   );

@@ -1,30 +1,24 @@
-import EncryptedStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const store = async ({data, name}) => {
+export const setAsync = async (key, value) => {
   try {
-    await EncryptedStorage.setItem(name, JSON.stringify(data));
+    await AsyncStorage.setItem(key, value); // Nilai harus berupa string
+    console.log('Data tersimpan!');
   } catch (error) {
-    // There was an error on the native side
-    return error;
+    console.error('Gagal menyimpan data:', error);
   }
 };
 
-export const get = async ({name}) => {
+export const getAsync = async key => {
   try {
-    const session = await EncryptedStorage.getItem(name);
-    if (session !== undefined) {
-      return session;
+    if (value !== null) {
+      console.log('Data ditemukan:', value);
+    } else {
+      console.log('Data tidak ditemukan.');
     }
+    return (value = await AsyncStorage.getItem(key));
   } catch (error) {
-    return error;
-  }
-};
-
-export const remove = async data => {
-  try {
-    await EncryptedStorage.setItem('user_session', JSON.stringify(data));
-  } catch (error) {
-    // There was an error on the native side
-    return error;
+    return null;
+    console.error('Gagal membaca data:', error);
   }
 };

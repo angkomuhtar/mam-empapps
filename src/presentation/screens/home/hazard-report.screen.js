@@ -84,9 +84,35 @@ const AddSleep = ({route}) => {
       <Layout>
         <VStack className={`px-5 bg-[#fafafa] flex-1`}>
           {isLoading && <Loading />}
-          <Header title="Durasi Tidur" back={true} />
-          <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
-            <VStack className="flex-1 mb-5 mt-5">
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Header
+              back={
+                <HStack alignItems={'center'} space={3}>
+                  <TouchableOpacity onPress={() => goBack()}>
+                    <Icon
+                      name="chevron-back-outline"
+                      color={'rgb(73, 6, 9)'}
+                      size={30}
+                    />
+                  </TouchableOpacity>
+                  <Text
+                    className="text-xl text-primary-950"
+                    style={{fontFamily: 'Inter-Bold'}}>
+                    Durasi Tidur
+                  </Text>
+                </HStack>
+              }
+            />
+            <VStack
+              // space={3}
+              flex={1}
+              mb={5}
+              style={{minHeight: height - height * 0.25}}>
+              <Text
+                className="text-lg"
+                style={{fontFamily: 'OpenSans-SemiBold'}}>
+                Jumlah jam tidur
+              </Text>
               <HStack className="justify-between mb-4">
                 <Controller
                   control={control}
@@ -169,16 +195,16 @@ const AddSleep = ({route}) => {
                 }}
               />
             </VStack>
+            <TouchableOpacity
+              onPress={handleSubmit(postTidur)}
+              className="bg-green-500 p-3 justify-center items-center rounded-md mb-5">
+              <Text
+                className="text-lg text-white"
+                style={{fontFamily: 'Inter-SemiBold'}}>
+                Simpan
+              </Text>
+            </TouchableOpacity>
           </ScrollView>
-          <TouchableOpacity
-            onPress={handleSubmit(postTidur)}
-            className="bg-green-500 p-3 py-2 justify-center items-center rounded-md mb-5">
-            <Text
-              className="text-sm text-white"
-              style={{fontFamily: 'Inter-Bold'}}>
-              Simpan
-            </Text>
-          </TouchableOpacity>
         </VStack>
       </Layout>
     </>

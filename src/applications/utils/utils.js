@@ -4,20 +4,16 @@ import {Text} from 'react-native';
 
 export const cDuration = (start, end) => {
   var mins = '',
-    st = start ? moment(start, 'HH:mm:ss') : null,
-    et = end ? moment(end, 'HH:mm:ss') : moment();
+    st = start ? moment(start, 'YYYY-MM-DD HH:mm:ss') : null,
+    et = end ? moment(end, 'YYYY-MM-DD HH:mm:ss') : moment();
 
   if (start == null) return '--:-- --';
-  if (et < st) {
-    mins = moment(moment('24:00:00', 'HH:mm:ss')).diff(st, 'minutes');
-    mins += moment(et).diff(moment('00:00:00', 'HH:mm:ss'), 'minutes');
-  } else {
-    mins = moment(et).diff(st, 'minutes');
-  }
+  console.log(st, et);
+
+  mins = moment(et).diff(st, 'minutes');
 
   var h = (mins / 60) | 0,
     m = mins % 60 | 0;
-  // return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
   return (
     <HStack className="space-x-2">
       <HStack className="space-x-1">
@@ -48,4 +44,18 @@ export const cDuration = (start, end) => {
       )}
     </HStack>
   );
+};
+
+export const checkImage = url => {
+  fetch(url)
+    .then(res => {
+      if (res.status == '404') {
+        return false;
+      } else {
+        return true;
+      }
+    })
+    .catch(err => {
+      return false;
+    });
 };

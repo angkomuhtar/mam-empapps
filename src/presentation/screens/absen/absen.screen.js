@@ -20,14 +20,14 @@ import {
   useGetAbsenLocationQuery,
   useSetClockInMutation,
 } from '@slices/clock.slice';
-import {Quote} from '../../../applications/utils/Quote';
+import {Quote} from '../../../applications/utils/constant';
 import {useFocusEffect} from '@react-navigation/native';
 import {apiSlice} from '../../../applications/slices/api.slice';
 import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
-import JailMonkey from 'jail-monkey';
 import RNMockLocationDetector from 'react-native-mock-location-detector';
 import {getVersion} from 'react-native-device-info';
-
+import Icon from 'react-native-vector-icons/Ionicons';
+import Layout from '../../components/layout.component';
 const requestLocationPermission = async () => {
   try {
     if (Platform.OS == 'ios') {
@@ -91,7 +91,8 @@ const Absen = ({navigation}) => {
     isSuccess,
   } = useGetShiftQuery();
   const {data: ab_location, isLoading: locLoading} = useGetAbsenLocationQuery();
-  const [setClockIn, {isLoading: postLoading}] = useSetClockInMutation();
+  const [setClockIn, {isLoading: postLoading, data: clockReturn}] =
+    useSetClockInMutation();
 
   const getCurrent = () => {
     setLoading(true);
@@ -115,8 +116,12 @@ const Absen = ({navigation}) => {
     });
   };
 
+  console.log('data log : ', clockReturn);
+
   let version = getVersion();
-  const takeAbsens = async () => {
+  const takeAbsens = async type => {
+    console.log('type :', type);
+
     Geolocation.getCurrentPosition(
       position => {
         let loc = false;
@@ -138,8 +143,9 @@ const Absen = ({navigation}) => {
             location = data.id;
           }
         });
+
         if (loc) {
-          if (today?.clock_in) {
+          if (type == 'out') {
             setAlert({
               show: true,
               type: 'warning',
@@ -193,13 +199,20 @@ const Absen = ({navigation}) => {
               version: version,
             }).then(res => {
               if (res.error) {
+                const validationErrors = res.error.message;
+                let errorMessage = '';
+                for (const key in validationErrors) {
+                  if (validationErrors.hasOwnProperty(key)) {
+                    errorMessage += `${validationErrors[key].join('\n')}\n`;
+                  }
+                }
                 setAlert({
                   show: true,
                   type: 'error',
                   title: 'Data tidak lengkap',
                   message:
                     res.error.status == '422'
-                      ? 'pilih jenis shift'
+                      ? errorMessage
                       : 'terjadi kesalahan',
                   onOK: () => {
                     setAlert({show: false});
@@ -255,7 +268,7 @@ const Absen = ({navigation}) => {
     // }?
   };
 
-  const CheckIn = async () => {
+  const CheckIn = async ({type = null}) => {
     if (Platform.OS == 'android') {
       let result = await RNMockLocationDetector.checkMockLocationProvider();
       if (result) {
@@ -269,10 +282,10 @@ const Absen = ({navigation}) => {
           },
         });
       } else {
-        takeAbsens();
+        takeAbsens(type);
       }
     } else {
-      takeAbsens();
+      takeAbsens(type);
     }
   };
 
@@ -288,11 +301,14 @@ const Absen = ({navigation}) => {
       setSelectedShift(today.shift.id);
     }
 
-    return () => {};
+    return () => {
+      today;
+    };
   }, [today]);
+  console.log(today);
 
   return (
-    <View className="flex-1 relative">
+    <Layout bg={true} className="flex-1 relative">
       {(postLoading || isLoading || loading || shiftLoading || locLoading) && (
         <Loading />
       )}
@@ -305,7 +321,6 @@ const Absen = ({navigation}) => {
         onOk={alert.onOK}
         onDissmiss={alert.onDissmiss}
       />
-
       {location?.coords ? (
         <VStack className="flex-1 justify-between bg-white h-full">
           <View className="flex-1 relative items-center">
@@ -345,7 +360,7 @@ const Absen = ({navigation}) => {
                   placeholder="Pilih Shift"
                   isDisabled={today?.clock_in ? true : false}
                   fontFamily={'OpenSans-Bold'}
-                  borderRadius={'full'}
+                  borderRadius={'lg'}
                   dropdownIcon={<></>}
                   _selectedItem={{
                     endIcon: <CheckIcon size="5" />,
@@ -355,56 +370,97 @@ const Absen = ({navigation}) => {
                     shift?.data.map((data, key) => (
                       <Select.Item
                         key={key}
+                        _text={{
+                          color: data.name.includes('Night')
+                            ? 'dark.900'
+                            : 'dark.100',
+                          fontWeight: '600',
+                        }}
                         fontFamily={'OpenSans-Bold'}
+                        bg={data.name.includes('Night') ? 'dark.100' : ''}
+                        style={{color: '#fff'}}
+                        startIcon={
+                          data.name.includes('Day') ? (
+                            <Icon name="sunny-sharp" size={20} />
+                          ) : (
+                            <Icon name="moon-sharp" size={20} color={'#fff'} />
+                          )
+                        }
                         label={`${data.name} ( ${moment(
                           data.start,
                           'HH:mm:ss',
                         ).format('HH:mm')} - ${moment(
                           data.end,
                           'HH:mm:ss',
-                        ).format('HH:mm')} ) (${data.shift_code})`}
+                        ).format('HH:mm')} )`}
+                        // label="test"
                         value={data.id}
                       />
                     ))}
                 </Select>
               </Box>
             </View>
-            <HStack justifyContent={'center'} alignItems={'center'} space={20}>
-              <VStack>
+            <HStack
+              justifyContent={'space-between'}
+              alignItems={'center'}
+              space={5}>
+              <VStack className="flex-1 items-center">
                 <Text
-                  className="text-xs text-primary-950"
+                  className="text-xs text-primary-950 uppercase"
                   style={{fontFamily: 'Inter-Bold'}}>
-                  Absen Masuk
+                  Pulang
                 </Text>
-                <Text className="text-2xl font-bold font-sans text-primary-700 text-center">
+                <Text className="text-2xl font-bold font-sans text-primary-700 text-center mb-2">
                   {today?.clock_in
-                    ? moment(today?.clock_in, 'HH:mm:ss').format('HH:mm')
+                    ? moment(today?.clock_in, 'YYYY-MM-DD HH:mm:ss').format(
+                        'HH:mm',
+                      )
                     : '--:--'}
                 </Text>
+                <TouchableOpacity
+                  disabled={today?.clock_in ? true : false}
+                  onPress={() => CheckIn({type: 'in'})}
+                  className={`w-full py-3 rounded-md flex flex-row justify-center items-center space-x-2 ${
+                    today?.clock_in ? 'bg-primary-200' : ' bg-primary-500'
+                  }`}>
+                  <Text className="font-bold text-white font-sans uppercase">
+                    <Icon name="enter" size={20} className="text-white" />
+                  </Text>
+                  <Text className="font-bold text-white font-sans uppercase">
+                    MASUK
+                  </Text>
+                </TouchableOpacity>
               </VStack>
-              <VStack>
+              <VStack className="flex-1 items-center">
                 <Text
-                  className="text-xs text-primary-950"
+                  className="text-xs text-primary-950 uppercase"
                   style={{fontFamily: 'Inter-Bold'}}>
-                  Absen Pulang
+                  Pulang
                 </Text>
-                <Text className="text-2xl font-bold font-sans text-primary-700 text-center">
+                <Text className="text-2xl font-bold font-sans text-primary-700 text-center mb-2">
                   {today?.clock_out
                     ? moment(today?.clock_out, 'HH:mm:ss').format('HH:mm')
                     : '--:--'}
                 </Text>
+                <TouchableOpacity
+                  disabled={
+                    today?.clock_out == null && today?.clock_in ? false : true
+                  }
+                  onPress={() => CheckIn({type: 'out'})}
+                  className={`w-full py-3 rounded-md flex flex-row justify-center items-center space-x-2 ${
+                    today?.clock_out == null && today?.clock_in
+                      ? 'bg-primary-500'
+                      : ' bg-primary-200'
+                  }`}>
+                  <Text className="font-bold text-white font-sans uppercase">
+                    <Icon name="exit" size={20} className="text-white" />
+                  </Text>
+                  <Text className="font-bold text-white font-sans uppercase">
+                    Pulang
+                  </Text>
+                </TouchableOpacity>
               </VStack>
             </HStack>
-            <TouchableOpacity
-              disabled={today?.clock_out && today?.clock_in ? true : false}
-              onPress={() => CheckIn()}
-              className={`w-full items-center p-4 rounded-md ${
-                today?.clock_out ? 'bg-primary-200' : ' bg-primary-500'
-              }`}>
-              <Text className="font-bold text-white font-sans uppercase">
-                {today?.clock_in ? 'Absen Pulang' : 'Absen Datang'}
-              </Text>
-            </TouchableOpacity>
           </VStack>
           <View className="py-9" />
         </VStack>
@@ -423,7 +479,7 @@ const Absen = ({navigation}) => {
           </Text>
         </VStack>
       )}
-    </View>
+    </Layout>
   );
 };
 

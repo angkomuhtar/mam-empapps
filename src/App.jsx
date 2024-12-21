@@ -1,10 +1,13 @@
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Provider} from 'react-redux';
+import {Provider, useDispatch} from 'react-redux';
 import {store} from './applications/root.state';
 import MainNavigation from './applications/navigations/root.stack';
 import {NativeBaseProvider, extendTheme} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useAsyncStorage} from '@react-native-async-storage/async-storage';
+import {setLogin} from './applications/slices/login.slice';
+import {useRefreshTokenMutation} from './applications/slices/auths.slice';
 // import codePush from 'react-native-code-push';
 
 Icon.loadFont();

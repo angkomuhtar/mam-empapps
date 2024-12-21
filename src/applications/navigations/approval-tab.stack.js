@@ -1,13 +1,7 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import BottomTabButton from '@components/navigation/bottom-tab-button.component';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Home from '@screens/home/home.screen';
-import History from '@screens/history/history.screen';
-import Settings from '@screens/settings/setting.screen';
-import Other from '@screens/other/other.screen';
-import Absen from '@screens/absen/absen.screen';
 import TabBottom from '../../presentation/components/navigation/tab-bottom.component';
 import ApprovalLeave from '../../presentation/screens/other/approval/leave/approval-leave.screen';
 import ApprovalAbsen from '../../presentation/screens/other/approval/absen/approval-absen.screen';

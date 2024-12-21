@@ -17,6 +17,7 @@
 		17BC5F0C88C945709C5AA6A8 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B0D5B546FC4D44E685726ED6 /* Inter-Regular.ttf */; };
 		2355C5B3B1154116A84A118D /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1D9E1A532DE14B88A147FDAA /* Roboto-Regular.ttf */; };
 		2493457860A6474B93E30CB2 /* Inter-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CFCF4DD9685E46D8BB2C2A9E /* Inter-ExtraLight.ttf */; };
+		2F8B6E98DD712EA53C590B92 /* libPods-E-Apps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9499D3962B693E859D3FFDD9 /* libPods-E-Apps.a */; };
 		35B6B947D2A541AE8D61A79B /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A71744AB01B14E61994B1D95 /* OpenSans-SemiBold.ttf */; };
 		37C1CA4640D24CDBA1B06FB6 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 911B2AD7F4944B23994E3F82 /* Inter-Medium.ttf */; };
 		4971341F014743A5BDEEC4C5 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3CC0854DBFE467EA5F369A6 /* OpenSans-ExtraBold.ttf */; };
@@ -29,7 +30,6 @@
 		784169C5130D45329046A5E3 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3279B0238FD84D7FB26E516C /* Roboto-Black.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		85347FACC9AC42F39F5C7ABE /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D85E857DB4434FAE98107D7F /* Inter-SemiBold.ttf */; };
-		8C02E4BB84D2624C0F145A49 /* libPods-MAM E-Apps-MAM E-AppsMAM E-Appss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABBF8876200E5D6153B7D03E /* libPods-MAM E-Apps-MAM E-AppsMAM E-Appss.a */; };
 		8D76D8ED7C0C4A9F93740F73 /* Montserrat-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6AD1705BE1A04DFBB6C2FF6D /* Montserrat-ExtraLight.ttf */; };
 		998FB926020549D69ED63D14 /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E155F8A844AD4F1FA77F373B /* Montserrat-ExtraBold.ttf */; };
 		9E4BEC71FCBE4262B97F3DE5 /* Montserrat-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A9D23FF197204F20BB05329E /* Montserrat-Thin.ttf */; };
@@ -38,7 +38,6 @@
 		B78754F7A43046FE96379868 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2100917497E64A24B85217AA /* Roboto-Medium.ttf */; };
 		CA0561D6EC7243ACBB5E44E8 /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE51AF7D03AA41B1AD6F0E6E /* Roboto-Italic.ttf */; };
 		CD0103FCC063439B92ABBBB1 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9D97886494E4CF8BACFF332 /* Montserrat-Medium.ttf */; };
-		CFAEF60E574A5B0BCE197064 /* libPods-MAM E-Apps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8223BCE33A4176159683A0B /* libPods-MAM E-Apps.a */; };
 		D88C5773D7624E8487280746 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CF6F7537DAFC4626B14908B5 /* OpenSans-Regular.ttf */; };
 		DAE89045DF4443AFA77B8656 /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C290517B31AC4CC1850E7191 /* Inter-Light.ttf */; };
 		DB94DBCF822A4DC98D61304B /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8465D465BFC64D75A884DDB4 /* Roboto-Bold.ttf */; };
@@ -70,7 +69,6 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Test/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Test/main.m; sourceTree = "<group>"; };
 		1D9E1A532DE14B88A147FDAA /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
-		1E2364F6441085A30146BEE8 /* Pods-MAM E-Apps-MAM E-AppsMAM E-Appss.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MAM E-Apps-MAM E-AppsMAM E-Appss.release.xcconfig"; path = "Target Support Files/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss.release.xcconfig"; sourceTree = "<group>"; };
 		2100917497E64A24B85217AA /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../assets/fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		2661810BD164870F2231691C /* Pods-MAM E-Apps.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MAM E-Apps.release.xcconfig"; path = "Target Support Files/Pods-MAM E-Apps/Pods-MAM E-Apps.release.xcconfig"; sourceTree = "<group>"; };
 		3279B0238FD84D7FB26E516C /* Roboto-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Black.ttf"; path = "../assets/fonts/Roboto-Black.ttf"; sourceTree = "<group>"; };
@@ -93,19 +91,20 @@
 		3C3DE7A32A5FD27E001F1029 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		3EFB3FDB0D9B42D5A1C07CB4 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		4CC1B54AB36B49A6826A0CF0 /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../assets/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
+		4E5FF03CB054193FA7DBCB1B /* Pods-E-Apps.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-E-Apps.debug.xcconfig"; path = "Target Support Files/Pods-E-Apps/Pods-E-Apps.debug.xcconfig"; sourceTree = "<group>"; };
 		5149110024164C75B84A924A /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		5601D993998DE56423F394E1 /* Pods-E-Apps.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-E-Apps.release.xcconfig"; path = "Target Support Files/Pods-E-Apps/Pods-E-Apps.release.xcconfig"; sourceTree = "<group>"; };
 		6AD1705BE1A04DFBB6C2FF6D /* Montserrat-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraLight.ttf"; path = "../assets/fonts/Montserrat-ExtraLight.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Test/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		834DD92C06D14443A1535BE4 /* OpenSans-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Medium.ttf"; path = "../assets/fonts/OpenSans-Medium.ttf"; sourceTree = "<group>"; };
 		8465D465BFC64D75A884DDB4 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		911B2AD7F4944B23994E3F82 /* Inter-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Medium.ttf"; path = "../assets/fonts/Inter-Medium.ttf"; sourceTree = "<group>"; };
+		9499D3962B693E859D3FFDD9 /* libPods-E-Apps.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-E-Apps.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3CC0854DBFE467EA5F369A6 /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-ExtraBold.ttf"; path = "../assets/fonts/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
 		A71744AB01B14E61994B1D95 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBold.ttf"; path = "../assets/fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		A9D23FF197204F20BB05329E /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Thin.ttf"; path = "../assets/fonts/Montserrat-Thin.ttf"; sourceTree = "<group>"; };
-		ABBF8876200E5D6153B7D03E /* libPods-MAM E-Apps-MAM E-AppsMAM E-Appss.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MAM E-Apps-MAM E-AppsMAM E-Appss.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE51AF7D03AA41B1AD6F0E6E /* Roboto-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Italic.ttf"; path = "../assets/fonts/Roboto-Italic.ttf"; sourceTree = "<group>"; };
 		B0D5B546FC4D44E685726ED6 /* Inter-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.ttf"; path = "../assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
-		B8223BCE33A4176159683A0B /* libPods-MAM E-Apps.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MAM E-Apps.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB20FB6A677343E6AFC850A4 /* Montserrat.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Montserrat.ttf; path = ../assets/fonts/Montserrat.ttf; sourceTree = "<group>"; };
 		BD21BEA0DB5745808A76FF77 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Light.ttf"; path = "../assets/fonts/OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		C22E0FD2E0D14BD3A6EBC729 /* Inter-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Black.ttf"; path = "../assets/fonts/Inter-Black.ttf"; sourceTree = "<group>"; };
@@ -121,7 +120,6 @@
 		DE3E432FB1F74860911B5903 /* Inter-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Thin.ttf"; path = "../assets/fonts/Inter-Thin.ttf"; sourceTree = "<group>"; };
 		E155F8A844AD4F1FA77F373B /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraBold.ttf"; path = "../assets/fonts/Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
 		E23EDEED3A744E9A9B118B3F /* Inter-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-ExtraBold.ttf"; path = "../assets/fonts/Inter-ExtraBold.ttf"; sourceTree = "<group>"; };
-		E99AA6D04D4C0EFED046265A /* Pods-MAM E-Apps-MAM E-AppsMAM E-Appss.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MAM E-Apps-MAM E-AppsMAM E-Appss.debug.xcconfig"; path = "Target Support Files/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss.debug.xcconfig"; sourceTree = "<group>"; };
 		EB18D67F1CA445E4A5409BB5 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Thin.ttf"; path = "../assets/fonts/Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -131,7 +129,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C02E4BB84D2624C0F145A49 /* libPods-MAM E-Apps-MAM E-AppsMAM E-Appss.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,7 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFAEF60E574A5B0BCE197064 /* libPods-MAM E-Apps.a in Frameworks */,
+				2F8B6E98DD712EA53C590B92 /* libPods-E-Apps.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,8 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				B8223BCE33A4176159683A0B /* libPods-MAM E-Apps.a */,
-				ABBF8876200E5D6153B7D03E /* libPods-MAM E-Apps-MAM E-AppsMAM E-Appss.a */,
+				9499D3962B693E859D3FFDD9 /* libPods-E-Apps.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -286,8 +282,8 @@
 			children = (
 				104857545368A38FEDB01551 /* Pods-MAM E-Apps.debug.xcconfig */,
 				2661810BD164870F2231691C /* Pods-MAM E-Apps.release.xcconfig */,
-				E99AA6D04D4C0EFED046265A /* Pods-MAM E-Apps-MAM E-AppsMAM E-Appss.debug.xcconfig */,
-				1E2364F6441085A30146BEE8 /* Pods-MAM E-Apps-MAM E-AppsMAM E-Appss.release.xcconfig */,
+				4E5FF03CB054193FA7DBCB1B /* Pods-E-Apps.debug.xcconfig */,
+				5601D993998DE56423F394E1 /* Pods-E-Apps.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -299,12 +295,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "E-AppsE-Appss" */;
 			buildPhases = (
-				AE35D0B56041455CF5BAF6B4 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				35566947476BBB4247EA0337 /* [CP] Embed Pods Frameworks */,
-				16F23208198221F212CA8173 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -443,55 +436,21 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		16F23208198221F212CA8173 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		35566947476BBB4247EA0337 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		548B98B46060CEE9C3E27AA1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MAM E-Apps/Pods-MAM E-Apps-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-E-Apps/Pods-E-Apps-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MAM E-Apps/Pods-MAM E-Apps-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-E-Apps/Pods-E-Apps-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MAM E-Apps/Pods-MAM E-Apps-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-E-Apps/Pods-E-Apps-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		819A24F3E63836B7D494553B /* [CP] Check Pods Manifest.lock */ = {
@@ -509,7 +468,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MAM E-Apps-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-E-Apps-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -522,37 +481,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MAM E-Apps/Pods-MAM E-Apps-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-E-Apps/Pods-E-Apps-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MAM E-Apps/Pods-MAM E-Apps-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-E-Apps/Pods-E-Apps-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MAM E-Apps/Pods-MAM E-Apps-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AE35D0B56041455CF5BAF6B4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MAM E-Apps-MAM E-AppsMAM E-Appss-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-E-Apps/Pods-E-Apps-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -607,7 +544,6 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E99AA6D04D4C0EFED046265A /* Pods-MAM E-Apps-MAM E-AppsMAM E-Appss.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -637,7 +573,6 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1E2364F6441085A30146BEE8 /* Pods-MAM E-Apps-MAM E-AppsMAM E-Appss.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -664,7 +599,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 104857545368A38FEDB01551 /* Pods-MAM E-Apps.debug.xcconfig */;
+			baseConfigurationReference = 4E5FF03CB054193FA7DBCB1B /* Pods-E-Apps.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -699,7 +634,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2661810BD164870F2231691C /* Pods-MAM E-Apps.release.xcconfig */;
+			baseConfigurationReference = 5601D993998DE56423F394E1 /* Pods-E-Apps.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -792,7 +727,10 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "$(inherited)  ";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -858,7 +796,10 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = "$(inherited)  ";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",

@@ -29,18 +29,10 @@ const Button = ({icon, onPress, title}) => (
 const Other = () => {
   return (
     <Layout>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="px-5">
-          <Header
-            back={
-              <Text
-                className="text-xl text-primary-950"
-                style={{fontFamily: 'Inter-Bold'}}>
-                Lainnya
-              </Text>
-            }
-          />
-          <VStack space={5} className="space-y-5 pt-5">
+      <VStack px={5} className="flex-1">
+        <Header back={false} title="Lainnya" />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <VStack space={3} className="space-y-3">
             <Button
               title="lupa absen"
               icon={
@@ -118,24 +110,8 @@ const Other = () => {
                 <KuotaCard title="Ditolak" value="8" />
               </HStack> */}
           </VStack>
-        </View>
-      </ScrollView>
-      {/* <Tab.Navigator
-          screenOptions={{
-            swipeEnabled: false,
-          }}
-          tabBar={props => (
-            <View
-              className="px-5 pt-5
-            ">
-              <TabBar {...props} />
-            </View>
-          )}>
-          <Tab.Screen name="Tunda" component={Upcoming} />
-          <Tab.Screen name="Setuju" component={Past} />
-          <Tab.Screen name="Confirm" component={Confirm} />
-          <Tab.Screen name="Teds" component={Confirm} />
-        </Tab.Navigator> */}
+        </ScrollView>
+      </VStack>
     </Layout>
   );
 };

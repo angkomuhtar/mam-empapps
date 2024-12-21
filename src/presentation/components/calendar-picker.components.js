@@ -5,9 +5,17 @@ import moment from 'moment';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CalendarPicker from 'react-native-calendar-picker';
 
-const Calendar = ({value, onChange, range = false, backDate = false}) => {
+const Calendar = ({
+  value,
+  onChange,
+  range = false,
+  backDate = false,
+  label,
+}) => {
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
+
+  console.log(value);
 
   const [visible, setVisible] = useState(false);
   return (
@@ -17,7 +25,7 @@ const Calendar = ({value, onChange, range = false, backDate = false}) => {
           <Text
             className="text-xs text-primary-950 capitalize"
             style={{fontFamily: 'Inter-Regular'}}>
-            Tanggal
+            {label}
           </Text>
           <Text
             style={{fontFamily: 'OpenSans-Light'}}
@@ -26,7 +34,7 @@ const Calendar = ({value, onChange, range = false, backDate = false}) => {
             } `}>
             {!value
               ? 'Pilih Tanggal'
-              : value.start == value.end
+              : value.start == value.end || value.end == null
               ? moment(value.start).format('DD-M-Y')
               : moment(value.start).format('DD-M-Y') +
                 ' - ' +
@@ -50,7 +58,7 @@ const Calendar = ({value, onChange, range = false, backDate = false}) => {
               }}
               selectedStartDate={value?.start}
               selectedEndDate={value?.end}
-              // minDate={new Date()}
+              minDate={backDate ? new Date() : null}
               selectedDayColor="#08b"
               allowRangeSelection={range}
               startFromMonday={true}

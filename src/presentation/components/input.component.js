@@ -18,7 +18,7 @@ const Input = props => {
 
   return (
     <View className="flex-1">
-      <HStack className="border border-primary-100 py-2 px-4 rounded-md bg-white mt-4">
+      <HStack className="border border-primary-100 py-2 px-4 rounded-md bg-white">
         <VStack className="flex-1">
           <Text
             className="text-xs text-primary-950 capitalize"
