@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {
   Avatar,
+  Button,
   Divider,
   FlatList,
   HStack,
@@ -63,27 +64,27 @@ const Home = ({navigation}) => {
         <HStack className="space-x-2">
           <HStack className="space-x-1">
             <Text
-              className="text-2xl text-primary-950 tracking-tighter"
+              className="text-xl text-primary-950 tracking-tighter"
               style={{fontFamily: 'Inter-Bold'}}>
               {jam}
             </Text>
             <Text
               className="text-xs text-primary-950 mt-3"
               style={{fontFamily: 'OpenSans-Bold'}}>
-              jm
+              j
             </Text>
           </HStack>
           {menit > 0 && (
             <HStack className="space-x-1">
               <Text
-                className="text-2xl text-primary-950 tracking-tighter"
+                className="text-xl text-primary-950 tracking-tighter"
                 style={{fontFamily: 'Inter-Bold'}}>
                 {menit}
               </Text>
               <Text
                 className="text-xs text-primary-950 mt-3"
                 style={{fontFamily: 'OpenSans-Bold'}}>
-                mnt
+                m
               </Text>
             </HStack>
           )}
@@ -144,6 +145,8 @@ const Home = ({navigation}) => {
       </Modal>
     );
   }
+
+  const numColums = 4;
 
   return (
     <>
@@ -280,18 +283,42 @@ const Home = ({navigation}) => {
               <HomeCard title="Semua Fitur">
                 <FlatList
                   data={listMenu}
-                  renderItem={({item}) => {
+                  renderItem={({item, index}) => {
                     return (
                       <Menu
+                        index={index}
                         label={item.label}
+                        num={numColums}
                         onpress={() => item.onpress()}
                         source={item.source}
                       />
                     );
                   }}
-                  numColumns={5}
+                  numColumns={numColums}
+                  key={numColums}
                   keyExtractor={index => index}
                 />
+              </HomeCard>
+
+              <HomeCard title="Laporan & Pengajuan">
+                <VStack className="w-full" space={4}>
+                  <Text
+                    className="text-xs text-black"
+                    style={{fontFamily: 'OpenSans-Light'}}>
+                    Ada <Text style={{fontFamily: 'OpenSans-Bold'}}>100 </Text>
+                    Laporan dan Pengajuan yang di tujukan kepada anda untuk di
+                    tindak lanjuti
+                  </Text>
+                  <TouchableOpacity
+                    className=" bg-primary-500 py-2 px-4 rounded-md items-center"
+                    onPress={() => navigate('request-report')}>
+                    <Text
+                      className="text-sm text-white uppercase"
+                      style={{fontFamily: 'Inter-Bold'}}>
+                      Semua Laporan & Pengajuan
+                    </Text>
+                  </TouchableOpacity>
+                </VStack>
               </HomeCard>
 
               <HomeCard title="Presensi Hari Ini">
@@ -328,7 +355,9 @@ const Home = ({navigation}) => {
                   <TimeCard
                     icon="bed"
                     label="Durasi Tidur"
-                    value={renderData(sleepDuration)}
+                    value={renderData(
+                      today?.sleep?.length > 0 ? sleepDuration : 0,
+                    )}
                   />
                 </HStack>
               </HomeCard>

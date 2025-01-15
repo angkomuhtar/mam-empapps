@@ -29,7 +29,7 @@ const Input = props => {
             {...elprops}
             className={`${
               Platform.OS == 'ios' ? 'py-2' : 'py-0'
-            } text-primary-950 text-sm`}
+            } text-primary-950 text-sm h-10`}
             style={[{fontFamily: 'OpenSans-Light'}, props.inputStyle]}
           />
         </VStack>
@@ -39,7 +39,7 @@ const Input = props => {
         <Text
           className="text-primary-500 capitalize text-[11px] ml-2 mt-2"
           style={{fontFamily: 'Inter-Medium'}}>
-          {props?.error}
+          {props?.error?.message}
         </Text>
       )}
     </View>

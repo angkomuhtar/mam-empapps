@@ -18,17 +18,23 @@ export const listMenu = [
   {
     label: 'Durasi Tidur',
     source: require('@images/features/sleepDuration.png'),
-    onpress: () => navigate('add-sleep'),
-  },
-  {
-    label: 'Laporkan Bahaya',
-    source: require('@images/features/pelaporan-bahaya.png'),
-    onpress: () => navigate('hazard'),
+    onpress: () => navigate('sleep'),
   },
   {
     label: 'laporan Bahaya',
     source: require('@images/features/list-hazard.png'),
-    onpress: () => navigate('hazard-list'),
+    onpress: () => navigate('hazard'),
+  },
+
+  {
+    label: 'Penanganan Bahaya',
+    source: require('@images/features/penanganan-bahaya.png'),
+    onpress: () => navigate('hazard'),
+  },
+  {
+    label: 'Cuti & Izin',
+    source: require('@images/features/leave.png'),
+    onpress: () => navigate('hazard'),
   },
   {
     label: 'Menu Lainnya',

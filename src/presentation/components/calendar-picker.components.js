@@ -7,6 +7,7 @@ import CalendarPicker from 'react-native-calendar-picker';
 
 const Calendar = ({
   value,
+  error = null,
   onChange,
   range = false,
   backDate = false,
@@ -14,8 +15,6 @@ const Calendar = ({
 }) => {
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
-
-  console.log(value);
 
   const [visible, setVisible] = useState(false);
   return (
@@ -45,6 +44,13 @@ const Calendar = ({
           <Icon name="calendar-outline" size={20} color={'rgb(73, 6, 9)'} />
         </View>
       </HStack>
+      {error && (
+        <Text
+          className="text-primary-500 capitalize text-[11px] ml-2 mt-2"
+          style={{fontFamily: 'Inter-Medium'}}>
+          {error?.message}
+        </Text>
+      )}
       <Modal visible={visible} transparent={true}>
         <VStack className="h-full w-full bg-black/50 items-center justify-center p-5">
           <VStack
@@ -87,7 +93,9 @@ const Calendar = ({
                 }
                 onPress={() => {
                   setVisible(false);
-                  onChange({start, end});
+                  onChange(
+                    end ? {start, end} : moment(start).format('YYYY-MM-DD'),
+                  );
                 }}
                 className={`${
                   !range && start

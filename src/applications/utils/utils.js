@@ -25,7 +25,7 @@ export const cDuration = (start, end) => {
         <Text
           className="text-xs text-primary-950 mt-3"
           style={{fontFamily: 'OpenSans-Bold'}}>
-          jm
+          j
         </Text>
       </HStack>
       {m > 0 && (
@@ -38,7 +38,7 @@ export const cDuration = (start, end) => {
           <Text
             className="text-xs text-primary-950 mt-3"
             style={{fontFamily: 'OpenSans-Bold'}}>
-            mnt
+            m
           </Text>
         </HStack>
       )}

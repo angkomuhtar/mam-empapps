@@ -92,6 +92,8 @@ const History = ({navigation}) => {
     }
   };
 
+  console.log('history', history);
+
   return (
     <Layout bg={false}>
       <View className="flex-1 px-5">

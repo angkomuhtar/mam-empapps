@@ -33,11 +33,24 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   }
 
   console.log('RTK Query Request URL:', args.url || args);
+  console.log('RTK Query Request BaseURL:', api_url);
   return result;
 };
 
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Users', 'Today', 'Rekap', 'History', 'Leave', 'Login'],
+  tagTypes: [
+    'Users',
+    'Today',
+    'Rekap',
+    'History',
+    'Leave',
+    'Login',
+    'Hazard',
+    'Division',
+    'Project',
+    'Location',
+    'HazardRequest',
+  ],
   endpoints: builder => ({}),
 });

@@ -1,15 +1,20 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import TabHome from './tab-home.stack';
+import {
+  TabHome,
+  SleepStack,
+  RequestReportStack,
+  Hazard,
+} from '@navigations/index';
 import LeaveAdd from '@screens/other/leave/leave-add.screen';
 import LeaveDetails from '@screens/other/leave/leave-details.screen';
 import ChangePassword from '@screens/settings/password.screen';
 import Profile from '@screens/settings/profile.screen';
 import Leave from '@screens/other/leave/leave.screen';
 import ApprovalTab from './approval-tab.stack';
-import AddSleep from '@screens/home/add-sleep.screen';
-import Hazard from '@screens/hazard/hazard.stack';
-import HazardList from '../../presentation/screens/hazard/hazard-list.stack';
+import HazardDetails from '../../presentation/screens/hazard/hazarad-detail.screen';
+import HazardReport from './hazard-report.stack';
+import HazardReportDetails from '../../presentation/screens/request-and-report/hazard-report/hazarad-report-detail.screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +22,7 @@ const HomeBase = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={TabHome} name="home" />
-      <Stack.Screen component={AddSleep} name="add-sleep" />
+      <Stack.Screen component={SleepStack} name="sleep" />
       <Stack.Screen component={Leave} name="leave" />
       <Stack.Screen component={LeaveAdd} name="leave-add" />
       <Stack.Screen component={LeaveDetails} name="leave-details" />
@@ -25,7 +30,15 @@ const HomeBase = () => {
 
       {/* hazard report */}
       <Stack.Screen component={Hazard} name="hazard" />
-      <Stack.Screen component={HazardList} name="hazard-list" />
+      <Stack.Screen component={HazardDetails} name="hazard-details" />
+
+      {/* request And report */}
+      <Stack.Screen component={RequestReportStack} name="request-report" />
+      <Stack.Screen component={HazardReport} name="hazard-report" />
+      <Stack.Screen
+        component={HazardReportDetails}
+        name="hazard-report-details"
+      />
 
       {/* settings */}
       <Stack.Screen component={ChangePassword} name="change-password" />

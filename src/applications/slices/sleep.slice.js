@@ -2,6 +2,17 @@ import {apiSlice} from './api.slice';
 
 export const sleepApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
+    getSleep: builder.query({
+      query: data => ({
+        url: '/sleep',
+        method: 'GET',
+        body: data,
+      }),
+      transformErrorResponse: responseData => {
+        return responseData.data;
+      },
+      invalidatesTags: ['Sleep', 'Today'],
+    }),
     setSleep: builder.mutation({
       query: data => ({
         url: '/sleep',
@@ -11,9 +22,10 @@ export const sleepApiSlice = apiSlice.injectEndpoints({
       transformErrorResponse: responseData => {
         return responseData.data;
       },
-      invalidatesTags: ['Today'],
+      invalidatesTags: ['Sleep', 'Today'],
     }),
   }),
 });
 
-export const {useSetSleepMutation} = sleepApiSlice;
+export const {useSetSleepMutation, useLazyGetSleepQuery, useGetSleepQuery} =
+  sleepApiSlice;

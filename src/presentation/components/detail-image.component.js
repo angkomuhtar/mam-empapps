@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const DetailImage = ({source}) => {
   const [viewImage, setViewImage] = useState(false);
-
   const images = [
     {
       url: source,
@@ -25,7 +24,7 @@ const DetailImage = ({source}) => {
           <Image
             resizeMode="contain"
             source={{uri: source}}
-            className="w-28 h-24 mt-5"
+            className="w-full aspect-video mt-5"
           />
         </Pressable>
       </View>

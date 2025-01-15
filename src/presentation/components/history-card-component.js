@@ -17,7 +17,7 @@ const HistoryCard = ({date, checkin, checkout, status, late, early}) => {
           <Text
             style={{fontFamily: 'Inter-ExtraBold'}}
             className="text-md text-primary-950">
-            {moment(date, 'YYYY-MM-DD').format('MMMM DD, YYYY')}
+            {moment(date, 'YYYY-MM-DD HH:mm:ss').format('MMMM DD, YYYY')}
           </Text>
 
           <Text
@@ -40,7 +40,9 @@ const HistoryCard = ({date, checkin, checkout, status, late, early}) => {
                   className="text-primary-950 text-md"
                   style={{fontFamily: 'Inter-SemiBold'}}>
                   {checkin
-                    ? moment(checkin, 'HH:mm:ss').locale('en').format('hh:mm a')
+                    ? moment(checkin, 'YYYY-MM-DD HH:mm:ss')
+                        .locale('en')
+                        .format('HH:mm a')
                     : '--:-- --'}
                 </Text>
               </>
@@ -70,9 +72,9 @@ const HistoryCard = ({date, checkin, checkout, status, late, early}) => {
                   className="text-primary-950 text-md"
                   style={{fontFamily: 'Inter-SemiBold'}}>
                   {checkout
-                    ? moment(checkout, 'HH:mm:ss')
+                    ? moment(checkout, 'YYYY-MM-DD HH:mm:ss')
                         .locale('en')
-                        .format('hh:mm a')
+                        .format('HH:mm a')
                     : '--:-- --'}
                 </Text>
               </>
@@ -90,43 +92,6 @@ const HistoryCard = ({date, checkin, checkout, status, late, early}) => {
             )}
           </HStack>
         </HStack>
-        {/* <View className="items-center space-y-1 py-4">
-          <Text
-            className="text-gray-500 text-xs"
-            style={{fontFamily: 'OpenSans-ExtraBold'}}>
-            Datang
-          </Text>
-          <Text
-            style={{fontFamily: 'OpenSans-Bold'}}
-            className="text-2xl text-primary-950">
-            {checkin ? moment(checkin, 'HH:mm:ss').format('HH:mm') : '--:--'}
-          </Text>
-        </View>
-        <View className="items-center space-y-1 flex-1">
-          <Text
-            className="text-gray-500 text-xs"
-            style={{fontFamily: 'OpenSans-ExtraBold'}}>
-            Pulang
-          </Text>
-          <Text
-            style={{fontFamily: 'OpenSans-Bold'}}
-            className="text-2xl text-primary-950">
-            {checkout ? moment(checkout, 'HH:mm:ss').format('HH:mm') : '--:--'}
-          </Text>
-        </View> */}
-
-        {/* <View className="items-center justify-center p-2 rounded-md">
-          <Ion
-            name="checkmark-done-circle"
-            color={'rgb(34 197 94)'}
-            size={20}
-          />
-          <Text
-            style={{fontFamily: 'OpenSans-ExtraBold'}}
-            className="text-xs text-green-500">
-            Hadir
-          </Text>
-        </View> */}
       </View>
     </View>
   );

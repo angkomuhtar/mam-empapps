@@ -13,6 +13,7 @@ const TabBar = ({state, descriptors, navigation}) => {
             : options.title !== undefined
             ? options.title
             : route.name;
+        const bg = options?.focusedBackground || 'bg-primary-500';
 
         const isFocused = state.index === index;
 
@@ -43,7 +44,7 @@ const TabBar = ({state, descriptors, navigation}) => {
             onPress={onPress}
             onLongPress={onLongPress}
             className={`flex-1 py-3 justify-center ${
-              isFocused && 'bg-primary-500'
+              isFocused && bg
             } items-center rounded-md`}>
             <Text
               style={{fontFamily: 'Inter-Medium'}}

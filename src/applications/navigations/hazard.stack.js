@@ -14,26 +14,10 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import TabBar from '@components/navigation/tab-bar.component';
 import {goBack, push} from '@utils/RootNavigation';
 import Layout from '@components/layout.component';
-import HazardAdd from './hazard-add.screen';
-import HazardHistory from './hazard-history.screen';
+import HazardAdd from '../../presentation/screens/hazard/hazard-add.screen';
+import HazardHistory from '../../presentation/screens/hazard/hazard-history.screen';
 
 const Tab = createMaterialTopTabNavigator();
-
-const Button = ({icon, onPress, title}) => (
-  <Pressable onPress={onPress}>
-    <HStack
-      className="px-3 py-2 bg-white shadow-sm shadow-primary-950/20 items-center rounded-md"
-      space={3}>
-      {icon}
-      <Text
-        className="flex-1 text-primary-950 text-sm capitalize"
-        style={{fontFamily: 'OpenSans-SemiBold'}}>
-        {title}
-      </Text>
-      <Entypo name="chevron-right" size={25} color={'rgb(73, 6, 9)'} />
-    </HStack>
-  </Pressable>
-);
 
 const Hazard = () => {
   return (
@@ -59,7 +43,7 @@ const Hazard = () => {
           component={HazardAdd}
         />
         <Tab.Screen
-          name="leaveList"
+          name="hazard-list"
           options={{tabBarLabel: 'Riwayat Laporan'}}
           component={HazardHistory}
         />

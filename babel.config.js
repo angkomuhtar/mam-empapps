@@ -10,7 +10,7 @@ module.exports = {
         extensions: ['.jsx', '.js'],
         alias: {
           '@components': './src/presentation/components',
-          '@navigation': './src/navigation',
+          '@navigations': './src/applications/navigations',
           '@stores': './src/stores',
           '@screens': './src/presentation/screens',
           '@utils': './src/applications/utils',

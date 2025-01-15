@@ -76,7 +76,7 @@ const ImagePicker = ({
           } else if (response.customButton) {
             console.log('User tapped custom button: ', response.customButton);
           } else {
-            console.log({response});
+            console.log(response);
             onChange(response);
             // setSelectedImage(response.path);
           }
@@ -149,7 +149,7 @@ const ImagePicker = ({
         <Text
           className="text-primary-500 capitalize text-[11px] ml-2 mt-2"
           style={{fontFamily: 'Inter-Medium'}}>
-          {error}
+          {error?.message}
         </Text>
       )}
     </View>

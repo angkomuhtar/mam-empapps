@@ -177,7 +177,8 @@ const Absen = ({navigation}) => {
                       type: 'success',
                       title: 'Absen Pulang berhasil',
                       message: false,
-                      quote: Quote[Math.floor(Math.random() * Quote.length)],
+                      quote:
+                        'Terima kasih untuk waktu dan kerja keras mu hari ini, Selamat beristirahat, jangan lupa istirahat yang cukup, Sampai jumpa besok',
                       onOK: () => {
                         setAlert({show: false});
                       },
@@ -439,7 +440,9 @@ const Absen = ({navigation}) => {
                 </Text>
                 <Text className="text-2xl font-bold font-sans text-primary-700 text-center mb-2">
                   {today?.clock_out
-                    ? moment(today?.clock_out, 'HH:mm:ss').format('HH:mm')
+                    ? moment(today?.clock_out, 'YYYY-MM-DD HH:mm:ss').format(
+                        'HH:mm',
+                      )
                     : '--:--'}
                 </Text>
                 <TouchableOpacity

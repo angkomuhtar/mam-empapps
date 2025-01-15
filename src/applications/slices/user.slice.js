@@ -52,6 +52,18 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         return responseData.data;
       },
     }),
+    searchPic: builder.query({
+      query: ({name}) => ({
+        url: `/pic?name=${name}`,
+        method: 'GET',
+      }),
+      transformResponse: responseData => {
+        return responseData.data;
+      },
+      transformErrorResponse: responseData => {
+        return responseData.data;
+      },
+    }),
   }),
 });
 
@@ -61,4 +73,5 @@ export const {
   useChangeAvatarMutation,
   useGetTeamQuery,
   useGetAppVersionQuery,
+  useSearchPicQuery,
 } = usersApiSlice;
