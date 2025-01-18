@@ -7,6 +7,7 @@ import DetailImage from '@components/detail-image.component';
 import Layout from '@components/layout.component';
 import Loading from '@components/loading.component';
 import {useGetHazardDetailsQuery} from '@slices/hazard.slice';
+import moment from 'moment';
 
 const HazardDetails = ({route}) => {
   const {id, type} = route.params;
@@ -140,21 +141,27 @@ const HazardDetails = ({route}) => {
                   </VStack>
                 </HStack>
               </>
-              // <View>
+            )}
 
-              //   <DetailValue
-              //     label="Person In Charge"
-              //     value={data.hazard_action.pic.profile.name}
-              //   />
-              //   <DetailValue
-              //     label="Nomer Registrasi Pekerja"
-              //     value={data.hazard_action.pic.employee.nip}
-              //   />
-              //   <DetailValue
-              //     label="Jabatan"
-              //     value={data.hazard_action.pic.employee.position.position}
-              //   />
-              // </View>
+            {data?.status == 'CLOSED' && (
+              <>
+                <Text>Tindakan Perbaikan</Text>
+                <DetailValue
+                  label="Status Perbaikan"
+                  value={data.hazard_action.status}
+                />
+                <DetailImage source={data.hazard_action.attachment} />
+                <DetailValue
+                  label="Tanggal Selesai"
+                  value={moment(data.hazard_action.updated_at).format(
+                    'YYYY-MM-DD',
+                  )}
+                />
+                <DetailValue
+                  label="Keterangan"
+                  value={data.hazard_action.notes}
+                />
+              </>
             )}
           </VStack>
         </ScrollView>

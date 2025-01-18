@@ -51,6 +51,7 @@ export const apiSlice = createApi({
     'Project',
     'Location',
     'HazardRequest',
+    'HazardAction',
   ],
   endpoints: builder => ({}),
 });

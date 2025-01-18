@@ -21,6 +21,20 @@ export const authApiSlice = apiSlice.injectEndpoints({
       transformErrorResponse: responseData => {
         return responseData.data;
       },
+      invalidatesTags: [
+        'Users',
+        'Today',
+        'Rekap',
+        'History',
+        'Leave',
+        'Login',
+        'Hazard',
+        'Division',
+        'Project',
+        'Location',
+        'HazardRequest',
+        'HazardAction',
+      ],
     }),
     getMe: builder.query({
       query: () => 'clock/rekap',

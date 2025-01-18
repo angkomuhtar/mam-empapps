@@ -1,14 +1,17 @@
 import {View, Text, RefreshControl, Modal, Pressable} from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, HStack, Icon, Image, Stack, VStack} from 'native-base';
-import {useLazyGetSleepQuery} from '@slices/sleep.slice';
+import {useGetSleepQuery} from '@slices/sleep.slice';
 import Empty from '@components/empty.comnponent';
 import {useFocusEffect} from '@react-navigation/native';
 import moment from 'moment';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import ImageViewer from 'react-native-image-zoom-viewer';
 const SleepHistory = ({navigation}) => {
-  const [trigger, {data, isFetching}, lastPromiseInfo] = useLazyGetSleepQuery();
+  // const [trigger, {data, isFetching}, lastPromiseInfo] = useGetSleepQuery();
+
+  const [item, setItem] = useState([]);
+  const [page, setPage] = useState(1);
   const [image, setImage] = useState({
     show: false,
     url: [
@@ -17,12 +20,22 @@ const SleepHistory = ({navigation}) => {
       },
     ],
   });
+  const {data, isLoading} = useGetSleepQuery({page});
+  console.log('data sleep', data);
 
-  useFocusEffect(
-    useCallback(() => {
-      trigger();
-    }, [navigation]),
-  );
+  useEffect(() => {
+    setPage(1);
+  }, [navigation]);
+
+  useEffect(() => {
+    if (data && page === 1) {
+      console.log('data sleep', data.data);
+
+      setItem(data?.data);
+    } else if (data && page > 1) {
+      setItem([...item, ...data?.data]);
+    }
+  }, [data]);
 
   const renderData = (end, start) => {
     const durasi = parseInt(
@@ -71,9 +84,9 @@ const SleepHistory = ({navigation}) => {
     <View className="px-5 pt-3 bg-[#fafafa] flex-1">
       <FlatList
         className="flex-1"
-        data={data?.data}
+        data={item}
         refreshControl={
-          <RefreshControl refreshing={isFetching} onRefresh={trigger} />
+          <RefreshControl refreshing={isLoading} onRefresh={() => setPage(1)} />
         }
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
@@ -85,7 +98,6 @@ const SleepHistory = ({navigation}) => {
           const duration = moment
             .duration(moment(item.end).diff(moment(item.start)))
             .asMinutes();
-
           return (
             <HStack
               className="bg-white rounded-md p-2 mb-3 space-x-5 border border-primary-50"
@@ -198,6 +210,12 @@ const SleepHistory = ({navigation}) => {
               </Modal>
             </HStack>
           );
+        }}
+        onEndReachedThreshold={0.3}
+        onEndReached={() => {
+          if (data?.total && item.length <= data?.total) {
+            setPage(page + 1);
+          }
         }}
       />
     </View>

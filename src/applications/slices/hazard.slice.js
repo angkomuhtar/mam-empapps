@@ -24,6 +24,14 @@ export const hazardApiSlice = apiSlice.injectEndpoints({
         return responseData.data;
       },
     }),
+    getHazardAction: builder.query({
+      query: ({page = 1, status = ''}) =>
+        `/hazard/action?page=${page}&status=${status}`,
+      transformResponse: responseData => {
+        return responseData.data;
+      },
+      providesTags: ['HazardAction'],
+    }),
     setHazard: builder.mutation({
       query: data => ({
         url: '/hazard',
@@ -46,6 +54,17 @@ export const hazardApiSlice = apiSlice.injectEndpoints({
       },
       invalidatesTags: ['HazardRequest'],
     }),
+    setAction: builder.mutation({
+      query: body => ({
+        url: `/hazard/action`,
+        method: 'POST',
+        body: body,
+      }),
+      transformErrorResponse: responseData => {
+        return responseData.data;
+      },
+      invalidatesTags: ['HazardAction'],
+    }),
   }),
 });
 
@@ -56,4 +75,6 @@ export const {
   useGetHazardDetailsQuery,
   useGetHazardReportQuery,
   useSetPICMutation,
+  useGetHazardActionQuery,
+  useSetActionMutation,
 } = hazardApiSlice;

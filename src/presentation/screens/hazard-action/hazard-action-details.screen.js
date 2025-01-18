@@ -12,16 +12,19 @@ import {
 } from '@slices/hazard.slice';
 import {Controller, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
-import SelectField from '../../../components/select.component';
+import SelectField from '@components/select.component';
 import {z} from 'zod';
-import {useSearchPicQuery} from '../../../../applications/slices/user.slice';
+import {useSearchPicQuery} from '@slices/user.slice';
 
 import Alert from '@components/alert.component';
 import ErrorAlert from '@components/alert.component';
-import {navigate} from '../../../../applications/utils/RootNavigation';
+import Input from '../../components/input.component';
+import ImagePicker from '../../components/image-picker.component';
+import {useSetActionMutation} from '../../../applications/slices/hazard.slice';
+import {navigate} from '../../../applications/utils/RootNavigation';
 import moment from 'moment';
 
-const HazardReportDetails = ({route}) => {
+const HazardActionDetails = ({route}) => {
   const {id, type} = route.params;
   const [alert, setAlert] = useState({
     show: false,
@@ -35,11 +38,6 @@ const HazardReportDetails = ({route}) => {
     onDissmiss: false,
   });
 
-  const [
-    postPIC,
-    {postResult, isLoading: postLoading, error: postError, isError, isSuccess},
-  ] = useSetPICMutation();
-
   const {
     control,
     handleSubmit,
@@ -49,11 +47,37 @@ const HazardReportDetails = ({route}) => {
     setValue,
   } = useForm({
     resolver: zodResolver(
-      z.object({
-        pic: z.number({
-          required_error: 'Pilih Person in Charge',
-        }),
-      }),
+      z
+        .object({
+          action_status: z.string({
+            required_error: 'Pilih Status',
+          }),
+          action_note: z.string().optional(),
+          action_attachment: z.any().refine(
+            data => {
+              if (!data || data.length === 0) {
+                return false;
+              }
+              return true;
+            },
+            {
+              message: 'Lampiran tidak boleh kosong',
+            },
+          ),
+        })
+        .refine(
+          data => {
+            if (data.action_status == 'PENDING' && !data.action_note) {
+              return false;
+            }
+            return true;
+          },
+          {
+            message:
+              'Lokasi lainnya harus diisi jika anda memilih lokasi lainnya',
+            path: ['action_note'],
+          },
+        ),
     ),
   });
 
@@ -61,12 +85,23 @@ const HazardReportDetails = ({route}) => {
   const [search, setSearch] = useState('');
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
-  const {data: dataPic, isLoading: isLoadingPic} = useSearchPicQuery({
-    name: search,
-  });
+  const [
+    postAction,
+    {postResult, isLoading: postLoading, error: postError, isError, isSuccess},
+  ] = useSetActionMutation();
 
   const sendingData = e => {
-    postPIC({id, body: e});
+    // postPIC({id, body: e});
+    const formdata = new FormData();
+    formdata.append('action_status', e.action_status);
+    formdata.append('action_note', e.action_note);
+    formdata.append('action_attachment', {
+      uri: e.action_attachment.path,
+      type: e.action_attachment.mime,
+      name: e.action_attachment.filename,
+    });
+    formdata.append('id_action', data.hazard_action.id);
+    postAction(formdata);
   };
 
   useEffect(() => {
@@ -88,10 +123,10 @@ const HazardReportDetails = ({route}) => {
         visible={success}
         type={'success'}
         title="Berhasil"
-        message="Hazard Report : PIC Telah di Tugaskan"
+        message="Hazard Report : Status Telah di Update"
         onOk={() => {
           setSuccess(false);
-          navigate('hazard-report');
+          navigate('hazard-action');
         }}
       />
       <ErrorAlert
@@ -104,26 +139,7 @@ const HazardReportDetails = ({route}) => {
         }}
       />
       <View className="px-5 pt-2">
-        <Header
-          back={true}
-          title="Hazard Report Details"
-          rightIcon={
-            <View
-              className={`py-1 px-3 ${
-                data.status == 'OPEN'
-                  ? 'bg-red-500'
-                  : data.status == 'ONPROGRESS'
-                  ? 'bg-yellow-500'
-                  : 'bg-green-500'
-              } rounded-sm text-white`}>
-              <Text
-                className="text-[10px] text-white"
-                style={{fontFamily: 'Inter-ExtraBold'}}>
-                {data.status}
-              </Text>
-            </View>
-          }
-        />
+        <Header back={true} title="Hazard Report Details" />
       </View>
       <VStack px={5} className="flex-1">
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -156,10 +172,6 @@ const HazardReportDetails = ({route}) => {
                   : data.location.location
               }
             />
-            <Text>Departement Terkait</Text>
-            <DetailValue label="Perusahaan" value={data.company.company} />
-            <DetailValue label="Project" value={data.project.name} />
-            <DetailValue label="Departement" value={data.division.division} />
             <Text>Detail Laporan</Text>
             <DetailValue
               label="kondisi temuan"
@@ -175,7 +187,6 @@ const HazardReportDetails = ({route}) => {
             />
             <DetailImage source={data.report_attachment} />
             <DetailValue label="Batas Waktu Pengerjaan" value={data.due_date} />
-
             <Text>Detail Pelapor</Text>
             <DetailValue label="Nama" value={data.created_by.profile.name} />
             <DetailValue
@@ -188,53 +199,7 @@ const HazardReportDetails = ({route}) => {
             />
             <Text>Tindakan Penanganan</Text>
 
-            {data?.hazard_action ? (
-              <>
-                <DetailValue
-                  label="Person In Charge"
-                  value={data.hazard_action.pic.profile.name}
-                />
-                <DetailValue
-                  label="Nomer Registrasi Pekerja"
-                  value={data.hazard_action.pic.employee.nip}
-                />
-                <DetailValue
-                  label="Jabatan"
-                  value={data.hazard_action.pic.employee.position.position}
-                />
-              </>
-            ) : (
-              <Controller
-                name="pic"
-                control={control}
-                render={({field: {onChange, value}}) => (
-                  <SelectField
-                    error={errors?.pic}
-                    label="Person in Charge"
-                    placeholder="Pilih Person in Charge"
-                    onChangeSearch={data => {
-                      if (data.length > 2) {
-                        setSearch(data);
-                      } else {
-                        setSearch('');
-                      }
-                    }}
-                    option={dataPic}
-                    labelField="name"
-                    additionalLabel="position"
-                    valueField="id"
-                    searchPlaceHolder="ketikkan minimal 3 karakter untuk mencari"
-                    onChange={data => {
-                      onChange(data.id);
-                      setValue('pic', data.id);
-                    }}
-                    value={value}
-                  />
-                )}
-              />
-            )}
-
-            {data?.status == 'CLOSED' && (
+            {data?.status == 'CLOSED' ? (
               <>
                 <Text>Tindakan Perbaikan</Text>
                 <DetailValue
@@ -253,16 +218,76 @@ const HazardReportDetails = ({route}) => {
                   value={data.hazard_action.notes}
                 />
               </>
+            ) : (
+              <>
+                <Controller
+                  name="action_status"
+                  control={control}
+                  render={({field: {onChange, value}}) => (
+                    <SelectField
+                      error={errors?.action_status}
+                      label="Status Perbaikan"
+                      placeholder="Pilih Status perbaikan"
+                      option={[
+                        {id: 'DONE', name: 'SELESAI'},
+                        {id: 'PENDING', name: 'PENDING'},
+                      ]}
+                      labelField="name"
+                      valueField="id"
+                      onChange={data => {
+                        onChange(data.id);
+                        setValue('action_status', data.id);
+                      }}
+                      value={value}
+                    />
+                  )}
+                />
+                <Controller
+                  name="action_note"
+                  control={control}
+                  render={({field: {onChange, value}}) => (
+                    <Input
+                      placeholder="Catatan Perbaikan"
+                      keyboardType="default"
+                      multiline={true}
+                      numberOfLines={5}
+                      value={value}
+                      onChangeText={onChange}
+                      inputStyle={{height: 70}}
+                      maxLength={100}
+                      title="Catatan Perbaikan"
+                      error={errors?.action_note}
+                    />
+                  )}
+                />
+                <Controller
+                  name="action_attachment"
+                  control={control}
+                  render={({field: {onChange, value}}) => (
+                    <ImagePicker
+                      error={errors?.action_attachment}
+                      label="Foto Perbaikan"
+                      value={value}
+                      crop={true}
+                      type="both"
+                      onChange={data => {
+                        onChange(data);
+                      }}
+                      onDelete={() => onChange(undefined)}
+                    />
+                  )}
+                />
+              </>
             )}
           </VStack>
         </ScrollView>
-        {!data?.hazard_action && (
+        {data?.status != 'CLOSED' && (
           <VStack className="py-5 pb-8">
             <Button onPress={handleSubmit(sendingData)}>
               <Text
-                className="text-white"
+                className="text-white capitalize"
                 style={{fontFamily: 'OpenSans-Bold'}}>
-                TENTUKAN PIC
+                Update status perbaikan
               </Text>
             </Button>
           </VStack>
@@ -272,4 +297,4 @@ const HazardReportDetails = ({route}) => {
   );
 };
 
-export default HazardReportDetails;
+export default HazardActionDetails;

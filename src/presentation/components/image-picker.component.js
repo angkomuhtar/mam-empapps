@@ -1,4 +1,11 @@
-import {View, Text, Image, PermissionsAndroid} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  PermissionsAndroid,
+  TouchableOpacity,
+  Modal,
+} from 'react-native';
 import React, {useState} from 'react';
 import {HStack, Pressable, VStack} from 'native-base';
 // import {launchImageLibrary} from 'react-native-image-picker';
@@ -54,52 +61,108 @@ const ImagePicker = ({
   type = 'library',
   error = null,
   label = 'Lampiran File',
+  crop = false,
 }) => {
   const [selectedImage, setSelectedImage] = useState('');
+  const [visible, setVisible] = useState(false);
 
-  const openImagePicker = () => {
+  const openImagePicker = pickType => {
     const permission = requestPermission();
     permission.then(() => {
       const option = {
         width: 800,
-        height: 1200,
+        height: 1000,
         cropping: true,
-        // cropperCircleOverlay: true,
+        freeStyleCropEnabled: crop,
       };
 
-      if (type == 'library') {
-        Picker.openPicker(option).then(response => {
-          if (response.didCancel) {
-            console.log('User cancelled image picker');
-          } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-          } else if (response.customButton) {
-            console.log('User tapped custom button: ', response.customButton);
-          } else {
-            console.log(response);
-            onChange(response);
-            // setSelectedImage(response.path);
-          }
-        });
-      } else if (type == 'camera') {
-        Picker.openCamera(option).then(response => {
-          if (response.didCancel) {
-            console.log('User cancelled image picker');
-          } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-          } else if (response.customButton) {
-            console.log('User tapped custom button: ', response.customButton);
-          } else {
-            console.log({response});
-            onChange(response);
-            // setSelectedImage(response.path);
-          }
-        });
+      if (pickType == 'library') {
+        Picker.openPicker(option)
+          .then(response => {
+            if (response.didCancel) {
+              console.log('User cancelled image picker');
+            } else if (response.error) {
+              console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+              console.log('User tapped custom button: ', response.customButton);
+            } else {
+              onChange(response);
+            }
+          })
+          .catch(res => {
+            console.log(res);
+          })
+          .finally(() => {
+            setVisible(false);
+          });
+      } else if (pickType == 'camera') {
+        Picker.openCamera(option)
+          .then(response => {
+            if (response.didCancel) {
+              console.log('User cancelled image picker');
+            } else if (response.error) {
+              console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+              console.log('User tapped custom button: ', response.customButton);
+            } else {
+              onChange(response);
+            }
+          })
+          .catch(res => {
+            console.log(res);
+          })
+          .finally(() => {
+            setVisible(false);
+          });
       }
     });
   };
   return (
     <View className="flex-1">
+      <Modal transparent={true} visible={visible} animationType="fade">
+        <VStack className="absolute h-screen w-full bg-black/50 items-center justify-center">
+          <VStack className="bg-white px-3 py-4 rounded-xl w-3/5 relative">
+            <TouchableOpacity
+              className="absolute z-20 top-2 right-2"
+              onPress={() => {
+                setVisible(false);
+              }}>
+              <Icon name="close" size={25} color={'rgb(251, 54, 64)'} />
+            </TouchableOpacity>
+            <Text
+              style={{fontFamily: 'Inter-SemiBold'}}
+              className="text-[12px] text-center text-primary-950 uppercase">
+              Pilih Sumber Gambar
+            </Text>
+            <HStack className="pt-2 space-x-3 justify-center">
+              <TouchableOpacity
+                onPress={() => {
+                  openImagePicker('camera');
+                }}
+                className="p-2 items-center">
+                <Icon name="camera" size={30} color={'rgb(251, 54, 64)'} />
+                <Text
+                  style={{fontFamily: 'OpenSans-Regular'}}
+                  className="text-primary-500 text-xs pt-1">
+                  Camera
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  openImagePicker('library');
+                }}
+                className="p-2 items-center">
+                <Icon name="images" size={30} color={'rgb(251, 54, 64)'} />
+                <Text
+                  style={{fontFamily: 'OpenSans-Regular'}}
+                  className="text-primary-500 text-xs pt-1">
+                  Library
+                </Text>
+              </TouchableOpacity>
+            </HStack>
+          </VStack>
+        </VStack>
+      </Modal>
       <HStack className="border border-primary-100 bg-white py-2 px-4 rounded-md">
         <VStack className="flex-1">
           <Text
@@ -112,14 +175,18 @@ const ImagePicker = ({
               <View className="relative">
                 <Image
                   source={{uri: value.path}}
-                  style={{flex: 1}}
+                  style={{
+                    width: 250,
+                    height: 250,
+                  }}
                   resizeMode="contain"
-                  className="w-40 aspect-[3/5]"
                 />
                 <HStack space={5} className="justify-center items-center mt-5">
                   <Pressable
                     className="border border-primary-500 bg-white p-2 rounded-full"
-                    onPress={openImagePicker}>
+                    onPress={() => {
+                      type == 'both' ? setVisible(true) : openImagePicker(type);
+                    }}>
                     <Icon
                       name="camera-reverse-sharp"
                       size={20}
@@ -137,7 +204,10 @@ const ImagePicker = ({
                 </HStack>
               </View>
             ) : (
-              <Pressable onPress={openImagePicker}>
+              <Pressable
+                onPress={() => {
+                  type == 'both' ? setVisible(true) : openImagePicker(type);
+                }}>
                 <Icon name="camera" size={35} color={'rgb(73, 6, 9)'} />
               </Pressable>
             )}

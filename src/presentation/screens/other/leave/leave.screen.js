@@ -39,25 +39,8 @@ const Leave = () => {
   return (
     <Layout>
       {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-      <View className="px-5">
-        <Header
-          back={
-            <HStack alignItems={'center'} space={3}>
-              <TouchableOpacity onPress={() => goBack()}>
-                <Icon
-                  name="chevron-back-outline"
-                  color={'rgb(73, 6, 9)'}
-                  size={30}
-                />
-              </TouchableOpacity>
-              <Text
-                className="text-base text-primary-950"
-                style={{fontFamily: 'OpenSans-Bold'}}>
-                Cuti dan Ijin
-              </Text>
-            </HStack>
-          }
-        />
+      <View className="px-5 pt-2">
+        <Header back={true} title="Cuti dan izin" />
       </View>
       <Tab.Navigator
         screenOptions={{

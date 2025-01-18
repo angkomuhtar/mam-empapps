@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {navigate, push} from '../utils/RootNavigation';
 
-const Button = ({icon, onPress, title}) => (
+const Button = ({icon, onPress, title, pills = 0}) => (
   <Pressable onPress={onPress}>
     <HStack
       className="px-3 py-2 bg-white shadow-sm shadow-primary-950/20 items-center rounded-md justify-between"
@@ -19,13 +19,15 @@ const Button = ({icon, onPress, title}) => (
         {title}
       </Text>
       <HStack className="items-center">
-        <View className="bg-primary-500 rounded-full px-2 py-1 w-11 items-center justify-center">
-          <Text
-            className="text-white text-xs"
-            style={{fontFamily: 'Inter-Bold'}}>
-            9
-          </Text>
-        </View>
+        {pills > 0 && (
+          <View className="bg-primary-500 rounded-full px-2 py-1 w-11 items-center justify-center">
+            <Text
+              className="text-white text-xs"
+              style={{fontFamily: 'Inter-Bold'}}>
+              {pills}
+            </Text>
+          </View>
+        )}
         <Entypo name="chevron-right" size={25} color={'rgb(73, 6, 9)'} />
       </HStack>
     </HStack>

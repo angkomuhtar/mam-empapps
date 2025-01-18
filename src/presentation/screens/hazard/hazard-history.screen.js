@@ -98,18 +98,18 @@ const HazardHistory = ({navigation}) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setStatus('done');
+                setStatus('closed');
                 setPage(1);
               }}>
               <View
                 className={`py-2 px-4 border border-primary-100 rounded-full ${
-                  status === 'done' && 'bg-primary-500'
+                  status === 'closed' && 'bg-primary-500'
                 }`}>
                 <Text
                   style={{
                     fontFamily: 'Inter-SemiBold',
                     fontSize: 11,
-                    color: status == 'done' ? 'white' : 'black',
+                    color: status == 'closed' ? 'white' : 'black',
                   }}>
                   Done
                 </Text>

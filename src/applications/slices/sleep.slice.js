@@ -3,11 +3,13 @@ import {apiSlice} from './api.slice';
 export const sleepApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getSleep: builder.query({
-      query: data => ({
-        url: '/sleep',
+      query: ({page}) => ({
+        url: '/sleep?page=' + page,
         method: 'GET',
-        body: data,
       }),
+      transformResponse: responseData => {
+        return responseData.data;
+      },
       transformErrorResponse: responseData => {
         return responseData.data;
       },

@@ -15,6 +15,8 @@ import ApprovalTab from './approval-tab.stack';
 import HazardDetails from '../../presentation/screens/hazard/hazarad-detail.screen';
 import HazardReport from './hazard-report.stack';
 import HazardReportDetails from '../../presentation/screens/request-and-report/hazard-report/hazarad-report-detail.screen';
+import HazardAction from './hazard-action.stack';
+import HazardActionDetails from '../../presentation/screens/hazard-action/hazard-action-details.screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +40,11 @@ const HomeBase = () => {
       <Stack.Screen
         component={HazardReportDetails}
         name="hazard-report-details"
+      />
+      <Stack.Screen component={HazardAction} name="hazard-action" />
+      <Stack.Screen
+        component={HazardActionDetails}
+        name="hazard-action-details"
       />
 
       {/* settings */}

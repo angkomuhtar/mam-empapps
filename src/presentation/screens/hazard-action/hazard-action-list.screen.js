@@ -6,24 +6,24 @@ import {
   RefreshControl,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {VStack} from 'native-base';
+import {Fab, HStack, VStack} from 'native-base';
 import Empty from '@components/empty.comnponent';
 import Loading from '@components/loading.component';
 import {
-  HazardCard,
+  HazardActionCard,
   HazardReportCard,
-} from '../../../components/hazard-components';
-import {navigate} from '../../../../applications/utils/RootNavigation';
-import {useGetHazardReportQuery} from '../../../../applications/slices/hazard.slice';
+} from '../../components/hazard-components';
+import {useGetHazardActionQuery} from '@slices/hazard.slice';
+import {navigate} from '../../../applications/utils/RootNavigation';
 
-const HazardReportOpen = ({navigation, route}) => {
-  const status = route.params?.status;
+const HazardActionList = ({navigation, route}) => {
+  const {status} = route.params;
   const [page, setPage] = useState(1);
-  const {data, isLoading} = useGetHazardReportQuery({page, status});
+  const {data, isLoading} = useGetHazardActionQuery({page, status});
   const [item, setItem] = useState([]);
-
   useEffect(() => {
     setPage(1);
+    console.log('focus');
   }, [navigation]);
 
   useEffect(() => {
@@ -43,14 +43,9 @@ const HazardReportOpen = ({navigation, route}) => {
           data={item}
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => (
-            <HazardReportCard
+            <HazardActionCard
               data={item}
-              onPress={() =>
-                navigate('hazard-report-details', {
-                  id: item.id,
-                  type: 'reviewer',
-                })
-              }
+              onPress={() => navigate('hazard-action-details', {id: item.id})}
             />
           )}
           ListEmptyComponent={<Empty />}
@@ -62,11 +57,7 @@ const HazardReportOpen = ({navigation, route}) => {
           }
           ItemSeparatorComponent={() => <View className="h-3"></View>}
           onEndReachedThreshold={0.3}
-          onEndReached={() => {
-            if (data?.total && item.length <= data?.total) {
-              setPage(page + 1);
-            }
-          }}
+          onEndReached={() => setPage(page + 1)}
           ListFooterComponent={() => (
             <View className="min-h-10">
               {item.length > 6 && item.length >= data?.total && (
@@ -80,4 +71,4 @@ const HazardReportOpen = ({navigation, route}) => {
   );
 };
 
-export default HazardReportOpen;
+export default HazardActionList;

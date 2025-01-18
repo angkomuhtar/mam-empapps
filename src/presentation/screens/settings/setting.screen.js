@@ -19,6 +19,7 @@ import Loading from '../../components/loading.component';
 import {setLogin} from '../../../applications/slices/login.slice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {checkImage} from '../../../applications/utils/utils';
+import {apiSlice} from '../../../applications/slices/api.slice';
 
 const ButtonB = ({text, icon, onPress}) => (
   <TouchableOpacity
@@ -92,6 +93,7 @@ const Setting = () => {
     const LogOutEvent = async () => {
       await AsyncStorage.removeItem('@token');
       dispatch(setLogin(false));
+      dispatch(apiSlice.util.resetApiState());
     };
 
     if (logOutTrue) {

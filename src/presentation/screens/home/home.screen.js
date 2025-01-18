@@ -305,7 +305,7 @@ const Home = ({navigation}) => {
                   <Text
                     className="text-xs text-black"
                     style={{fontFamily: 'OpenSans-Light'}}>
-                    Ada <Text style={{fontFamily: 'OpenSans-Bold'}}>100 </Text>
+                    {/* Ada <Text style={{fontFamily: 'OpenSans-Bold'}}>100 </Text> */}
                     Laporan dan Pengajuan yang di tujukan kepada anda untuk di
                     tindak lanjuti
                   </Text>
