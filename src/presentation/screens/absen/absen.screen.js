@@ -382,7 +382,7 @@ const Absen = ({navigation}) => {
                         style={{color: '#fff'}}
                         startIcon={
                           data.name.includes('Day') ? (
-                            <Icon name="sunny-sharp" size={20} />
+                            <Icon name="sunny-sharp" size={20} color={'#000'} />
                           ) : (
                             <Icon name="moon-sharp" size={20} color={'#fff'} />
                           )
@@ -409,7 +409,7 @@ const Absen = ({navigation}) => {
                 <Text
                   className="text-xs text-primary-950 uppercase"
                   style={{fontFamily: 'Inter-Bold'}}>
-                  Pulang
+                  Masuk
                 </Text>
                 <Text className="text-2xl font-bold font-sans text-primary-700 text-center mb-2">
                   {today?.clock_in

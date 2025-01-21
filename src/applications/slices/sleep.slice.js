@@ -13,7 +13,7 @@ export const sleepApiSlice = apiSlice.injectEndpoints({
       transformErrorResponse: responseData => {
         return responseData.data;
       },
-      invalidatesTags: ['Sleep', 'Today'],
+      providesTags: ['Sleep'],
     }),
     setSleep: builder.mutation({
       query: data => ({

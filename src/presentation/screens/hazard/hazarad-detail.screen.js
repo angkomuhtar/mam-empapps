@@ -24,7 +24,6 @@ const HazardDetails = ({route}) => {
   });
 
   const {data, isLoading} = useGetHazardDetailsQuery(id);
-  console.log(id, type);
 
   if (isLoading) return <Loading />;
   return (
@@ -159,7 +158,7 @@ const HazardDetails = ({route}) => {
                 />
                 <DetailValue
                   label="Keterangan"
-                  value={data.hazard_action.notes}
+                  value={data?.hazard_action?.notes ?? '-'}
                 />
               </>
             )}

@@ -1,3 +1,4 @@
+import {Hazard} from '../navigations';
 import {apiSlice} from './api.slice';
 
 export const hazardApiSlice = apiSlice.injectEndpoints({
@@ -10,28 +11,6 @@ export const hazardApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ['Hazard'],
     }),
-    getHazardReport: builder.query({
-      query: ({page = 1, status = ''}) =>
-        `/hazard/report?page=${page}&status=${status}`,
-      transformResponse: responseData => {
-        return responseData.data;
-      },
-      providesTags: ['HazardRequest'],
-    }),
-    getHazardDetails: builder.query({
-      query: id => `/hazard/${id}`,
-      transformResponse: responseData => {
-        return responseData.data;
-      },
-    }),
-    getHazardAction: builder.query({
-      query: ({page = 1, status = ''}) =>
-        `/hazard/action?page=${page}&status=${status}`,
-      transformResponse: responseData => {
-        return responseData.data;
-      },
-      providesTags: ['HazardAction'],
-    }),
     setHazard: builder.mutation({
       query: data => ({
         url: '/hazard',
@@ -43,6 +22,28 @@ export const hazardApiSlice = apiSlice.injectEndpoints({
       },
       invalidatesTags: ['Hazard'],
     }),
+    getHazardDetails: builder.query({
+      query: id => `/hazard/${id}`,
+      transformResponse: responseData => {
+        return responseData.data;
+      },
+    }),
+
+    getHazardReport: builder.query({
+      query: ({page = 1, status = ''}) =>
+        `/hazard/report?page=${page}&status=${status}`,
+      transformResponse: responseData => {
+        return responseData.data;
+      },
+      providesTags: ['HazardReport'],
+    }),
+    getHazardReportDetails: builder.query({
+      query: id => `/hazard/${id}`,
+      transformResponse: responseData => {
+        return responseData.data;
+      },
+      providesTags: ['HazardReportDetails'],
+    }),
     setPIC: builder.mutation({
       query: ({id, body}) => ({
         url: `/hazard/${id}/pic`,
@@ -52,7 +53,23 @@ export const hazardApiSlice = apiSlice.injectEndpoints({
       transformErrorResponse: responseData => {
         return responseData.data;
       },
-      invalidatesTags: ['HazardRequest'],
+      invalidatesTags: ['HazardReport', 'HazardReportDetails'],
+    }),
+
+    getHazardAction: builder.query({
+      query: ({page = 1, status = ''}) =>
+        `/hazard/action?page=${page}&status=${status}`,
+      transformResponse: responseData => {
+        return responseData.data;
+      },
+      providesTags: ['HazardAction'],
+    }),
+    getHazardActionDetails: builder.query({
+      query: id => `/hazard/${id}`,
+      transformResponse: responseData => {
+        return responseData.data;
+      },
+      providesTags: ['HazardActionDetails'],
     }),
     setAction: builder.mutation({
       query: body => ({
@@ -63,7 +80,7 @@ export const hazardApiSlice = apiSlice.injectEndpoints({
       transformErrorResponse: responseData => {
         return responseData.data;
       },
-      invalidatesTags: ['HazardAction'],
+      invalidatesTags: ['HazardAction', 'HazardActionDetails'],
     }),
   }),
 });
@@ -73,6 +90,8 @@ export const {
   useLazyGetHazardHistoryQuery,
   useSetHazardMutation,
   useGetHazardDetailsQuery,
+  useGetHazardActionDetailsQuery,
+  useGetHazardReportDetailsQuery,
   useGetHazardReportQuery,
   useSetPICMutation,
   useGetHazardActionQuery,

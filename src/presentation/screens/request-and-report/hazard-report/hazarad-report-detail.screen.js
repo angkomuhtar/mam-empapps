@@ -7,7 +7,7 @@ import DetailImage from '@components/detail-image.component';
 import Layout from '@components/layout.component';
 import Loading from '@components/loading.component';
 import {
-  useGetHazardDetailsQuery,
+  useGetHazardReportDetailsQuery,
   useSetPICMutation,
 } from '@slices/hazard.slice';
 import {Controller, useForm} from 'react-hook-form';
@@ -57,7 +57,7 @@ const HazardReportDetails = ({route}) => {
     ),
   });
 
-  const {data, isLoading} = useGetHazardDetailsQuery(id);
+  const {data, isLoading} = useGetHazardReportDetailsQuery(id);
   const [search, setSearch] = useState('');
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -250,7 +250,7 @@ const HazardReportDetails = ({route}) => {
                 />
                 <DetailValue
                   label="Keterangan"
-                  value={data.hazard_action.notes}
+                  value={data?.hazard_action?.notes ?? '-'}
                 />
               </>
             )}

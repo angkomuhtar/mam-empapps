@@ -68,16 +68,17 @@ const HazardAdd = () => {
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         if (key === 'report_attachment') {
-          console.log(
-            'append form',
-            data.report_attachment.path,
-            data.report_attachment.mime,
-            data.report_attachment.filename,
-          );
+          var nama = data.report_attachment.path.split('/');
+
+          // console.log('append form', {
+          //   uri: data.attachment.path,
+          //   type: data.attachment.mime, // or photo.type
+          //   name: nama[nama.length - 1],
+          // });
           form.append('report_attachment', {
             uri: data.report_attachment.path,
             type: data.report_attachment.mime, // or photo.type
-            name: data.report_attachment.filename,
+            name: nama[nama.length - 1],
           });
         } else {
           form.append(key, value);
@@ -331,6 +332,8 @@ const HazardAdd = () => {
                     label="Foto Temuan"
                     value={value}
                     onChange={data => {
+                      console.log('data', data);
+
                       onChange(data);
                     }}
                     onDelete={() => onChange(undefined)}

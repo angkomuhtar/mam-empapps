@@ -1,4 +1,4 @@
-import {Text, ScrollView, Dimensions, View} from 'react-native';
+import {Text, ScrollView, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Button, VStack} from 'native-base';
 import Header from '@components/navigation/header.component';
@@ -6,16 +6,11 @@ import DetailValue from '@components/detail-value.component';
 import DetailImage from '@components/detail-image.component';
 import Layout from '@components/layout.component';
 import Loading from '@components/loading.component';
-import {
-  useGetHazardDetailsQuery,
-  useSetPICMutation,
-} from '@slices/hazard.slice';
+import {useGetHazardActionDetailsQuery} from '@slices/hazard.slice';
 import {Controller, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import SelectField from '@components/select.component';
 import {z} from 'zod';
-import {useSearchPicQuery} from '@slices/user.slice';
-
 import Alert from '@components/alert.component';
 import ErrorAlert from '@components/alert.component';
 import Input from '../../components/input.component';
@@ -81,7 +76,7 @@ const HazardActionDetails = ({route}) => {
     ),
   });
 
-  const {data, isLoading} = useGetHazardDetailsQuery(id);
+  const {data, isLoading} = useGetHazardActionDetailsQuery(id);
   const [search, setSearch] = useState('');
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -90,17 +85,20 @@ const HazardActionDetails = ({route}) => {
     {postResult, isLoading: postLoading, error: postError, isError, isSuccess},
   ] = useSetActionMutation();
 
+  console.log(data);
+
   const sendingData = e => {
     // postPIC({id, body: e});
     const formdata = new FormData();
     formdata.append('action_status', e.action_status);
-    formdata.append('action_note', e.action_note);
+    formdata.append('action_note', e?.action_note ?? '');
+    var nama = e.action_attachment.path.split('/');
     formdata.append('action_attachment', {
       uri: e.action_attachment.path,
       type: e.action_attachment.mime,
-      name: e.action_attachment.filename,
+      name: nama[nama.length - 1],
     });
-    formdata.append('id_action', data.hazard_action.id);
+    formdata.append('id_action', data?.hazard_action?.id);
     postAction(formdata);
   };
 
@@ -197,7 +195,6 @@ const HazardActionDetails = ({route}) => {
               label="Departement"
               value={data.created_by.employee.division?.division}
             />
-            <Text>Tindakan Penanganan</Text>
 
             {data?.status == 'CLOSED' ? (
               <>
@@ -215,11 +212,12 @@ const HazardActionDetails = ({route}) => {
                 />
                 <DetailValue
                   label="Keterangan"
-                  value={data.hazard_action.notes}
+                  value={data.hazard_action?.notes ?? '-'}
                 />
               </>
             ) : (
               <>
+                <Text>Tindakan Penanganan</Text>
                 <Controller
                   name="action_status"
                   control={control}

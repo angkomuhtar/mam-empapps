@@ -64,6 +64,12 @@ const AddSleep = ({navigation}) => {
       type: data.attachment.mime, // or photo.type
       name: nama[nama.length - 1],
     });
+    // console.log('attachment', {
+    //   uri: data.attachment.path,
+    //   type: data.attachment.mime, // or photo.type
+    //   name: nama[nama.length - 1],
+    // });
+
     let end = moment().format('Y-MM-DD 06:00:00');
     let start = moment(end)
       .subtract({hours: data.jam, minutes: data.menit})

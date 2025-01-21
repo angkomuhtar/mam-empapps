@@ -1,4 +1,10 @@
-import {View, Text, Platform, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from 'react-native';
 import React from 'react';
 import {HStack, Select, VStack} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -20,19 +26,6 @@ const SelectField = ({
   onChangeSearch = false,
   searchPlaceHolder = 'Search',
 }) => {
-  const renderItem = item => (
-    <HStack className="py-3 px-4 justify-between items-center">
-      <Text
-        className="text-sm text-primary-950"
-        style={{fontFamily: 'Inter-Medium'}}>
-        {item[labelField]}
-      </Text>
-      {item[valueField] === value && (
-        <Icon color="black" name="checkmark-done" size={20} />
-      )}
-    </HStack>
-  );
-
   return (
     <>
       <HStack className="border border-primary-100 rounded-md bg-white">
@@ -110,6 +103,7 @@ const SelectField = ({
                       <View style={{flex: 1}}>
                         <Text
                           style={{
+                            color: '#000',
                             fontFamily: 'Inter-SemiBold',
                             fontSize: 14,
                           }}>
@@ -117,6 +111,7 @@ const SelectField = ({
                         </Text>
                         <Text
                           style={{
+                            color: '#000',
                             fontFamily: 'Inter-Regular',
                             fontSize: 12,
                           }}>
@@ -127,6 +122,7 @@ const SelectField = ({
                       <Text
                         style={{
                           flex: 1,
+                          color: '#000',
                         }}>
                         {item[labelField]}
                       </Text>
