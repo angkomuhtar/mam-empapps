@@ -1,10 +1,10 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import Layout from '../../presentation/components/layout.component';
-import Header from '../../presentation/components/navigation/header.component';
+import Layout from '@components/layout.component';
+import Header from '@components/navigation/header.component';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import TabBar from '../../presentation/components/navigation/tab-bar.component';
-import HazardReportOpen from '../../presentation/screens/request-and-report/hazard-report/hazard-report-open.screen';
+import TabBar from '@components/navigation/tab-bar.component';
+import HazardReportOpen from '@screens/request-and-approval/hazard/hazard-report-list.screen';
 
 const Tab = createMaterialTopTabNavigator();
 

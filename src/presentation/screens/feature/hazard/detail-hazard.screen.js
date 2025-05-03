@@ -9,7 +9,7 @@ import Loading from '@components/loading.component';
 import {useGetHazardDetailsQuery} from '@slices/hazard.slice';
 import moment from 'moment';
 
-const HazardDetails = ({route}) => {
+const DetailHazard = ({route}) => {
   const {id, type} = route.params;
   const [alert, setAlert] = useState({
     show: false,
@@ -169,4 +169,4 @@ const HazardDetails = ({route}) => {
   );
 };
 
-export default HazardDetails;
+export default DetailHazard;

@@ -13,19 +13,19 @@ import ImagePicker from '@components/image-picker.component';
 import Loading from '@components/loading.component';
 import Alert from '@components/alert.component';
 import ErrorAlert from '@components/alert.component';
-import Layout from '../../components/layout.component';
+import Layout from '@components/layout.component';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {hazardSchema} from '../../../applications/schema/hazard.schema';
+import {hazardSchema} from '../../../../applications/schema/hazard.schema';
 import {
   useGetCompanyQuery,
   useGetHazardLocationQuery,
   useLazyGetDivisionQuery,
   useLazyGetProjectQuery,
-} from '../../../applications/slices/master.slice';
-import {useSetHazardMutation} from '../../../applications/slices/hazard.slice';
-import {navigate} from '../../../applications/utils/RootNavigation';
+} from '@slices/master.slice';
+import {useSetHazardMutation} from '@slices/hazard.slice';
+import {navigate} from '@utils/RootNavigation';
 
-const HazardAdd = () => {
+const AddHazard = () => {
   const [alert, setAlert] = useState({
     show: false,
     type: 'error',
@@ -69,12 +69,6 @@ const HazardAdd = () => {
       if (value !== undefined && value !== null) {
         if (key === 'report_attachment') {
           var nama = data.report_attachment.path.split('/');
-
-          // console.log('append form', {
-          //   uri: data.attachment.path,
-          //   type: data.attachment.mime, // or photo.type
-          //   name: nama[nama.length - 1],
-          // });
           form.append('report_attachment', {
             uri: data.report_attachment.path,
             type: data.report_attachment.mime, // or photo.type
@@ -200,7 +194,7 @@ const HazardAdd = () => {
               <Text
                 className="text-sm text-black"
                 style={{fontFamily: 'OpenSans-SemiBold'}}>
-                Departement Terkait
+                Departement Penangggung Jawab
               </Text>
               <Controller
                 name="company_id"
@@ -372,4 +366,4 @@ const HazardAdd = () => {
   );
 };
 
-export default HazardAdd;
+export default AddHazard;

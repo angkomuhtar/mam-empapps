@@ -185,7 +185,7 @@ export const HazardReportCard = ({data, onPress}) => {
 export const HazardActionCard = ({data, onPress}) => {
   return (
     <TouchableOpacity
-      className="py-2 px-4 border border-primary-100 rounded-lg"
+      className="py-2 px-4 border border-primary-100 rounded-lg bg-white"
       onPress={onPress}>
       <HStack className="py-1.5 items-center justify-between">
         <View className="flex-1">

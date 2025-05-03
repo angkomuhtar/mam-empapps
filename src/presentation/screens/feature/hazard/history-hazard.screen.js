@@ -9,11 +9,11 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Fab, HStack, VStack} from 'native-base';
 import Empty from '@components/empty.comnponent';
 import Loading from '@components/loading.component';
-import {HazardCard} from '../../components/hazard-components';
+import {HazardCard} from '@components/hazard-components';
 import {useGetHazardHistoryQuery} from '@slices/hazard.slice';
-import {navigate} from '../../../applications/utils/RootNavigation';
+import {navigate} from '@utils/RootNavigation';
 
-const HazardHistory = ({navigation}) => {
+const HistoryHazard = ({navigation}) => {
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState('');
   const {data, isLoading} = useGetHazardHistoryQuery({page, status});
@@ -154,4 +154,4 @@ const HazardHistory = ({navigation}) => {
   );
 };
 
-export default HazardHistory;
+export default HistoryHazard;

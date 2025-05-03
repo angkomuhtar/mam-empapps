@@ -21,11 +21,10 @@ export const listMenu = [
     onpress: () => navigate('sleep'),
   },
   {
-    label: 'laporan Bahaya',
+    label: 'Laporan Bahaya',
     source: require('@images/features/list-hazard.png'),
     onpress: () => navigate('hazard'),
   },
-
   {
     label: 'Penanganan Bahaya',
     source: require('@images/features/penanganan-bahaya.png'),
@@ -35,6 +34,16 @@ export const listMenu = [
     label: 'Cuti & Izin',
     source: require('@images/features/leave.png'),
     onpress: () => navigate('leave'),
+  },
+  {
+    label: 'Kartu Inspeksi',
+    source: require('@images/features/inspection.png'),
+    onpress: () => navigate('inspection'),
+  },
+  {
+    label: 'e-PKWT',
+    source: require('@images/features/pkwt.png'),
+    onpress: () => navigate('pkwt'),
   },
   {
     label: 'Menu Lainnya',

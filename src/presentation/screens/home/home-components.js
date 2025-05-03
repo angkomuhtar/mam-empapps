@@ -49,7 +49,7 @@ export const Menu = ({label, source, onpress, num, index}) => {
             />
           </Stack>
           <Text
-            className="text-center text-[10px] leading-1 text-black capitalize"
+            className="text-center text-[10px] leading-1 text-black"
             style={{fontFamily: 'OpenSans-Bold'}}>
             {label}
           </Text>

@@ -1,10 +1,4 @@
-import {createEntityAdapter} from '@reduxjs/toolkit';
 import {apiSlice} from './api.slice';
-import {useAsyncStorage} from '@react-native-async-storage/async-storage';
-
-// const usersAdapter = createEntityAdapter();
-
-// const initialState = usersAdapter.getInitialState();
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -20,15 +14,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       transformResponse: responseData => {
         return responseData.user;
       },
-      // providesTags: ['Users'],
     }),
     getAppVersion: builder.query({
       query: device => '/version?device=' + device,
       transformResponse: responseData => {
-        console.log(responseData.data);
         return responseData.data;
       },
-      // providesTags: ['Users'],
     }),
     changePass: builder.mutation({
       query: body => ({

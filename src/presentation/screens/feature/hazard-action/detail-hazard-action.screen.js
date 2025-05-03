@@ -13,13 +13,13 @@ import SelectField from '@components/select.component';
 import {z} from 'zod';
 import Alert from '@components/alert.component';
 import ErrorAlert from '@components/alert.component';
-import Input from '../../components/input.component';
-import ImagePicker from '../../components/image-picker.component';
-import {useSetActionMutation} from '../../../applications/slices/hazard.slice';
-import {navigate} from '../../../applications/utils/RootNavigation';
+import Input from '@components/input.component';
+import ImagePicker from '@components/image-picker.component';
+import {useSetActionMutation} from '@slices/hazard.slice';
+import {navigate} from '@utils/RootNavigation';
 import moment from 'moment';
 
-const HazardActionDetails = ({route}) => {
+const DetailHazardAction = ({route}) => {
   const {id, type} = route.params;
   const [alert, setAlert] = useState({
     show: false,
@@ -295,4 +295,4 @@ const HazardActionDetails = ({route}) => {
   );
 };
 
-export default HazardActionDetails;
+export default DetailHazardAction;

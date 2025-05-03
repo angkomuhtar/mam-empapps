@@ -6,9 +6,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '@screens/home/home.screen';
 import History from '@screens/history/history.screen';
 import Settings from '@screens/settings/setting.screen';
-import Other from '@screens/other/other.screen';
 import Absen from '@screens/absen/absen.screen';
-import TabBottom from '../../presentation/components/navigation/tab-bottom.component';
+import TabBottom from '@components/navigation/tab-bottom.component';
+import News from '@screens/news/news.screen';
 
 const Tab = createBottomTabNavigator();
 const TabHome = () => {
@@ -78,17 +78,17 @@ const TabHome = () => {
         }}
       />
       <Tab.Screen
-        name="others"
-        component={Other}
+        name="news"
+        component={News}
         options={{
-          title: 'Lainnya',
+          title: 'Berita',
           headerShown: false,
           tabBarIcon: ({focused, color, size}) => {
             return (
               <BottomTabButton
                 color={color}
                 text="Izin"
-                icon={focused ? 'ios-apps' : 'ios-apps-outline'}
+                icon={focused ? 'ios-globe' : 'ios-globe-outline'}
               />
             );
           },

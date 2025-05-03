@@ -6,10 +6,8 @@ import {Avatar, HStack, ScrollView, Spinner, VStack} from 'native-base';
 import {useGetProfileQuery} from '@slices/user.slice';
 import {useDispatch} from 'react-redux';
 import Header from '../../components/navigation/header.component';
-import {logout} from '../../../applications/actions/auth.action';
 import ReactNativeVersionInfo from 'react-native-version-info';
 import {navigate} from '../../../applications/utils/RootNavigation';
-// import {launchImageLibrary} from 'react-native-image-picker';
 import {useChangeAvatarMutation} from '../../../applications/slices/user.slice';
 import ImagePicker from 'react-native-image-crop-picker';
 import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
@@ -128,7 +126,7 @@ const Setting = () => {
           console.log('User tapped custom button: ', response.customButton);
         } else {
           // this.setState({response, modalVisible: false});
-          console.log(response);
+          // console.log(response);
           setSelectedFile(response);
         }
       });
@@ -227,7 +225,7 @@ const Setting = () => {
           <Text
             style={{fontFamily: 'Inter-Light'}}
             className="text-xs text-primary-950">
-            {users?.employee?.division.division}
+            {users?.employee?.division?.division}
           </Text>
           <Text
             style={{fontFamily: 'Inter-Light'}}

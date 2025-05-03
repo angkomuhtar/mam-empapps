@@ -22,7 +22,6 @@ export const clockApiSlice = apiSlice.injectEndpoints({
     }),
     getClock: builder.query({
       query: month => {
-        console.log('data from Slice:', month);
         return {
           url: `/clock/${month}/history`,
           // params: '',

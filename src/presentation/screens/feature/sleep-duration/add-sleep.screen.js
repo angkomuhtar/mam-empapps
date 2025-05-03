@@ -4,10 +4,9 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
-  Platform,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Avatar, Button, HStack, VStack} from 'native-base';
+import {HStack, VStack} from 'native-base';
 import Alert from '@components/alert.component';
 import ErrorAlert from '@components/alert.component';
 import Loading from '@components/loading.component';
@@ -15,15 +14,13 @@ import Input from '@components/input.component';
 import {Controller, useForm} from 'react-hook-form';
 import {useSetSleepMutation} from '@slices/sleep.slice';
 import moment from 'moment';
-import Layout from '../../components/layout.component';
-import ImagePicker from '../../components/image-picker.component';
+import ImagePicker from '@components/image-picker.component';
 import {useGetTodayQuery} from '@slices/clock.slice';
 import {useFocusEffect} from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
-import {navigate} from '../../../applications/utils/RootNavigation';
+import {navigate} from '@utils/RootNavigation';
 
 const AddSleep = ({navigation}) => {
-  const height = Dimensions.get('screen').height;
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const {data: today, isLoading: sleepLoad, refetch} = useGetTodayQuery();

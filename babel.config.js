@@ -13,6 +13,8 @@ module.exports = {
           '@navigations': './src/applications/navigations',
           '@stores': './src/stores',
           '@screens': './src/presentation/screens',
+          '@features': './src/presentation/screens/feature',
+          '@requests': './src/presentation/screens/request-and-approval',
           '@utils': './src/applications/utils',
           '@slices': './src/applications/slices',
           '@actions': './src/applications/actions',

@@ -1,15 +1,15 @@
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
 import Layout from '@components/layout.component';
 import {VStack} from 'native-base';
 import Header from '@components/navigation/header.component';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import TabBar from '@components/navigation/tab-bar.component';
-import AddSleep from '@screens/sleep/sleep-add.screen';
-import SleepHistory from '@screens/sleep/sleep-history.screen';
+import AddSleep from './add-sleep.screen';
+import ListSleep from './list-sleep.screen';
 
 const Tab = createMaterialTopTabNavigator();
-const SleepStack = () => {
+const SleepScreen = () => {
   return (
     <Layout>
       <VStack className="px-5 pt-2">
@@ -35,11 +35,11 @@ const SleepStack = () => {
         <Tab.Screen
           name="history-sleep"
           options={{tabBarLabel: 'Riwayat Jam Tidur'}}
-          component={SleepHistory}
+          component={ListSleep}
         />
       </Tab.Navigator>
     </Layout>
   );
 };
 
-export default SleepStack;
+export default SleepScreen;

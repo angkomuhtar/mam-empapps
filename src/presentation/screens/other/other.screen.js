@@ -3,17 +3,16 @@ import React from 'react';
 import Header from '@components/navigation/header.component';
 import {HStack, VStack} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {push} from '@utils/RootNavigation';
 import Layout from '@components/layout.component';
 
 const Tab = createMaterialTopTabNavigator();
 
-const Button = ({icon, onPress, title}) => (
+const Button = ({icon, onPress, title, pills = 0}) => (
   <Pressable onPress={onPress}>
     <HStack
-      className="px-3 py-2 bg-white shadow-sm shadow-primary-950/20 items-center rounded-md"
+      className="px-3 py-2 bg-white border border-primary-950/10 items-center rounded-md justify-between"
       space={3}>
       {icon}
       <Text
@@ -21,7 +20,18 @@ const Button = ({icon, onPress, title}) => (
         style={{fontFamily: 'OpenSans-SemiBold'}}>
         {title}
       </Text>
-      <Entypo name="chevron-right" size={25} color={'rgb(73, 6, 9)'} />
+      <HStack className="items-center">
+        {pills > 0 && (
+          <View className="bg-primary-500 rounded-full px-2 py-1 w-11 items-center justify-center">
+            <Text
+              className="text-white text-xs"
+              style={{fontFamily: 'Inter-Bold'}}>
+              {pills}
+            </Text>
+          </View>
+        )}
+        <Icon name="chevron-forward" size={25} color={'rgb(73, 6, 9)'} />
+      </HStack>
     </HStack>
   </Pressable>
 );
@@ -30,7 +40,7 @@ const Other = () => {
   return (
     <Layout>
       <VStack px={5} className="flex-1">
-        <Header back={false} title="Lainnya" />
+        <Header back={true} title="Lainnya" />
         <ScrollView showsVerticalScrollIndicator={false}>
           <VStack space={3} className="space-y-3">
             <Button

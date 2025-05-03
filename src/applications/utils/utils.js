@@ -8,7 +8,6 @@ export const cDuration = (start, end) => {
     et = end ? moment(end, 'YYYY-MM-DD HH:mm:ss') : moment();
 
   if (start == null) return '--:-- --';
-  console.log(st, et);
 
   mins = moment(et).diff(st, 'minutes');
 

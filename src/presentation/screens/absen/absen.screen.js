@@ -116,8 +116,6 @@ const Absen = ({navigation}) => {
     });
   };
 
-  console.log('data log : ', clockReturn);
-
   let version = getVersion();
   const takeAbsens = async type => {
     console.log('type :', type);
@@ -272,19 +270,21 @@ const Absen = ({navigation}) => {
   const CheckIn = async ({type = null}) => {
     if (Platform.OS == 'android') {
       let result = await RNMockLocationDetector.checkMockLocationProvider();
-      if (result) {
-        setAlert({
-          show: true,
-          type: 'danger',
-          title: 'Oops, Tidak di izinkan.?',
-          message: 'Anda berada di luar lokasi',
-          onOK: () => {
-            setAlert({show: false});
-          },
-        });
-      } else {
-        takeAbsens(type);
-      }
+      console.log('result', result);
+
+      // if (result) {
+      //   setAlert({
+      //     show: true,
+      //     type: 'danger',
+      //     title: 'Oops, Tidak di izinkan.?',
+      //     message: 'Anda berada di luar lokasi',
+      //     onOK: () => {
+      //       setAlert({show: false});
+      //     },
+      //   });
+      // } else {
+      //   takeAbsens(type);
+      // }
     } else {
       takeAbsens(type);
     }

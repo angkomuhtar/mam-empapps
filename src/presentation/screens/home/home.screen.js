@@ -242,9 +242,20 @@ const Home = ({navigation}) => {
                     </Text>
                   </View>
                 </View>
-                <TouchableOpacity className="relative">
-                  <Icon name="notifications-outline" color="#fff" size={25} />
-                  <View className="absolute border-[1.3px] border-white bg-primary-500 self-start rounded-full p-[4px] top-0 right-0.5" />
+                <TouchableOpacity
+                  className="relative"
+                  onPress={() => navigate('notif-list')}>
+                  <Icon name="notifications" color="#fff" size={30} />
+                  <View className="absolute border-[1px] border-white bg-primary-500 self-start rounded-full p-[2px] top-0 -right-0.5 aspect-square">
+                    <Text
+                      style={{
+                        fontFamily: 'Inter-Bold',
+                        fontSize: 8,
+                        color: '#fff',
+                      }}>
+                      99
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               </View>
               <View className="bg-white/30 rounded-xl px-3 py-3 space-y-2">
@@ -278,6 +289,7 @@ const Home = ({navigation}) => {
               </View>
             </View>
           </View>
+
           <View className="bg-primary-600">
             <View className="bg-[#fafafa] rounded-tl-[60px] min-h-[100px] py-7 px-5 pb-40">
               <HomeCard title="Semua Fitur">
@@ -300,26 +312,29 @@ const Home = ({navigation}) => {
                 />
               </HomeCard>
 
-              <HomeCard title="Laporan & Pengajuan">
-                <VStack className="w-full" space={4}>
-                  <Text
-                    className="text-xs text-black"
-                    style={{fontFamily: 'OpenSans-Light'}}>
-                    {/* Ada <Text style={{fontFamily: 'OpenSans-Bold'}}>100 </Text> */}
-                    Laporan dan Pengajuan yang di tujukan kepada anda untuk di
-                    tindak lanjuti
-                  </Text>
-                  <TouchableOpacity
-                    className=" bg-primary-500 py-2 px-4 rounded-md items-center"
-                    onPress={() => navigate('request-report')}>
+              {(users?.user_roles == 'superadmin' ||
+                users?.employee?.position?.position_class?.class >= 4) && (
+                <HomeCard title="Laporan & Pengajuan">
+                  <VStack className="w-full" space={4}>
                     <Text
-                      className="text-sm text-white uppercase"
-                      style={{fontFamily: 'Inter-Bold'}}>
-                      Semua Laporan & Pengajuan
+                      className="text-xs text-black"
+                      style={{fontFamily: 'OpenSans-Light'}}>
+                      {/* Ada <Text style={{fontFamily: 'OpenSans-Bold'}}>100 </Text> */}
+                      Laporan dan Pengajuan yang di tujukan kepada anda untuk di
+                      tindak lanjuti
                     </Text>
-                  </TouchableOpacity>
-                </VStack>
-              </HomeCard>
+                    <TouchableOpacity
+                      className=" bg-primary-500 py-2 px-4 rounded-md items-center"
+                      onPress={() => navigate('request')}>
+                      <Text
+                        className="text-sm text-white uppercase"
+                        style={{fontFamily: 'Inter-Bold'}}>
+                        Semua Laporan & Pengajuan
+                      </Text>
+                    </TouchableOpacity>
+                  </VStack>
+                </HomeCard>
+              )}
 
               <HomeCard title="Presensi Hari Ini">
                 <HStack className="w-full" flexWrap="wrap">

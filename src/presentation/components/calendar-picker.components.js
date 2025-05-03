@@ -34,10 +34,10 @@ const Calendar = ({
             {!value
               ? 'Pilih Tanggal'
               : value.start == value.end || value.end == null
-              ? moment(value.start).format('DD-M-Y')
-              : moment(value.start).format('DD-M-Y') +
+              ? moment(value).format('DD-MM-Y')
+              : moment(value.start).format('DD-MM-Y') +
                 ' - ' +
-                moment(value.end).format('DD-M-Y')}
+                moment(value.end).format('DD-MM-Y')}
           </Text>
         </VStack>
         <View className="justify-center items-center">
@@ -62,7 +62,7 @@ const Calendar = ({
                 color: '#000000',
                 fontSize: 15,
               }}
-              selectedStartDate={value?.start}
+              selectedStartDate={value?.start ?? value}
               selectedEndDate={value?.end}
               minDate={backDate ? new Date() : null}
               selectedDayColor="#08b"

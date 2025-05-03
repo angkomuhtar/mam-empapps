@@ -56,6 +56,12 @@ export const apiSlice = createApi({
     'HazardReportDetails',
     'HazardAction',
     'HazardActionDetails',
+    'HazardCount',
+    'InspectionType',
+    'InspectionQuestion',
+    'InspectionHistory',
+    'InspectionDetail',
+    'InspectionReport',
   ],
   endpoints: builder => ({}),
 });

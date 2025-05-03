@@ -1,40 +1,17 @@
-import {View, Text, ScrollView} from 'react-native';
+import {Text, ScrollView} from 'react-native';
 import React from 'react';
-import Layout from '../../presentation/components/layout.component';
-import {HStack, Pressable, VStack} from 'native-base';
-import Header from '../../presentation/components/navigation/header.component';
+import Layout from '@components/layout.component';
+import {VStack} from 'native-base';
+import Header from '@components/navigation/header.component';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
-import {navigate, push} from '../utils/RootNavigation';
+import {navigate} from '@utils/RootNavigation';
+import {useGetHazardReportCountQuery} from '@slices/hazard.slice';
+import ButtonList from '../../components/button-list.components';
+import {useGetInspectionCountQuery} from '@slices/inspection.slice';
 
-const Button = ({icon, onPress, title, pills = 0}) => (
-  <Pressable onPress={onPress}>
-    <HStack
-      className="px-3 py-2 bg-white shadow-sm shadow-primary-950/20 items-center rounded-md justify-between"
-      space={3}>
-      {icon}
-      <Text
-        className="flex-1 text-primary-950 text-sm capitalize"
-        style={{fontFamily: 'OpenSans-SemiBold'}}>
-        {title}
-      </Text>
-      <HStack className="items-center">
-        {pills > 0 && (
-          <View className="bg-primary-500 rounded-full px-2 py-1 w-11 items-center justify-center">
-            <Text
-              className="text-white text-xs"
-              style={{fontFamily: 'Inter-Bold'}}>
-              {pills}
-            </Text>
-          </View>
-        )}
-        <Entypo name="chevron-right" size={25} color={'rgb(73, 6, 9)'} />
-      </HStack>
-    </HStack>
-  </Pressable>
-);
-
-const RequestReportStack = () => {
+const RequestScreen = () => {
+  const {data: countHazard, isLoading} = useGetHazardReportCountQuery();
+  const {data: countInspect} = useGetInspectionCountQuery();
   return (
     <Layout>
       <VStack px={5} pt={2} className="flex-1">
@@ -46,7 +23,7 @@ const RequestReportStack = () => {
               className="text-primary-950">
               Laporan
             </Text>
-            <Button
+            <ButtonList
               title="Hazard Report"
               icon={
                 <Icon
@@ -55,8 +32,23 @@ const RequestReportStack = () => {
                   color={'rgb(73, 6, 9)'}
                 />
               }
+              pills={countHazard}
               onPress={() => {
                 navigate('hazard-report');
+              }}
+            />
+            <ButtonList
+              title="Kartu Inspeksi"
+              icon={
+                <Icon
+                  name="briefcase-outline"
+                  size={20}
+                  color={'rgb(73, 6, 9)'}
+                />
+              }
+              pills={countInspect}
+              onPress={() => {
+                navigate('inspection-report');
               }}
             />
 
@@ -65,7 +57,7 @@ const RequestReportStack = () => {
               className="text-primary-950">
               Pengajuan
             </Text>
-            <Button
+            <ButtonList
               title="Pengajuan Cuti / Izin"
               icon={
                 <Icon
@@ -85,4 +77,4 @@ const RequestReportStack = () => {
   );
 };
 
-export default RequestReportStack;
+export default RequestScreen;
