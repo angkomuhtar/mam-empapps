@@ -1,5 +1,5 @@
 import {Text, ScrollView, View, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, VStack} from 'native-base';
 import Header from '@components/navigation/header.component';
 import DetailValue from '@components/detail-value.component';
@@ -8,6 +8,8 @@ import Loading from '@components/loading.component';
 import moment from 'moment';
 import {useGetInspectDetailQuery} from '@slices/inspection.slice';
 import _ from 'lodash';
+import Alert from '@components/alert.component';
+import {useVerifyInspectionMutation} from '../../../../applications/slices/inspection.slice';
 
 const InspectionDetail = ({route}) => {
   const {id, type} = route.params;
@@ -24,17 +26,45 @@ const InspectionDetail = ({route}) => {
   });
 
   const {data, isLoading} = useGetInspectDetailQuery({id});
-  const [subItem, setSubItem] = useState('');
+  const [verify, {isLoading: isVerifying, isSuccess, isError, error}] =
+    useVerifyInspectionMutation();
 
   const grouped = _.groupBy(
     data?.answer,
     item => item?.question?.sub_inspection?.sub_inspection_name || 'Unknown',
   );
-
   const sections = Object.entries(grouped).map(([key, items]) => ({
     title: key,
     data: items,
   }));
+
+  console.log('sections', data);
+
+  useEffect(() => {
+    if (isError) {
+      setAlert({
+        show: true,
+        type: 'error',
+        title: 'Verifikasi Gagal',
+        message: 'Verifikasi gagal, silahkan coba lagi',
+        onOK: () => {
+          setAlert({...alert, show: false});
+        },
+      });
+      console.log('error', error);
+    }
+    if (isSuccess) {
+      setAlert({
+        show: true,
+        type: 'success',
+        title: 'Verifikasi Berhasil',
+        message: 'Verifikasi berhasil dilakukan',
+        onOK: () => {
+          setAlert({show: false});
+        },
+      });
+    }
+  }, [isVerifying, isSuccess, isError]);
 
   if (isLoading) return <Loading />;
   return (
@@ -60,23 +90,22 @@ const InspectionDetail = ({route}) => {
             </View>
           }
         />
+        <Alert
+          visible={alert.show}
+          type={alert.type}
+          title={alert.title}
+          message={alert.message}
+          quote={alert.quote}
+          onOk={alert.onOK}
+          onDissmiss={alert.onDissmiss}
+        />
+        {isVerifying && <Loading />}
+
         <ScrollView showsVerticalScrollIndicator={false}>
           <VStack space={3} pb={10}>
             <DetailValue
               label="nomor hazard report"
               value={data?.inspection_number}
-            />
-            <DetailValue
-              label="Nama Pengawas"
-              value={data?.creator?.profile.name}
-            />
-            <DetailValue
-              label="Jabatan Pengawas"
-              value={data?.creator?.employee?.position?.position}
-            />
-            <DetailValue
-              label="NRP Pengawas"
-              value={data?.creator?.employee?.nip}
             />
             <DetailValue
               label="tanggal inspeksi"
@@ -87,13 +116,13 @@ const InspectionDetail = ({route}) => {
               value={
                 data?.location_id !== '999'
                   ? data?.location?.location
-                  : data.other_location
+                  : data?.other_location
               }
             />
-            <DetailValue label="Detail Lokasi" value={data.detail_location} />
+            <DetailValue label="Detail Lokasi" value={data?.detail_location} />
             <DetailValue
               label="Catatan Inspeksi"
-              value={data.recomended_action}
+              value={data?.recomended_action}
             />
 
             {sections.map((section, index) => {
@@ -137,53 +166,54 @@ const InspectionDetail = ({route}) => {
                 </VStack>
               );
             })}
-            {/* 
-            {data?.answer.map(answer => {
-              console.log(subItem);
 
-              if (answer?.answer == 'yes') {
-                return (
-                  <>
-                    {subItem != answer?.question?.sub_inspection_id && (
-                      <Text>
-                        {answer?.question?.sub_inspection?.sub_inspection_name}
-                        {subItem}
-                      </Text>
-                    )}
-                    <DetailValue
-                      key={answer.id}
-                      label={answer.question.question}
-                      value="Sesuai"
-                    />
-                  </>
-                );
-              } else if (answer?.answer == 'no') {
-                return (
-                  <VStack key={answer.id} space={1}>
-                    <DetailValue
-                      key={answer.id}
-                      label={answer.question.question}
-                      value="Tidak Sesuai"
-                    />
-                    <DetailValue
-                      label="Tindakan Perbaikan"
-                      value={answer.note}
-                    />
-                    <DetailValue
-                      label="Due Date"
-                      value={moment(answer.due_date).format('DD MMM YY')}
-                    />
-                  </VStack>
-                );
-              }
-              setSubItem(answer?.question?.sub_inspection_id);
-            })} */}
+            <DetailValue label="Nama Pengawas" value={data?.creator?.name} />
+            <DetailValue
+              label="Jabatan Pengawas"
+              value={data?.creator?.position}
+            />
+            <DetailValue label="NRP Pengawas" value={data?.creator?.nrp} />
+
+            {data?.supervisor && (
+              <>
+                <DetailValue
+                  label="Nama Verifikator"
+                  value={data?.supervisor?.name}
+                />
+                <DetailValue
+                  label="Jabatan Verifikator"
+                  value={data?.supervisor?.position}
+                />
+                <DetailValue
+                  label="NRP Verifikator"
+                  value={data?.supervisor?.nrp}
+                />
+              </>
+            )}
           </VStack>
         </ScrollView>
 
-        {type == 'reviewer' && (
+        {type == 'reviewer' && data?.status == 'created' && (
           <VStack className="py-5 pb-8">
-            <Button onPress={() => console.log()}>
+            <Button
+              onPress={() => {
+                setAlert({
+                  show: true,
+                  type: 'warning',
+                  title: 'Verifikasi Inspeksi',
+                  message: 'ingin melakukan verifikasi inspeksi sekarang.?',
+                  onOK: () => {
+                    setAlert({
+                      ...alert,
+                      show: false,
+                    });
+                    verify({id: id});
+                  },
+                  onDissmiss: () => {
+                    setAlert({...alert, show: false});
+                  },
+                });
+              }}>
               <Text
                 className="text-white capitalize"
                 style={{fontFamily: 'OpenSans-Bold'}}>

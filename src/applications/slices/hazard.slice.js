@@ -33,8 +33,8 @@ export const hazardApiSlice = apiSlice.injectEndpoints({
     }),
 
     getHazardReport: builder.query({
-      query: ({page = 1, status = ''}) =>
-        `/hazard/report?page=${page}&status=${status}`,
+      query: ({page = 1, status = '', search = ''}) =>
+        `/hazard/report?page=${page}&status=${status}&search=${search}`,
       transformResponse: responseData => {
         return responseData.data;
       },

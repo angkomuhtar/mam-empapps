@@ -11,7 +11,9 @@ export const HazardCard = ({data, onPress}) => {
       onPress={onPress}>
       <HStack className="py-1.5 items-center justify-between">
         <View className="flex-1">
-          <Text className="text-xs" style={{fontFamily: 'OpenSans-ExtraBold'}}>
+          <Text
+            className="text-xs text-primary-950"
+            style={{fontFamily: 'OpenSans-ExtraBold'}}>
             {data?.id_location == '999'
               ? data?.other_location
               : data?.location.location}
@@ -32,11 +34,13 @@ export const HazardCard = ({data, onPress}) => {
       <HStack className="justify-between py-2 space-x-3 my-2">
         <VStack className="flex-1">
           <Text
-            className="text-xs mb-2"
+            className="text-xs mb-2 text-primary-950"
             style={{fontFamily: 'OpenSans-Regular'}}>
             kategori
           </Text>
-          <Text className="text-xs" style={{fontFamily: 'Inter-ExtraBold'}}>
+          <Text
+            className="text-xs text-primary-950"
+            style={{fontFamily: 'Inter-ExtraBold'}}>
             {data.category === 'KTA'
               ? 'Kondisi Tidak Aman'
               : 'Tindakan Tidak Aman'}
@@ -44,17 +48,19 @@ export const HazardCard = ({data, onPress}) => {
         </VStack>
         <VStack className="flex-1">
           <Text
-            className="text-xs mb-2"
+            className="text-xs mb-2 text-primary-950"
             style={{fontFamily: 'OpenSans-Regular'}}>
             Due date
           </Text>
-          <Text className="text-xs" style={{fontFamily: 'Inter-Bold'}}>
+          <Text
+            className="text-xs text-primary-950"
+            style={{fontFamily: 'Inter-Bold'}}>
             {moment(data.due_date).format('dddd, DD MMM YYYY')}
           </Text>
         </VStack>
         <VStack className="flex-1 items-start">
           <Text
-            className="text-xs mb-2"
+            className="text-xs mb-2 text-primary-950"
             style={{fontFamily: 'OpenSans-Regular'}}>
             Status
           </Text>
@@ -94,7 +100,9 @@ export const HazardReportCard = ({data, onPress}) => {
       onPress={onPress}>
       <HStack className="py-1.5 items-center justify-between">
         <View className="flex-1">
-          <Text className="text-xs" style={{fontFamily: 'OpenSans-ExtraBold'}}>
+          <Text
+            className="text-xs text-primary-950"
+            style={{fontFamily: 'OpenSans-ExtraBold'}}>
             {data?.id_location == '999'
               ? data?.other_location
               : data?.location.location}
@@ -115,7 +123,7 @@ export const HazardReportCard = ({data, onPress}) => {
       <HStack className="justify-between py-2 space-x-3 my-2">
         <VStack className="flex-1">
           <Text
-            className="text-xs mb-2"
+            className="text-xs mb-2 text-primary-950"
             style={{fontFamily: 'OpenSans-Regular'}}>
             kategori
           </Text>
@@ -127,17 +135,19 @@ export const HazardReportCard = ({data, onPress}) => {
         </VStack>
         <VStack className="flex-1">
           <Text
-            className="text-xs mb-2"
+            className="text-xs mb-2 text-primary-950"
             style={{fontFamily: 'OpenSans-Regular'}}>
             Due date
           </Text>
-          <Text className="text-xs" style={{fontFamily: 'Inter-Bold'}}>
+          <Text
+            className="text-xs text-primary-950"
+            style={{fontFamily: 'Inter-Bold'}}>
             {moment(data.due_date).format('dddd, DD MMM YYYY')}
           </Text>
         </VStack>
         <VStack className="flex-1 items-start">
           <Text
-            className="text-xs mb-2"
+            className="text-xs mb-2 text-primary-950"
             style={{fontFamily: 'OpenSans-Regular'}}>
             Status
           </Text>
@@ -189,7 +199,9 @@ export const HazardActionCard = ({data, onPress}) => {
       onPress={onPress}>
       <HStack className="py-1.5 items-center justify-between">
         <View className="flex-1">
-          <Text className="text-xs" style={{fontFamily: 'OpenSans-ExtraBold'}}>
+          <Text
+            className="text-xs text-primary-950"
+            style={{fontFamily: 'OpenSans-ExtraBold'}}>
             {data?.id_location == '999'
               ? data?.other_location
               : data?.location.location}
@@ -210,11 +222,13 @@ export const HazardActionCard = ({data, onPress}) => {
       <HStack className="justify-between py-2 space-x-3 my-2">
         <VStack className="flex-1">
           <Text
-            className="text-xs mb-2"
+            className="text-xs mb-2 text-primary-950"
             style={{fontFamily: 'OpenSans-Regular'}}>
             kategori
           </Text>
-          <Text className="text-xs" style={{fontFamily: 'Inter-ExtraBold'}}>
+          <Text
+            className="text-xs text-primary-950"
+            style={{fontFamily: 'Inter-ExtraBold'}}>
             {data.category === 'KTA'
               ? 'Kondisi Tidak Aman'
               : 'Tindakan Tidak Aman'}
@@ -222,17 +236,19 @@ export const HazardActionCard = ({data, onPress}) => {
         </VStack>
         <VStack className="flex-1">
           <Text
-            className="text-xs mb-2"
+            className="text-xs mb-2 text-primary-950"
             style={{fontFamily: 'OpenSans-Regular'}}>
             Due date
           </Text>
-          <Text className="text-xs" style={{fontFamily: 'Inter-Bold'}}>
+          <Text
+            className="text-xs text-primary-950"
+            style={{fontFamily: 'Inter-Bold'}}>
             {moment(data.due_date).format('dddd, DD MMM YYYY')}
           </Text>
         </VStack>
         <VStack className="flex-1 items-start">
           <Text
-            className="text-xs mb-2"
+            className="text-xs mb-2 text-primary-950"
             style={{fontFamily: 'OpenSans-Regular'}}>
             Status
           </Text>

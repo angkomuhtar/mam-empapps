@@ -20,7 +20,7 @@ const ButtonList = ({icon, onPress, title, pills = 0}) => (
             <Text
               className="text-white text-xs"
               style={{fontFamily: 'Inter-Bold'}}>
-              {pills}
+              {pills > 99 ? '99+' : pills}
             </Text>
           </View>
         )}

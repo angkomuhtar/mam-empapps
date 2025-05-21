@@ -19,8 +19,8 @@ export const InspectApiSlice = apiSlice.injectEndpoints({
     }),
 
     getInspectReport: builder.query({
-      query: ({page = 1, status = ''}) =>
-        `/inspection/report?page=${page}&status=${status}`,
+      query: ({page = 1, status = '', search = ''}) =>
+        `/inspection/report?page=${page}&status=${status}&search=${search}`,
       transformResponse: responseData => {
         return responseData.data;
       },
@@ -63,6 +63,16 @@ export const InspectApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ['HazardCount'],
     }),
+    verifyInspection: builder.mutation({
+      query: ({id}) => ({
+        url: `/inspection/${id}/verified`,
+        method: 'POST',
+        body: {},
+      }),
+      transformErrorResponse: responseData => {
+        return responseData.data;
+      },
+    }),
   }),
 });
 
@@ -74,4 +84,5 @@ export const {
   useGetInspectionCountQuery,
   useGetInspectDetailQuery,
   useGetInspectReportQuery,
+  useVerifyInspectionMutation,
 } = InspectApiSlice;

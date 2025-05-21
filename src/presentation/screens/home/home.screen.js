@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Platform,
   Modal,
+  Linking,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import Layout from '@components/layout.component';
@@ -46,7 +47,7 @@ const Home = ({navigation}) => {
   const [progress, setProgress] = useState(0);
   const [download, setDownload] = useState(false);
 
-  const iconSuccess = require('../../assets/images/success.json');
+  const iconSuccess = require('../../assets/images/error.json');
 
   let version = getVersion();
   let device = Platform.OS;
@@ -55,6 +56,8 @@ const Home = ({navigation}) => {
     isLoading: versionLoad,
     error,
   } = useGetAppVersionQuery(device);
+
+  console.log(Platform.OS, version, versionApp);
 
   const renderData = durasi => {
     if (durasi > 0) {
@@ -115,27 +118,9 @@ const Home = ({navigation}) => {
   }, [today]);
 
   const downloadFile = () => {
-    setDownload(true);
-    setProgress(0);
-    const url = versionApp?.download;
-    const filePath = RNFS.DownloadDirectoryPath + '/empapps.apk';
-
-    RNFS.downloadFile({
-      fromUrl: url,
-      toFile: filePath,
-      background: true, // Enable downloading in the background (iOS only)
-      discretionary: true, // Allow the OS to control the timing and speed (iOS only)
-      progress: res => {
-        const progressx = (res.bytesWritten / res.contentLength) * 100;
-        setProgress(Math.floor(progressx));
-      },
-    })
-      .promise.then(response => {
-        setDownload(false);
-      })
-      .catch(err => {
-        // console.log('Download error:', err);
-      });
+    Linking.openURL(versionApp?.download).catch(err =>
+      console.error('err loink', err),
+    );
   };
 
   if (versionLoad) {
@@ -150,7 +135,7 @@ const Home = ({navigation}) => {
 
   return (
     <>
-      {Platform.OS == 'android' && version != versionApp?.version && (
+      {version < versionApp?.version && (
         <Modal transparent={true}>
           <View className="flex-1 h-full justify-center items-center">
             <View className="bg-white rounded-md py-4 px-6 border border-primary-500 items-center">
@@ -164,46 +149,24 @@ const Home = ({navigation}) => {
                 className="text-sm my-4">
                 Versi Aplikasi Anda harus di perbaharui
               </Text>
-              {progress == 100 ? (
-                <>
-                  <LottieView
-                    source={iconSuccess}
-                    loop={false}
-                    autoPlay
-                    style={{height: 70, width: 70}}
-                  />
-                  <TouchableOpacity
-                    onPress={() => {
-                      setProgress(0);
-                    }}>
-                    <View className="py-2 px-4 border border-primary-500 rounded-md">
-                      <Text className="font-extrabold text-primary-500 text-[10px]">
-                        OKE
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                </>
-              ) : download ? (
-                <View className="w-64 bg-primary-100 h-2 rounded-full my-4">
-                  <View
-                    className={`h-full bg-red-500 rounded-full`}
-                    style={{width: progress + '%'}}
-                  />
+              <LottieView
+                source={iconSuccess}
+                loop={false}
+                autoPlay
+                style={{height: 70, width: 70}}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  downloadFile();
+                }}>
+                <View className="bg-primary-500 px-4 py-2 rounded-md mt-4">
+                  <Text
+                    className="text-white"
+                    style={{fontFamily: 'Inter-Bold'}}>
+                    Unduh Sekarang
+                  </Text>
                 </View>
-              ) : (
-                <TouchableOpacity
-                  onPress={() => {
-                    downloadFile();
-                  }}>
-                  <View className="bg-primary-500 px-4 py-2 rounded-md mt-4">
-                    <Text
-                      className="text-white"
-                      style={{fontFamily: 'Inter-Bold'}}>
-                      Unduh Sekarang
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              )}
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>

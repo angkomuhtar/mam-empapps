@@ -14,17 +14,23 @@ import {navigate} from '@utils/RootNavigation';
 import HazardListLoad from '@components/hazard-list-load.component';
 import {useGetInspectReportQuery} from '@slices/inspection.slice';
 import {InspectionCard} from '../../../components/inspection-card.components';
+import {useSelector} from 'react-redux';
 
 const InspectReportList = ({navigation, route}) => {
   const status = route.params?.status;
   const [page, setPage] = useState(1);
-  const {data, isLoading, refetch} = useGetInspectReportQuery({page, status});
+  const keyword = useSelector(state => state.filter.keyword);
+  const {data, isLoading, refetch, isFetching} = useGetInspectReportQuery({
+    page,
+    status,
+    search: keyword,
+  });
   const [item, setItem] = useState([]);
   const [load, setLoad] = useState(false);
 
   useEffect(() => {
     setPage(1);
-  }, [navigation]);
+  }, [navigation, keyword]);
 
   useEffect(() => {
     if (data && page === 1) {
@@ -38,7 +44,7 @@ const InspectReportList = ({navigation, route}) => {
 
   return (
     <VStack className="px-5 pt-3 bg-[#fafafa] flex-1 pb-8">
-      {isLoading ? (
+      {isLoading || (isFetching && keyword != '') ? (
         <HazardListLoad />
       ) : (
         <FlatList
@@ -47,6 +53,7 @@ const InspectReportList = ({navigation, route}) => {
           renderItem={({item}) => (
             <InspectionCard
               data={item}
+              type="reviewer"
               onPress={() =>
                 navigate('inspection-detail', {
                   id: item.id,
@@ -75,7 +82,7 @@ const InspectReportList = ({navigation, route}) => {
                       <HazardListLoad />
                     </View>
                   ) : page >= data?.last_page ? (
-                    <Text className="text-center py-4">
+                    <Text className="text-center py-4 ">
                       {' '}
                       Tidak Ada Data Lagi{' '}
                     </Text>

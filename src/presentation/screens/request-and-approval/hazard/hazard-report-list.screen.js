@@ -16,17 +16,25 @@ import {
 import {navigate} from '../../../../applications/utils/RootNavigation';
 import {useGetHazardReportQuery} from '../../../../applications/slices/hazard.slice';
 import HazardListLoad from '../../../components/hazard-list-load.component';
+import {useRoute} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
-const HazardReportOpen = ({navigation, route}) => {
-  const status = route.params?.status;
+const HazardReportOpen = ({navigation}) => {
+  const route = useRoute();
+  const {status = ''} = route.params ?? {};
   const [page, setPage] = useState(1);
-  const {data, isLoading, refetch} = useGetHazardReportQuery({page, status});
+  const keyword = useSelector(state => state.filter.keyword);
+  const {data, isLoading, refetch, isFetching} = useGetHazardReportQuery({
+    page,
+    status,
+    search: keyword,
+  });
   const [item, setItem] = useState([]);
   const [load, setLoad] = useState(false);
 
   useEffect(() => {
     setPage(1);
-  }, [navigation]);
+  }, [navigation, keyword]);
 
   useEffect(() => {
     if (data && page === 1) {
@@ -40,7 +48,7 @@ const HazardReportOpen = ({navigation, route}) => {
 
   return (
     <VStack className="px-5 pt-3 bg-[#fafafa] flex-1 pb-8">
-      {isLoading ? (
+      {isLoading || (isFetching && keyword != '') ? (
         <HazardListLoad />
       ) : (
         <FlatList
