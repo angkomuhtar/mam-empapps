@@ -19,46 +19,34 @@ import {Actionsheet, HStack, VStack} from 'native-base';
 
 const Tab = createMaterialTopTabNavigator();
 
-const useKeyboardBottomInset = () => {
-  const [bottom, setBottom] = useState(0);
-  const subscriptions = useRef([]);
-
-  React.useEffect(() => {
-    function onKeyboardChange(e) {
-      if (
-        e.startCoordinates &&
-        e.endCoordinates.screenY < e.startCoordinates.screenY
-      )
-        setBottom(e.endCoordinates.height);
-      else setBottom(0);
-    }
-
-    if (Platform.OS === 'ios') {
-      subscriptions.current = [
-        Keyboard.addListener('keyboardWillChangeFrame', onKeyboardChange),
-      ];
-    } else {
-      subscriptions.current = [
-        Keyboard.addListener('keyboardDidHide', onKeyboardChange),
-        Keyboard.addListener('keyboardDidShow', onKeyboardChange),
-      ];
-    }
-    return () => {
-      subscriptions.current.forEach(subscription => {
-        subscription.remove();
-      });
-    };
-  }, [setBottom, subscriptions]);
-
-  return bottom;
-};
-
 const InspectionReport = ({navigation}) => {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [nama, setNama] = useState('');
   const dispatch = useDispatch();
   const keyword = useSelector(state => state.filter.keyword);
-  const useBottom = useKeyboardBottomInset();
+
+  const [bottom, setBottom] = useState(0);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      e => {
+        console.log('this from event', e);
+        setBottom(e.endCoordinates.height);
+      },
+    );
+    const hideSubscription = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      e => {
+        setBottom(0);
+      },
+    );
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(setKeyword(''));
@@ -112,7 +100,7 @@ const InspectionReport = ({navigation}) => {
       </Tab.Navigator>
       <Actionsheet isOpen={sheetOpen} onClose={setSheetOpen}>
         <Actionsheet.Content
-          bottom={useBottom}
+          bottom={bottom}
           className="bg-white border-t-[4px] border-red-500/20"
           _dragIndicator={{
             bg: 'black',

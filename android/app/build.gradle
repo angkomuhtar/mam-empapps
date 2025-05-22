@@ -79,7 +79,7 @@ android {
         applicationId "com.mitraabadimahakam.eapps"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
+        versionCode 9
         versionName "2.0.0"
         vectorDrawables.useSupportLibrary = true
     }

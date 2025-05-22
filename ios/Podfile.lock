@@ -97,10 +97,10 @@ PODS:
   - hermes-engine (0.72.1):
     - hermes-engine/Pre-built (= 0.72.1)
   - hermes-engine/Pre-built (0.72.1)
-  - jail-monkey (2.8.0):
+  - jail-monkey (2.8.3):
     - React-Core
   - libevent (2.1.12)
-  - lottie-ios (4.3.3)
+  - lottie-ios (4.3.4)
   - lottie-react-native (6.3.1):
     - lottie-ios (~> 4.3.0)
     - React-Core
@@ -416,6 +416,9 @@ PODS:
     - React-Core
   - react-native-maps (1.7.1):
     - React-Core
+  - react-native-mock-location-detector (2.3.1):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - react-native-month-year-picker (1.9.0):
     - React
   - react-native-pager-view (6.2.1):
@@ -595,7 +598,7 @@ PODS:
   - RNVectorIcons (9.2.0):
     - React-Core
   - SocketRocket (0.6.1)
-  - TOCropViewController (2.6.1)
+  - TOCropViewController (2.7.4)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -654,6 +657,7 @@ DEPENDENCIES:
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - react-native-mock-location-detector (from `../node_modules/react-native-turbo-mock-location-detector`)
   - react-native-month-year-picker (from `../node_modules/react-native-month-year-picker`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -770,6 +774,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-mock-location-detector:
+    :path: "../node_modules/react-native-turbo-mock-location-detector"
   react-native-month-year-picker:
     :path: "../node_modules/react-native-month-year-picker"
   react-native-pager-view:
@@ -863,9 +869,9 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: d3fdfd57db799771418f06189e33981597553aa8
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: 9df83855a0fd15ef8eb61694652bae636b0c466e
-  jail-monkey: a71b35d482a70ecba844a90f002994012cf12a5d
+  jail-monkey: 066e0af74e67cbf432fbb4d214b046ef6dccf910
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  lottie-ios: 25e7b2675dad5c3ddad369ac9baab03560c5bfdd
+  lottie-ios: 3d98679b41fa6fd6aff2352b3953dbd3df8a397e
   lottie-react-native: c9f1db4f4124dcce9f8159e65d8dc6e8bcb11fb4
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
@@ -888,6 +894,7 @@ SPEC CHECKSUMS:
   react-native-google-maps: dd12cdd86b8e3fedbbb671676aedaa2f656e2ccd
   react-native-image-picker: 1569cfade34b3a011191ce262423e6ce2f8db5a1
   react-native-maps: 667f9b975549c6fa9b1631bf859440f68ebd3b8f
+  react-native-mock-location-detector: b0008ed9cfe6e245e47ab334c342c7c2f7b3cec4
   react-native-month-year-picker: 948797e981ca502427024a34b17f545eb321bbff
   react-native-pager-view: d211379f61895b6349bd7e571b44a26d005c2975
   react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
@@ -922,7 +929,7 @@ SPEC CHECKSUMS:
   RNSVG: 80584470ff1ffc7994923ea135a3e5ad825546b9
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
+  TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Yoga: 65286bb6a07edce5e4fe8c90774da977ae8fc009
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

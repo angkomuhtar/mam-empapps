@@ -12,60 +12,40 @@ import Header from '@components/navigation/header.component';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import TabBar from '@components/navigation/tab-bar.component';
 import HazardReportOpen from '@screens/request-and-approval/hazard/hazard-report-list.screen';
-import {
-  Actionsheet,
-  Checkbox,
-  HStack,
-  KeyboardAvoidingView,
-  Stack,
-  VStack,
-} from 'native-base';
+import {Actionsheet, HStack, VStack} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {setKeyword} from '@slices/filter.slice';
 
 const Tab = createMaterialTopTabNavigator();
 
-const useKeyboardBottomInset = () => {
-  const [bottom, setBottom] = useState(0);
-  const subscriptions = useRef([]);
-
-  useEffect(() => {
-    function onKeyboardChange(e) {
-      if (
-        e.startCoordinates &&
-        e.endCoordinates.screenY <= e.startCoordinates.screenY
-      )
-        setBottom(e.endCoordinates.height);
-      else setBottom(0);
-    }
-
-    if (Platform.OS === 'ios') {
-      subscriptions.current = [
-        Keyboard.addListener('keyboardWillChangeFrame', onKeyboardChange),
-      ];
-    } else {
-      subscriptions.current = [
-        Keyboard.addListener('keyboardDidHide', onKeyboardChange),
-        Keyboard.addListener('keyboardDidShow', onKeyboardChange),
-      ];
-    }
-    return () => {
-      subscriptions.current.forEach(subscription => {
-        subscription.remove();
-      });
-    };
-  }, [setBottom, subscriptions]);
-
-  return bottom;
-};
-
 const HazardReport = ({navigation}) => {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [nama, setNama] = useState('');
   const dispatch = useDispatch();
   const keyword = useSelector(state => state.filter.keyword);
-  const bottomInset = useKeyboardBottomInset();
+  const [bottom, setBottom] = useState(0);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      e => {
+        console.log('this from event', e);
+        setBottom(e.endCoordinates.height);
+      },
+    );
+    const hideSubscription = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      e => {
+        setBottom(0);
+      },
+    );
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(setKeyword(''));
@@ -130,7 +110,7 @@ const HazardReport = ({navigation}) => {
       <Actionsheet isOpen={sheetOpen} onClose={setSheetOpen}>
         <Actionsheet.Content
           className="bg-white border-t-[4px] border-red-500/20"
-          bottom={bottomInset}
+          bottom={bottom}
           _dragIndicator={{
             bg: 'black',
           }}>
