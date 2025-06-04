@@ -10,11 +10,10 @@ import {navigate} from '@utils/RootNavigation';
 const ListHazardAction = ({navigation, route}) => {
   const {status} = route.params;
   const [page, setPage] = useState(1);
-  const {data, isLoading} = useGetHazardActionQuery({page, status});
+  const {data, isLoading, refetch} = useGetHazardActionQuery({page, status});
   const [item, setItem] = useState([]);
   useEffect(() => {
     setPage(1);
-    console.log('focus');
   }, [navigation]);
 
   useEffect(() => {
@@ -36,14 +35,17 @@ const ListHazardAction = ({navigation, route}) => {
           renderItem={({item}) => (
             <HazardActionCard
               data={item}
-              onPress={() => navigate('hazard-report-details', {id: item.id})}
+              onPress={() => navigate('hazard-action-details', {id: item.id})}
             />
           )}
           ListEmptyComponent={<Empty />}
           refreshControl={
             <RefreshControl
               refreshing={isLoading}
-              onRefresh={() => setPage(1)}
+              onRefresh={() => {
+                setPage(1);
+                refetch();
+              }}
             />
           }
           ItemSeparatorComponent={() => <View className="h-3"></View>}

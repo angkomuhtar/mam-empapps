@@ -19,8 +19,8 @@ export const InspectApiSlice = apiSlice.injectEndpoints({
     }),
 
     getInspectReport: builder.query({
-      query: ({page = 1, status = '', search = ''}) =>
-        `/inspection/report?page=${page}&status=${status}&search=${search}`,
+      query: ({page = 1, status = '', search = '', month = ''}) =>
+        `/inspection/report?page=${page}&status=${status}&search=${search}&month=${month}`,
       transformResponse: responseData => {
         return responseData.data;
       },

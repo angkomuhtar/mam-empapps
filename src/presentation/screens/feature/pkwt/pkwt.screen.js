@@ -9,13 +9,15 @@ import {useGetPkwtListQuery} from '@slices/contract.slice';
 import HazardListLoad from '@components/hazard-list-load.component';
 import Empty from '@components/empty.comnponent';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useGetProfileQuery} from '../../../../applications/slices/user.slice';
+import {navigate} from '../../../../applications/utils/RootNavigation';
 
 const PkwtScreen = ({navigation}) => {
   const [page, setPage] = useState(1);
-
+  const {data: users} = useGetProfileQuery();
   const {data, isLoading, error, isFetching, refetch} = useGetPkwtListQuery({
     page,
-    user_id: 3797,
+    user_id: users?.id,
   });
 
   const [item, setItem] = useState([]);
@@ -36,54 +38,33 @@ const PkwtScreen = ({navigation}) => {
   }, [data]);
   console.log('result', data, error);
 
-  // const ref = useRef();
-  // // Called after ref.current.readSignature() reads a non-empty base64 string
-  // const handleOK = signature => {
-  //   // console.log(signature);
-  //   console.log('signature Cretae');
-  //   // onOK(signature); // Callback from Component props
-  // };
-
-  // // Called after ref.current.readSignature() reads an empty string
-  // const handleEmpty = () => {
-  //   console.log('Empty');
-  // };
-
-  // // Called after ref.current.clearSignature()
-  // const handleClear = () => {
-  //   console.log('clear success!');
-  // };
-
-  // // Called after end of stroke
-  // const handleEnd = () => {
-  //   ref.current.readSignature();
-  // };
-
-  // // Called after ref.current.getData()
-  // const handleData = data => {
-  //   // console.log(data);
-  // };
-
   const ContractCard = ({item, onPress}) => {
-    let icon = '';
+    let icon = '',
+      text = '';
     switch (item?.status) {
       case 'draft':
         icon = 'heart-circle-outline';
+        text = 'Draft';
         break;
       case 'send':
         icon = 'cloud-circle-outline';
+        text = 'ditawarkan';
         break;
       case 'signed':
         icon = 'checkmark-circle-outline';
+        text = 'diajukan';
         break;
       case 'success':
         icon = 'checkmark-done-circle-outline';
+        text = 'aktif';
         break;
       case 'expired':
         icon = 'heart-dislike-circle-outline';
+        text = 'berakhir';
         break;
       default:
         icon = 'close-circle-outline';
+        text = 'expired';
         break;
     }
     return (
@@ -92,13 +73,11 @@ const PkwtScreen = ({navigation}) => {
           <Icon name="document-text-outline" size={40} />
           <View className="justify-center items-center absolute right-2 top-auto">
             <Icon name={icon} size={25} color="rgb(239 68 68)" />
-            <View>
-              <Text
-                className="font-semibold text-[11px]"
-                style={{fontFamily: 'OpenSans-SemiBold'}}>
-                {item.status}
-              </Text>
-            </View>
+            <Text
+              className="font-semibold text-[11px] capitalize leading-3"
+              style={{fontFamily: 'OpenSans-SemiBold'}}>
+              {text}
+            </Text>
           </View>
           <VStack className="flex-1">
             <Text
@@ -138,7 +117,7 @@ const PkwtScreen = ({navigation}) => {
               <ContractCard
                 key={key}
                 item={item}
-                onPress={() => console.log('')}
+                onPress={() => navigate('pkwt-detail', {item})}
               />
             )}
             ListEmptyComponent={<Empty />}

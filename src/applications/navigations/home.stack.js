@@ -14,7 +14,10 @@ import HazardAction from '@features/hazard-action/hazard-action.screen';
 import DetailHazardAction from '@features/hazard-action/detail-hazard-action.screen';
 import DetailHazard from '@features/hazard/detail-hazard.screen';
 import SleepScreen from '@features/sleep-duration/sleep.screen';
+
 import PkwtScreen from '@features/pkwt/pkwt.screen';
+import PkwtDetailScreen from '../../presentation/screens/feature/pkwt/pkwt.detail.screen';
+
 import Inspection from '@features/inspection-card/inspection.screen';
 import InspectionForm from '@features/inspection-card/inspection-form.screen';
 import InspectionDetail from '@features/inspection-card/inspection-detail.screen';
@@ -41,6 +44,7 @@ const HomeBase = () => {
       <Stack.Screen component={LeaveDetails} name="leave-details" />
       <Stack.Screen component={ApprovalTab} name="approval-request" />
       <Stack.Screen component={PkwtScreen} name="pkwt" />
+      <Stack.Screen component={PkwtDetailScreen} name="pkwt-detail" />
       <Stack.Screen component={Other} name="others" />
       {/* create hazard report */}
       <Stack.Screen component={Hazard} name="hazard" />

@@ -33,7 +33,6 @@ import {navigate} from '../../../applications/utils/RootNavigation';
 import {useFocusEffect} from '@react-navigation/native';
 import {getVersion} from 'react-native-device-info';
 import Loading from '../../components/loading.component';
-import RNFS from 'react-native-fs';
 import LottieView from 'lottie-react-native';
 import HomeCard from '../../components/home-card';
 import {listMenu} from '../../../applications/utils/constant';
@@ -44,8 +43,6 @@ const Home = ({navigation}) => {
   const {data: today, refetch} = useGetTodayQuery();
   const {data} = useGetClockRecapQuery();
   const [sleepDuration, setSleepDuration] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [download, setDownload] = useState(false);
 
   const iconSuccess = require('../../assets/images/error.json');
 

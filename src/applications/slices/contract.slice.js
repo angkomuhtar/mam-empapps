@@ -34,7 +34,18 @@ export const PkwtSlice = pkwtApiSlice.injectEndpoints({
       },
       providesTags: ['pkwt-list'],
     }),
+    signedPkwt: builder.mutation({
+      query: body => ({
+        url: `signed-contracts`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['pkwt-list'],
+      transformErrorResponse: responseData => {
+        return responseData.data;
+      },
+    }),
   }),
 });
 
-export const {useGetPkwtListQuery} = PkwtSlice;
+export const {useGetPkwtListQuery, useSignedPkwtMutation} = PkwtSlice;

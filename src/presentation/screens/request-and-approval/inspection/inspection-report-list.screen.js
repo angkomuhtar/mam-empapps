@@ -19,11 +19,12 @@ import {useSelector} from 'react-redux';
 const InspectReportList = ({navigation, route}) => {
   const status = route.params?.status;
   const [page, setPage] = useState(1);
-  const keyword = useSelector(state => state.filter.keyword);
+  const {keyword, month} = useSelector(state => state.filter);
   const {data, isLoading, refetch, isFetching} = useGetInspectReportQuery({
     page,
     status,
     search: keyword,
+    month: month,
   });
   const [item, setItem] = useState([]);
   const [load, setLoad] = useState(false);

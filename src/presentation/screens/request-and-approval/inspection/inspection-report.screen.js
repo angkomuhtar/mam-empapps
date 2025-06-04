@@ -13,19 +13,22 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import TabBar from '@components/navigation/tab-bar.component';
 import InspectReportList from './inspection-report-list.screen';
 import {useDispatch, useSelector} from 'react-redux';
-import {setKeyword} from '@slices/filter.slice';
+import {setKeyword, setMonth} from '@slices/filter.slice';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Actionsheet, HStack, VStack} from 'native-base';
+import MonthPicker from 'react-native-month-year-picker';
+import moment from 'moment';
 
 const Tab = createMaterialTopTabNavigator();
 
 const InspectionReport = ({navigation}) => {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [nama, setNama] = useState('');
+  const [Bulan, setBulan] = useState('');
   const dispatch = useDispatch();
-  const keyword = useSelector(state => state.filter.keyword);
-
+  const {keyword, month} = useSelector(state => state.filter);
   const [bottom, setBottom] = useState(0);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener(
@@ -50,7 +53,20 @@ const InspectionReport = ({navigation}) => {
 
   useEffect(() => {
     dispatch(setKeyword(''));
+    dispatch(setMonth(''));
   }, [navigation]);
+
+  const onValueChange = (event, newDate) => {
+    setShow(false);
+    switch (event) {
+      case 'dateSetAction':
+        setBulan(newDate);
+        break;
+      case 'dismissedAction':
+      default:
+        break;
+    }
+  };
 
   return (
     <Layout>
@@ -62,11 +78,12 @@ const InspectionReport = ({navigation}) => {
             <TouchableOpacity
               onPress={() => {
                 setNama(keyword);
+                setBulan(month);
                 setSheetOpen(true);
               }}
               className="relative">
               <Icon name="search" color={'rgb(239, 68, 68)'} size={20} />
-              {keyword != '' && (
+              {(keyword != '' || month != '') && (
                 <View className="bg-red-500 aspect-square rounded-full absolute h-[10px] border-2 border-white -left-1 "></View>
               )}
             </TouchableOpacity>
@@ -126,12 +143,31 @@ const InspectionReport = ({navigation}) => {
                 }}
               />
             </VStack>
+            <VStack space={1} className="my-2">
+              <Text
+                style={{fontFamily: 'OpenSans-Light'}}
+                className="text-sm text-gray-500">
+                Bulan Laporan
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setShow(true);
+                }}
+                className="border border-slate-400 py-2 px-3 rounded-md items-center self-start">
+                <Text
+                  className="text-xs text-primary-950"
+                  style={{fontFamily: 'Inter-Bold'}}>
+                  {Bulan ? moment(Bulan).format('MMMM YYYY') : 'Select Month'}
+                </Text>
+              </TouchableOpacity>
+            </VStack>
             <HStack space={2} className="mt-4">
               <TouchableOpacity
                 className="flex-1 py-2  border border-red-500 rounded-lg"
                 onPress={() => {
                   dispatch(setKeyword(''));
                   setNama('');
+                  dispatch(setMonth(''));
                   setSheetOpen(false);
                 }}>
                 <Text
@@ -141,12 +177,13 @@ const InspectionReport = ({navigation}) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                disabled={!nama}
+                disabled={!nama && !Bulan}
                 className={`flex-1 py-2 ${
-                  !nama ? 'bg-red-300' : 'bg-red-500'
+                  !nama && !Bulan ? 'bg-red-300' : 'bg-red-500'
                 }  rounded-lg`}
                 onPress={() => {
                   dispatch(setKeyword(nama));
+                  dispatch(setMonth(moment(Bulan).format('YYYY-MM-DD')));
                   setSheetOpen(false);
                 }}>
                 <Text
@@ -157,6 +194,16 @@ const InspectionReport = ({navigation}) => {
               </TouchableOpacity>
             </HStack>
           </View>
+          {show && (
+            <MonthPicker
+              onChange={onValueChange}
+              value={Bulan ? new Date(Bulan) : new Date()}
+              locale="in"
+              maximumDate={
+                new Date(moment().format('YYYY'), moment().format('MM'))
+              }
+            />
+          )}
         </Actionsheet.Content>
       </Actionsheet>
     </Layout>

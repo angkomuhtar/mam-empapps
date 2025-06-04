@@ -23,11 +23,12 @@ const HazardReportOpen = ({navigation}) => {
   const route = useRoute();
   const {status = ''} = route.params ?? {};
   const [page, setPage] = useState(1);
-  const keyword = useSelector(state => state.filter.keyword);
+  const {keyword, month} = useSelector(state => state.filter);
   const {data, isLoading, refetch, isFetching} = useGetHazardReportQuery({
     page,
     status,
     search: keyword,
+    month: month,
   });
   const [item, setItem] = useState([]);
   const [load, setLoad] = useState(false);

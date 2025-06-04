@@ -85,7 +85,7 @@ const DetailHazardAction = ({route}) => {
     {postResult, isLoading: postLoading, error: postError, isError, isSuccess},
   ] = useSetActionMutation();
 
-  console.log(data);
+  console.log('data', data?.status);
 
   const sendingData = e => {
     // postPIC({id, body: e});

@@ -43,6 +43,7 @@ export const apiSlice = createApi({
     'Users',
     'Today',
     'Rekap',
+    'Me',
     'Sleep',
     'History',
     'Leave',
