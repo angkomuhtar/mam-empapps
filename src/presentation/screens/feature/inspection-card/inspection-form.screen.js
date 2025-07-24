@@ -38,7 +38,7 @@ const InspectionForm = ({route}) => {
   } = useForm({});
 
   const submitForm = data => {
-    console.log(data);
+    console.log(data, inspect_id);
     submit({...data, inspection_id: inspect_id});
   };
 
@@ -240,6 +240,7 @@ const InspectionForm = ({route}) => {
                           option={[
                             {id: 'yes', value: 'Sesuai'},
                             {id: 'no', value: 'Tidak Sesuai'},
+                            {id: 'na', value: 'N/A'},
                           ]}
                           labelField="value"
                           valueField="id"

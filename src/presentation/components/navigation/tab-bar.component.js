@@ -48,7 +48,7 @@ const TabBar = ({state, descriptors, navigation}) => {
             } items-center rounded-md`}>
             <Text
               style={{fontFamily: 'Inter-Medium'}}
-              className={`text-primary-${isFocused ? '50' : '950'} capitalize`}>
+              className={`text-primary-${isFocused ? '50' : '950'} `}>
               {label}
             </Text>
           </TouchableOpacity>

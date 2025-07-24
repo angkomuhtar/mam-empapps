@@ -72,6 +72,11 @@ export const InspectApiSlice = apiSlice.injectEndpoints({
       transformErrorResponse: responseData => {
         return responseData.data;
       },
+      invalidatesTags: [
+        'InspectionHistory',
+        'InspectionDetail',
+        'InspectionReport',
+      ],
     }),
   }),
 });

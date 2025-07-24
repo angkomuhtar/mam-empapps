@@ -19,7 +19,6 @@ import FileViewer from 'react-native-file-viewer';
 import Loading from '../../../components/loading.component';
 import {useSignedPkwtMutation} from '../../../../applications/slices/contract.slice';
 import Alert from '@components/alert.component';
-import {set} from 'zod';
 // import {Platform} from 'react-native';
 
 const PkwtDetailScreen = ({navigation, route}) => {

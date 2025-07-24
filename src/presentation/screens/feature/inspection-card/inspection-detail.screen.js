@@ -9,10 +9,16 @@ import moment from 'moment';
 import {useGetInspectDetailQuery} from '@slices/inspection.slice';
 import _ from 'lodash';
 import Alert from '@components/alert.component';
+import Icon from 'react-native-vector-icons/Ionicons';
+import RNFS from 'react-native-fs';
 import {useVerifyInspectionMutation} from '../../../../applications/slices/inspection.slice';
+import FileViewer from 'react-native-file-viewer';
+import {API_URL, APP_ENV, API_URL_DEV_IOS, API_URL_DEV_AND} from '@env';
 
 const InspectionDetail = ({route}) => {
   const {id, type} = route.params;
+
+  const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({
     show: false,
     type: 'success',
@@ -24,6 +30,13 @@ const InspectionDetail = ({route}) => {
     },
     onDissmiss: false,
   });
+
+  const url =
+    APP_ENV == 'production'
+      ? `${API_URL}/inspection/${id}/export_pdf`
+      : Platform.OS == 'android'
+      ? `${API_URL_DEV_AND}/inspection/${id}/export_pdf`
+      : `${API_URL_DEV_IOS}/inspection/${id}/export_pdf`;
 
   const {data, isLoading} = useGetInspectDetailQuery({id});
   const [verify, {isLoading: isVerifying, isSuccess, isError, error}] =
@@ -38,7 +51,13 @@ const InspectionDetail = ({route}) => {
     data: items,
   }));
 
-  console.log('sections', data);
+  useEffect(() => {
+    if (isLoading) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     if (isError) {
@@ -66,7 +85,44 @@ const InspectionDetail = ({route}) => {
     }
   }, [isVerifying, isSuccess, isError]);
 
-  if (isLoading) return <Loading />;
+  const openFile = () => {
+    const filename = `inspection_${data.inspection_number}`;
+    const newFilename = filename.replace(/\//g, '_').toLowerCase();
+    const localFile = `${RNFS.DocumentDirectoryPath}/${newFilename}.pdf`;
+
+    const options = {
+      fromUrl: url,
+      toFile: localFile,
+    };
+
+    setLoading(true);
+    RNFS.downloadFile(options)
+      .promise.then(() => {
+        setLoading(false);
+        console.log('File downloaded to:', localFile);
+
+        FileViewer.open(localFile);
+      })
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error);
+
+        setAlert({
+          visible: true,
+          type: 'error',
+          title: 'Gagal',
+          message: 'Gagal membuka dokumen, silahkan coba lagi',
+          onOK: () => {
+            setAlert({...alert, visible: false});
+          },
+        });
+      });
+  };
+
+  if (loading) return <Loading />;
   return (
     <Layout>
       <VStack px={5} pt={3} className="flex-1">
@@ -74,19 +130,26 @@ const InspectionDetail = ({route}) => {
           back={true}
           title="Inspection Card Detail"
           rightIcon={
-            <View
-              className={`py-1 px-3 ${
-                data?.status == 'OPEN'
-                  ? 'bg-red-500'
-                  : data?.status == 'ONPROGRESS'
-                  ? 'bg-yellow-500'
-                  : 'bg-green-500'
-              } rounded-sm text-white`}>
-              <Text
-                className="text-[10px] text-white"
-                style={{fontFamily: 'Inter-ExtraBold'}}>
-                {data?.status}
-              </Text>
+            <View className="flex-row items-center">
+              {data?.status == 'verified' && (
+                <TouchableOpacity onPress={openFile} className="mr-2">
+                  <Icon name="cloud-download-outline" size={20} color="#000" />
+                </TouchableOpacity>
+              )}
+              <View
+                className={`py-1 px-3 ${
+                  data?.status == 'OPEN'
+                    ? 'bg-red-500'
+                    : data?.status == 'ONPROGRESS'
+                    ? 'bg-yellow-500'
+                    : 'bg-green-500'
+                } rounded-sm text-white`}>
+                <Text
+                  className="text-[10px] text-white"
+                  style={{fontFamily: 'Inter-ExtraBold'}}>
+                  {data?.status}
+                </Text>
+              </View>
             </View>
           }
         />
@@ -134,12 +197,12 @@ const InspectionDetail = ({route}) => {
                     {section.title}
                   </Text>
                   {section.data.map(item => {
-                    if (item?.answer == 'yes') {
+                    if (item?.answer == 'yes' || item?.answer == 'na') {
                       return (
                         <DetailValue
                           key={item.id}
                           label={item.question.question}
-                          value="Sesuai"
+                          value={item?.answer == 'yes' ? 'Sesuai' : 'N/A'}
                         />
                       );
                     } else if (item?.answer == 'no') {
