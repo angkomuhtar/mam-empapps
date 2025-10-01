@@ -12,6 +12,8 @@ module.exports = {
           '@components': './src/presentation/components',
           '@navigations': './src/applications/navigations',
           '@stores': './src/stores',
+          '@schema': './src/applications/schema',
+          '@hooks': './src/applications/hooks',
           '@screens': './src/presentation/screens',
           '@features': './src/presentation/screens/feature',
           '@requests': './src/presentation/screens/request-and-approval',

@@ -30,7 +30,7 @@ export const Menu = ({label, source, onpress, num, index}) => {
   const widthDiv = width / num - 16;
   return (
     <HStack>
-      {(index + num) % num !== 0 && (
+      {index % num !== 0 && (
         <View className="h-full pt-5">
           <View className="h-5 w-[1px] mx-1 bg-slate-300"></View>
         </View>

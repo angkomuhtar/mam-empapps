@@ -23,7 +23,6 @@ const ChangePassword = () => {
   const [changePass, {isError, error, isLoading, isSuccess}] =
     useChangePassMutation();
 
-  console.log('err', isError, error);
   return (
     <Layout>
       {isSuccess && (

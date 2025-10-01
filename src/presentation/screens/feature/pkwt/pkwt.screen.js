@@ -1,16 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from '@components/layout.component';
-import {HStack, Text, VStack} from 'native-base';
+import {Text, VStack} from 'native-base';
 import Header from '@components/navigation/header.component';
 
-import SignatureScreen from 'react-native-signature-canvas';
 import {FlatList, RefreshControl, TouchableOpacity, View} from 'react-native';
-import {useGetPkwtListQuery} from '@slices/contract.slice';
+import {useGetPkwtListQuery} from '@slices/pkwt.slice';
 import HazardListLoad from '@components/hazard-list-load.component';
 import Empty from '@components/empty.comnponent';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useGetProfileQuery} from '../../../../applications/slices/user.slice';
-import {navigate} from '../../../../applications/utils/RootNavigation';
+import {useGetProfileQuery} from '@slices/user.slice';
+import {navigate} from '@utils/RootNavigation';
 
 const PkwtScreen = ({navigation}) => {
   const [page, setPage] = useState(1);
@@ -36,7 +35,6 @@ const PkwtScreen = ({navigation}) => {
       setLoad(false);
     }
   }, [data]);
-  console.log('result', data, error);
 
   const ContractCard = ({item, onPress}) => {
     let icon = '',
@@ -164,16 +162,6 @@ const PkwtScreen = ({navigation}) => {
           />
         )}
       </VStack>
-      {/* <SignatureScreen
-        ref={ref}
-        // onEnd={handleEnd}
-        onOK={handleOK}
-        onEmpty={handleEmpty}
-        onClear={handleClear}
-        onGetData={handleData}
-        autoClear={false}
-        descriptionText={'Digital Signature'}
-      /> */}
     </Layout>
   );
 };

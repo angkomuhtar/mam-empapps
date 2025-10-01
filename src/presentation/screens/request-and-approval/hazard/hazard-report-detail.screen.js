@@ -79,7 +79,7 @@ const HazardReportDetails = ({route}) => {
     }
   }, [postError, isSuccess]);
 
-  console.log(postResult, postError, isSuccess, isError);
+  console.log(postResult, postError, isSuccess, isError, data);
 
   if (isLoading || postLoading) return <Loading />;
   return (
@@ -110,16 +110,16 @@ const HazardReportDetails = ({route}) => {
           rightIcon={
             <View
               className={`py-1 px-3 ${
-                data.status == 'OPEN'
+                data?.status == 'OPEN'
                   ? 'bg-red-500'
-                  : data.status == 'ONPROGRESS'
+                  : data?.status == 'ONPROGRESS'
                   ? 'bg-yellow-500'
                   : 'bg-green-500'
               } rounded-sm text-white`}>
               <Text
                 className="text-[10px] text-white"
                 style={{fontFamily: 'Inter-ExtraBold'}}>
-                {data.status}
+                {data?.status}
               </Text>
             </View>
           }
@@ -130,12 +130,12 @@ const HazardReportDetails = ({route}) => {
           <VStack space={3} pb={5}>
             <DetailValue
               label="nomor hazard report"
-              value={data.hazard_report_number}
+              value={data?.hazard_report_number}
             />
             <DetailValue
               label="Kategori"
               value={
-                data.category == 'KTA'
+                data?.category == 'KTA'
                   ? 'Kondisi Tidak Aman'
                   : 'Tindakan Tidak Aman'
               }
@@ -143,9 +143,9 @@ const HazardReportDetails = ({route}) => {
             <DetailValue
               label="Lokasi Temuan"
               value={
-                data.id_location == '999'
-                  ? data.other_location
-                  : data.location.location
+                data?.id_location == '999'
+                  ? data?.other_location
+                  : data?.location.location
               }
             />
             <DetailValue

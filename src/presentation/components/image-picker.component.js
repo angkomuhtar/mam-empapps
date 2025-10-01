@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {HStack, Pressable, VStack} from 'native-base';
-// import {launchImageLibrary} from 'react-native-image-picker';
 import Picker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {

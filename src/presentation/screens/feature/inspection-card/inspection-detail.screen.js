@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import RNFS from 'react-native-fs';
 import {useVerifyInspectionMutation} from '../../../../applications/slices/inspection.slice';
 import FileViewer from 'react-native-file-viewer';
-import {API_URL, APP_ENV, API_URL_DEV_IOS, API_URL_DEV_AND} from '@env';
+import {API_URL, APP_ENV, API_URL_DEV} from '@env';
 
 const InspectionDetail = ({route}) => {
   const {id, type} = route.params;
@@ -34,9 +34,7 @@ const InspectionDetail = ({route}) => {
   const url =
     APP_ENV == 'production'
       ? `${API_URL}/inspection/${id}/export_pdf`
-      : Platform.OS == 'android'
-      ? `${API_URL_DEV_AND}/inspection/${id}/export_pdf`
-      : `${API_URL_DEV_IOS}/inspection/${id}/export_pdf`;
+      : `${API_URL_DEV}/inspection/${id}/export_pdf`;
 
   const {data, isLoading} = useGetInspectDetailQuery({id});
   const [verify, {isLoading: isVerifying, isSuccess, isError, error}] =

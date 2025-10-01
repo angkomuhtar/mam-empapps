@@ -37,10 +37,15 @@ import LottieView from 'lottie-react-native';
 import HomeCard from '../../components/home-card';
 import {listMenu} from '../../../applications/utils/constant';
 import {Menu, TimeCard} from './home-components';
+import messaging from '@react-native-firebase/messaging';
+import {useRegisterTokenMutation} from '../../../applications/slices/notif.slice';
+
+import notifee from '@notifee/react-native';
 
 const Home = ({navigation}) => {
   const {data: users} = useGetProfileQuery();
   const {data: today, refetch} = useGetTodayQuery();
+  const [register_token] = useRegisterTokenMutation();
   const {data} = useGetClockRecapQuery();
   const [sleepDuration, setSleepDuration] = useState(0);
 
@@ -113,6 +118,35 @@ const Home = ({navigation}) => {
       setSleepDuration(dur);
     }
   }, [today]);
+
+  async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (enabled) {
+      getToken();
+    }
+  }
+
+  const getToken = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+    if (token) {
+      console.log('token update');
+      register_token({
+        token: token,
+      });
+    } else {
+      console.log('cannot get token');
+    }
+  };
+
+  useEffect(() => {
+    if (users?.fcm_token == null) {
+      requestUserPermission();
+    }
+  }, [users]);
 
   const downloadFile = () => {
     Linking.openURL(versionApp?.download).catch(err =>
@@ -249,7 +283,6 @@ const Home = ({navigation}) => {
               </View>
             </View>
           </View>
-
           <View className="bg-primary-600">
             <View className="bg-[#fafafa] rounded-tl-[60px] min-h-[100px] py-7 px-5 pb-40">
               <HomeCard title="Semua Fitur">
@@ -268,7 +301,6 @@ const Home = ({navigation}) => {
                   }}
                   numColumns={numColums}
                   key={numColums}
-                  keyExtractor={index => index}
                 />
               </HomeCard>
 
@@ -279,7 +311,6 @@ const Home = ({navigation}) => {
                     <Text
                       className="text-xs text-black"
                       style={{fontFamily: 'OpenSans-Light'}}>
-                      {/* Ada <Text style={{fontFamily: 'OpenSans-Bold'}}>100 </Text> */}
                       Laporan dan Pengajuan yang di tujukan kepada anda untuk di
                       tindak lanjuti
                     </Text>

@@ -3,8 +3,6 @@ import {LEARN_API_URL} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {refreshToken} from '../utils/ApiCall';
 
-// const api_url = PKWT_API_URL
-
 const baseQuery = fetchBaseQuery({
   baseUrl: LEARN_API_URL,
   credentials: 'include',

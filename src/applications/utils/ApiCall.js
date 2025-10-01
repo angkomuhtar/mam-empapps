@@ -1,14 +1,8 @@
 import axios from 'axios';
-import {API_URL, APP_ENV, API_URL_DEV_IOS, API_URL_DEV_AND} from '@env';
+import {API_URL, APP_ENV, API_URL_DEV} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Platform} from 'react-native';
 
-const api_url =
-  APP_ENV == 'production'
-    ? API_URL
-    : Platform.OS == 'android'
-    ? API_URL_DEV_AND
-    : API_URL_DEV_IOS;
+const api_url = APP_ENV == 'production' ? API_URL : API_URL_DEV;
 
 export const apiClient = axios.create({
   baseURL: api_url,
@@ -32,7 +26,8 @@ apiClient.interceptors.request.use(async function (config, data) {
     await apiPublic
       .post('auth/refresh', {Authorization: 'Bearer ' + token})
       .then(async ({data}) => {
-        await AsyncStorage.setItem('@token', data.accessToken);
+        await AsyncStorage.setItem('@token', data.authorisation.token);
+        config.headers.Authorization = 'Bearer ' + data.authorisation.token;
       })
       .catch(err => {
         console.log('error in intercept');
@@ -44,6 +39,10 @@ apiClient.interceptors.request.use(async function (config, data) {
 export const refreshToken = async () => {
   try {
     const token = await AsyncStorage.getItem('@token');
+    if (!token) {
+      return false;
+    }
+
     const res = await apiPublic.post(
       'auth/refresh',
       {},
@@ -53,8 +52,9 @@ export const refreshToken = async () => {
         },
       },
     );
+
     if (res.status == 200) {
-      await AsyncStorage.setItem('@token', res.data.authorisation.token);
+      await AsyncStorage.setItem('@token', res?.data?.authorisation?.token);
       return true;
     }
     return false;

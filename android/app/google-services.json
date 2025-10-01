@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "905590242025",
+    "project_id": "empapps-f0fb0",
+    "storage_bucket": "empapps-f0fb0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905590242025:android:00ea6f8d00465bebf04e78",
+        "android_client_info": {
+          "package_name": "com.mitraabadimahakam.eapps"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPwWohs-UMZgY2Y7NU27GgfXVYQ7N_Kx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,14 +1,9 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {API_URL, APP_ENV, API_URL_DEV_IOS, API_URL_DEV_AND} from '@env';
+import {API_URL, APP_ENV, API_URL_DEV} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {refreshToken} from '../utils/ApiCall';
 
-const api_url =
-  APP_ENV == 'production'
-    ? API_URL
-    : Platform.OS == 'android'
-    ? API_URL_DEV_AND
-    : API_URL_DEV_IOS;
+const api_url = APP_ENV == 'production' ? API_URL : API_URL_DEV;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: api_url,

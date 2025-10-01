@@ -72,7 +72,7 @@ const SopListScreen = () => {
             />
           }
           ItemSeparatorComponent={() => <View className="h-3"></View>}
-          ListFooterComponent={() => <View className="h-2 0"></View>}
+          ListFooterComponent={() => <View className="h-20"></View>}
         />
       )}
     </VStack>

@@ -1,7 +1,7 @@
 import {View, Text, Pressable, Modal, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {HStack, VStack} from 'native-base';
-import moment from 'moment';
+import moment, {max} from 'moment';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CalendarPicker from 'react-native-calendar-picker';
 
@@ -11,15 +11,27 @@ const Calendar = ({
   onChange,
   range = false,
   backDate = false,
+  minDate = null,
+  maxDate = null,
   label,
+  disabled = false,
+  initialDate = null,
 }) => {
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
 
   const [visible, setVisible] = useState(false);
+
+  const isDate = val => !isNaN(new Date(val).getTime());
   return (
-    <Pressable onPress={() => setVisible(true)}>
-      <HStack className="border border-primary-100 py-2 px-4 rounded-md bg-white">
+    <Pressable
+      onPress={() => {
+        if (!disabled) setVisible(true);
+      }}>
+      <HStack
+        className={`border border-primary-100 py-2 px-4 rounded-md ${
+          disabled ? 'bg-gray-100' : 'bg-white'
+        }`}>
         <VStack className="flex-1 items-start">
           <Text
             className="text-xs text-primary-950 capitalize"
@@ -64,7 +76,11 @@ const Calendar = ({
               }}
               selectedStartDate={value?.start ?? value}
               selectedEndDate={value?.end}
-              minDate={backDate ? new Date() : null}
+              minDate={
+                minDate ? new Date(minDate) : backDate ? new Date() : null
+              }
+              maxDate={maxDate ? new Date(maxDate) : null}
+              initialDate={initialDate ?? new Date()}
               selectedDayColor="#08b"
               allowRangeSelection={range}
               startFromMonday={true}

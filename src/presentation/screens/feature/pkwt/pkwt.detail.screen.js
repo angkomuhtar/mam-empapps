@@ -17,8 +17,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import Loading from '../../../components/loading.component';
-import {useSignedPkwtMutation} from '../../../../applications/slices/contract.slice';
+import {useSignedPkwtMutation} from '../../../../applications/slices/pkwt.slice';
 import Alert from '@components/alert.component';
+import {now} from 'moment';
 // import {Platform} from 'react-native';
 
 const PkwtDetailScreen = ({navigation, route}) => {
@@ -50,7 +51,9 @@ const PkwtDetailScreen = ({navigation, route}) => {
   }
 
   const extension = getUrlExtension(url);
-  const localFile = `${RNFS.DocumentDirectoryPath}/temporaryfile.${extension}`;
+  const localFile = `${RNFS.DocumentDirectoryPath}/pkwt-${now()}.${extension}`;
+
+  console.log(localFile);
 
   const ref = useRef();
 

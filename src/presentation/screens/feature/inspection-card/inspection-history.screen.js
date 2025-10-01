@@ -21,7 +21,6 @@ const InspectionHistory = ({navigation}) => {
   const [item, setItem] = useState([]);
   useEffect(() => {
     setPage(1);
-    console.log('focus');
   }, [navigation]);
 
   useEffect(() => {

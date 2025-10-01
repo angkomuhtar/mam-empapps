@@ -9,14 +9,12 @@ import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import HomeBase from './home.stack';
 import AuthBase from './auth.stack';
 import {setLogin} from '@slices/login.slice';
-import {useGetProfileQuery} from '@slices/user.slice';
 import {refreshToken} from '../utils/ApiCall';
 
 const MainNavigation = ({navigation}) => {
   const {getItem} = useAsyncStorage('@token');
   const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
-  // const {data: userData, error, isLoading, isSuccess} = useGetProfileQuery();
 
   const {isLoggedIn} = useSelector(state => state.login);
 

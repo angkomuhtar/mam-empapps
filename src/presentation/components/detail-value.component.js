@@ -1,8 +1,9 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import {HStack, VStack} from 'native-base';
+import Icon from 'react-native-vector-icons/Octicons';
 
-const DetailValue = ({label, value}) => {
+const DetailValue = ({label, value, icon = null}) => {
   const ValueArray = ({data}) => {
     return (
       <HStack className="items-center" space={2}>
@@ -34,17 +35,22 @@ const DetailValue = ({label, value}) => {
         style={{fontFamily: 'Inter-Light'}}>
         {label}
       </Text>
-      {Array.isArray(value) ? (
-        <ValueArray data={value} />
-      ) : (
-        <View className="">
-          <Text
-            style={{fontFamily: 'OpenSans-Medium'}}
-            className="text-sm text-primary-950">
-            {value}
-          </Text>
-        </View>
-      )}
+      <HStack className="items-center" space={2}>
+        {icon && (
+          <Icon name="verified" size={14} className="mr-2" color="#22c55e" />
+        )}
+        {Array.isArray(value) ? (
+          <ValueArray data={value} />
+        ) : (
+          <View className="">
+            <Text
+              style={{fontFamily: 'OpenSans-Medium'}}
+              className="text-sm text-primary-950">
+              {value}
+            </Text>
+          </View>
+        )}
+      </HStack>
     </VStack>
   );
 };

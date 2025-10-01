@@ -17,7 +17,7 @@ export const Quote = [
 export const listMenu = [
   {
     label: 'Durasi Tidur',
-    source: require('@images/features/sleepDuration.png'),
+    source: require('@images/features/sleep-duration.png'),
     onpress: () => navigate('sleep'),
   },
   {
@@ -27,13 +27,13 @@ export const listMenu = [
   },
   {
     label: 'Penanganan Bahaya',
-    source: require('@images/features/penanganan-bahaya.png'),
+    source: require('@images/features/hazard-action.png'),
     onpress: () => navigate('hazard-action'),
   },
   {
     label: 'Cuti & Izin',
     source: require('@images/features/leave.png'),
-    onpress: () => navigate('leave'),
+    onpress: () => navigate('leave-landing'),
   },
   {
     label: 'Kartu Inspeksi',
@@ -46,8 +46,16 @@ export const listMenu = [
     onpress: () => navigate('pkwt'),
   },
   {
+    label: 'P2H',
+    source: require('@images/features/p2h.png'),
+    onpress: () => {
+      // navigate('p2h');
+      alert('Fitur dalam pengembangan');
+    },
+  },
+  {
     label: 'Menu Lainnya',
-    source: require('@images/features/allFeature.png'),
+    source: require('@images/features/all-menu.png'),
     onpress: () => navigate('others'),
   },
 ];

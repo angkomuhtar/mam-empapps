@@ -2,9 +2,9 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   Image,
   Dimensions,
+  Platform,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Layout from '@components/layout.component';
@@ -19,15 +19,17 @@ import {
   getDeviceId,
   getModel,
 } from 'react-native-device-info';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import Loading from '@components/loading.component';
 import Input from '@components/input.component';
 import Alert from '@components/alert.component';
 import {Controller, useForm} from 'react-hook-form';
 import {getVersion} from 'react-native-device-info';
 import {useSetLogInMutation} from '@slices/auths.slice';
-import {setAsync, getAsync} from '@utils/SecureStore';
+import {setAsync} from '@utils/SecureStore';
 import {setLogin} from '../../../applications/slices/login.slice';
+import messaging from '@react-native-firebase/messaging';
+import {useRegisterTokenMutation} from '../../../applications/slices/notif.slice';
 
 const Login = ({navigation}) => {
   const {
@@ -62,6 +64,9 @@ const Login = ({navigation}) => {
   const dispatch = useDispatch();
   const [setLogIn, {isLoading, isSuccess, data: loginData, error}] =
     useSetLogInMutation();
+
+  const [register_token, {isSuccess: sucToken, error: errToken}] =
+    useRegisterTokenMutation();
 
   const toatsShow = ({message = 'terjadi kesalahan', errno = '500'}) => {
     toast.show({
@@ -99,6 +104,30 @@ const Login = ({navigation}) => {
     });
   }, []);
 
+  async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      getToken();
+    }
+  }
+
+  const getToken = async () => {
+    const token = await messaging().getToken();
+    if (token) {
+      console.log(token);
+
+      register_token({
+        token: token,
+      });
+    } else {
+      console.log('cannot get token');
+    }
+  };
+
   useEffect(() => {
     if (error) {
       toast.show({
@@ -122,6 +151,7 @@ const Login = ({navigation}) => {
   useEffect(() => {
     if (isSuccess) {
       setAsync('@token', loginData.authorisation.token);
+      requestUserPermission();
       dispatch(setLogin(true));
     }
     return () => {

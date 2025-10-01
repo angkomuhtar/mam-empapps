@@ -4,6 +4,7 @@
     "paths": {
       "@slices/*": ["./src/applications/slices/*"],
       "@actions/*": ["./src/applications/actions/*"],
+      "@schema/*": ["./src/applications/schema/*"],
       "@screens/*": ["./src/presentation/screens/*"],
       "@components/*": ["./src/presentation/components/*"],
 

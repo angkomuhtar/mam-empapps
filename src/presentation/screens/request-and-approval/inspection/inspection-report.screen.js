@@ -34,7 +34,6 @@ const InspectionReport = ({navigation}) => {
     const showSubscription = Keyboard.addListener(
       Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
       e => {
-        console.log('this from event', e);
         setBottom(e.endCoordinates.height);
       },
     );

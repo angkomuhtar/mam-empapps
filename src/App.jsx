@@ -1,17 +1,13 @@
 import * as React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Provider, useDispatch} from 'react-redux';
 import {store} from './applications/root.state';
 import MainNavigation from './applications/navigations/root.stack';
 import {NativeBaseProvider, extendTheme} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useAsyncStorage} from '@react-native-async-storage/async-storage';
-import {setLogin} from './applications/slices/login.slice';
-import {useRefreshTokenMutation} from './applications/slices/auths.slice';
-// import codePush from 'react-native-code-push';
+import {Alert} from 'react-native';
+import {AlertProvider} from './applications/hooks/useAlert';
 
 Icon.loadFont();
-const Stack = createNativeStackNavigator();
 const ColorTheme = {
   primary: {
     50: '#fff1f2',
@@ -28,11 +24,14 @@ const ColorTheme = {
   },
 };
 const theme = extendTheme(ColorTheme);
+
 function App() {
   return (
     <Provider store={store}>
       <NativeBaseProvider theme={theme}>
-        <MainNavigation />
+        <AlertProvider>
+          <MainNavigation />
+        </AlertProvider>
       </NativeBaseProvider>
     </Provider>
   );
