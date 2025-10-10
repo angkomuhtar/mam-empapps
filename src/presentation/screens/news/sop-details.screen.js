@@ -1,6 +1,12 @@
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {HStack, VStack} from 'native-base';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {HStack, List, VStack} from 'native-base';
 import {useGetFolderDetailQuery} from '../../../applications/slices/sop.slice';
 import Empty from '../../components/empty.comnponent';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,15 +15,28 @@ import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import Loading from '../../components/loading.component';
 import {SopListLoading} from './sop-list.screen';
+import {set} from 'zod';
 
 const SopDetailsScreen = ({route, navigation}) => {
   const {id, name} = route.params;
+  const [listItem, setListItem] = useState([]);
+  const [page, setPage] = useState(1);
   const {data, error, refetch, isLoading, isFetching} = useGetFolderDetailQuery(
-    {id: id},
+    {id: id, page: page},
   );
   const [loading, setLoading] = useState(false);
 
-  console.log(data, error, 'data dan report');
+  useEffect(() => {
+    setPage(1);
+  }, [navigation]);
+
+  useEffect(() => {
+    if (data && page === 1) {
+      setListItem(data?.data);
+    } else if (data && page > 1) {
+      setListItem([...listItem, ...data?.data]);
+    }
+  }, [data]);
 
   const viewFile = ({filename, url}) => {
     const localFile = `${RNFS.DocumentDirectoryPath}/${filename}.pdf`;
@@ -36,18 +55,10 @@ const SopDetailsScreen = ({route, navigation}) => {
       })
       .catch(error => {
         setLoading(false);
-        // setAlert({
-        //   visible: true,
-        //   type: 'error',
-        //   title: 'Gagal',
-        //   message: 'Gagal membuka dokumen, silahkan coba lagi',
-        //   onOK: () => {
-        //     setAlert({...alert, visible: false});
-        //   },
-        // });
-        console.error(error);
       });
   };
+
+  console.log(data?.meta, 'page', page);
 
   return (
     <VStack className="px-5 pt-3 bg-[#fafafa] flex-1 pb-8">
@@ -65,7 +76,7 @@ const SopDetailsScreen = ({route, navigation}) => {
         </HStack>
       </TouchableOpacity>
 
-      {isFetching || isLoading ? (
+      {isLoading ? (
         <VStack space={3}>
           <SopListLoading />
           <SopListLoading />
@@ -73,12 +84,13 @@ const SopDetailsScreen = ({route, navigation}) => {
         </VStack>
       ) : (
         <FlatList
-          data={data}
+          data={listItem}
           showsVerticalScrollIndicator={false}
-          renderItem={({item}) => {
+          renderItem={({item, index}) => {
             if (item.type == 'folder') {
               return (
                 <TouchableOpacity
+                  key={index}
                   onPress={() => {
                     navigation.push('detail-folder-sop', {
                       id: item.id,
@@ -101,6 +113,7 @@ const SopDetailsScreen = ({route, navigation}) => {
             } else if (item.type == 'file')
               return (
                 <TouchableOpacity
+                  key={index}
                   onPress={() => {
                     viewFile({filename: item.title, url: item.url});
                   }}>
@@ -119,8 +132,27 @@ const SopDetailsScreen = ({route, navigation}) => {
               );
           }}
           ListEmptyComponent={<Empty />}
+          refreshControl={
+            <RefreshControl
+              refreshing={isLoading}
+              onRefresh={() => setPage(1)}
+            />
+          }
           ItemSeparatorComponent={() => <View className="h-3"></View>}
-          ListFooterComponent={() => <View className="h-20"></View>}
+          onEndReachedThreshold={0.3}
+          onEndReached={() => {
+            if (data?.meta.total > listItem.length) setPage(page + 1);
+          }}
+          ListFooterComponent={() => (
+            <View className="">
+              {data?.meta.total > listItem.length && (
+                <VStack mt={3}>
+                  <SopListLoading />
+                </VStack>
+              )}
+              <View className="h-20"></View>
+            </View>
+          )}
         />
       )}
     </VStack>

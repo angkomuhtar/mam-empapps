@@ -39,16 +39,16 @@ export const sopApiSlice = createApi({
 export const sopSlice = sopApiSlice.injectEndpoints({
   endpoints: builder => ({
     getSOPFolder: builder.query({
-      query: () => `/sop/sop-folders`,
+      query: ({page = 1}) => `/sop/sop-folders?page=${page}`,
       transformResponse: responseData => {
-        return responseData.data;
+        return responseData;
       },
       providesTags: ['list-folder'],
     }),
     getFolderDetail: builder.query({
-      query: ({id}) => `/sop/sop-folders/${id}`,
+      query: ({id, page = 1}) => `/sop/sop-folders/${id}?page=${page}`,
       transformResponse: responseData => {
-        return responseData.data;
+        return responseData;
       },
     }),
   }),
