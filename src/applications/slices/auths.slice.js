@@ -32,7 +32,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
         'Division',
         'Project',
         'Location',
-        'HazardRequest',
         'HazardAction',
       ],
     }),

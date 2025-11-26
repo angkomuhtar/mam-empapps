@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Layout from '@components/layout.component';
-import {Text, VStack} from 'native-base';
+import {Button, Text, VStack} from 'native-base';
 import Header from '@components/navigation/header.component';
 
 import {FlatList, RefreshControl, TouchableOpacity, View} from 'react-native';
@@ -35,6 +35,8 @@ const PkwtScreen = ({navigation}) => {
       setLoad(false);
     }
   }, [data]);
+
+  console.log(page);
 
   const ContractCard = ({item, onPress}) => {
     let icon = '',
@@ -105,7 +107,7 @@ const PkwtScreen = ({navigation}) => {
         <Header title="Kontrak" back={true} />
       </VStack>
       <VStack className="px-5 pt-3 bg-[#fafafa] flex-1 pb-8">
-        {isLoading || isFetching ? (
+        {isLoading ? (
           <HazardListLoad />
         ) : (
           <FlatList
@@ -113,7 +115,7 @@ const PkwtScreen = ({navigation}) => {
             showsVerticalScrollIndicator={false}
             renderItem={({item, key}) => (
               <ContractCard
-                key={key}
+                key={key + Math.random()}
                 item={item}
                 onPress={() => navigate('pkwt-detail', {item})}
               />

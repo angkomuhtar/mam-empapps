@@ -27,14 +27,22 @@ const baseQueryWithReauth = (args, api, extraOptions) => {
 export const pkwtApiSlice = createApi({
   reducerPath: 'pkwt',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['pkwt-list', 'cuti-list', 'cuti-detail'],
+  tagTypes: ['pkwt-list', 'cuti-list', 'cuti-detail', 'pkwt-last'],
   endpoints: builder => ({}),
 });
 
 export const PkwtSlice = pkwtApiSlice.injectEndpoints({
   endpoints: builder => ({
+    getPkwtLatest: builder.query({
+      query: ({page = 1, user_id}) => `/latest-contracts?user_id=${user_id}`,
+      transformResponse: responseData => {
+        return responseData.data;
+      },
+      providesTags: ['pkwt-last'],
+    }),
     getPkwtList: builder.query({
-      query: ({page = 1, user_id}) => `/list-contracts?user_id=${user_id}`,
+      query: ({page = 1, user_id}) =>
+        `/list-contracts?user_id=${user_id}` + `&page=${page}`,
       transformResponse: responseData => {
         return responseData.data;
       },
@@ -90,6 +98,7 @@ export const PkwtSlice = pkwtApiSlice.injectEndpoints({
 });
 
 export const {
+  useGetPkwtLatestQuery,
   useGetPkwtListQuery,
   useSignedPkwtMutation,
   useGetCutiListQuery,

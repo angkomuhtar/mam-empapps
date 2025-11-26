@@ -5,7 +5,6 @@ import {
   Dimensions,
   Platform,
   PermissionsAndroid,
-  NativeModules,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {Box, CheckIcon, HStack, Image, Select, VStack} from 'native-base';
@@ -29,6 +28,11 @@ import RNMockLocationDetector from 'react-native-mock-location-detector';
 import {getVersion} from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Layout from '../../components/layout.component';
+import {
+  useGetPkwtLatestQuery,
+  useGetPkwtListQuery,
+} from '../../../applications/slices/pkwt.slice';
+import {useGetProfileQuery} from '../../../applications/slices/user.slice';
 
 const requestLocationPermission = async () => {
   try {
@@ -125,6 +129,16 @@ const Absen = ({navigation}) => {
   const {data: ab_location, isLoading: locLoading} = useGetAbsenLocationQuery();
   const [setClockIn, {isLoading: postLoading, data: clockReturn}] =
     useSetClockInMutation();
+  const {data: users} = useGetProfileQuery();
+  const {data: pkwt, isLoading: pkwtLoad} = useGetPkwtLatestQuery({
+    user_id: users?.id,
+  });
+  const {data: pkwtList} = useGetPkwtListQuery({
+    user_id: users?.id,
+  });
+
+  const withContract = pkwtList?.total > 0;
+  const activeContract = pkwt == null ? false : true;
 
   let version = getVersion();
 
@@ -366,7 +380,23 @@ const Absen = ({navigation}) => {
         onOk={alert.onOK}
         onDissmiss={alert.onDissmiss}
       />
-      {location?.coords ? (
+
+      {withContract && !activeContract ? (
+        <VStack className="flex-1 justify-center items-center bg-white h-full">
+          <Image
+            source={require('../../assets/images/error.png')}
+            resizeMode="contain"
+            alt="images"
+            className="h-32"
+          />
+          <Text
+            className="text-center text-primary-950 capitalize text-lg px-10"
+            style={{fontFamily: 'Inter-Bold'}}>
+            Maaf Anda tidak memiliki kontrak kerja yang aktif, silahkan hubungi
+            HRD
+          </Text>
+        </VStack>
+      ) : location?.coords ? (
         <VStack className="flex-1 justify-between bg-white h-full">
           <View className="flex-1 relative items-center">
             <MapView

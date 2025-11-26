@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  Dimensions,
   ScrollView,
   TouchableOpacity,
   Platform,
@@ -12,17 +11,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import Layout from '@components/layout.component';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {
-  Avatar,
-  Button,
-  Divider,
-  FlatList,
-  HStack,
-  Image,
-  Spacer,
-  Stack,
-  VStack,
-} from 'native-base';
+import {Avatar, Divider, FlatList, HStack, Spacer, VStack} from 'native-base';
 import RecapItem from '../../components/home/rekap-item.component';
 import {cDuration, checkImage} from '../../../applications/utils/utils';
 import {useGetProfileQuery, useGetAppVersionQuery} from '@slices/user.slice';
@@ -39,8 +28,11 @@ import {listMenu} from '../../../applications/utils/constant';
 import {Menu, TimeCard} from './home-components';
 import messaging from '@react-native-firebase/messaging';
 import {useRegisterTokenMutation} from '../../../applications/slices/notif.slice';
-
-import notifee from '@notifee/react-native';
+import {
+  useGetPkwtLatestQuery,
+  useGetPkwtListQuery,
+} from '../../../applications/slices/pkwt.slice';
+import {set} from 'zod';
 
 const Home = ({navigation}) => {
   const {data: users} = useGetProfileQuery();
@@ -48,18 +40,22 @@ const Home = ({navigation}) => {
   const [register_token] = useRegisterTokenMutation();
   const {data} = useGetClockRecapQuery();
   const [sleepDuration, setSleepDuration] = useState(0);
+  const [showNotif, setShowNotif] = useState(true);
 
   const iconSuccess = require('../../assets/images/error.json');
 
   let version = getVersion();
   let device = Platform.OS;
-  const {
-    data: versionApp,
-    isLoading: versionLoad,
-    error,
-  } = useGetAppVersionQuery(device);
+  const {data: versionApp, isLoading: versionLoad} =
+    useGetAppVersionQuery(device);
 
-  console.log(Platform.OS, version, versionApp);
+  const {data: pkwt, isLoading: pkwtLoad} = useGetPkwtLatestQuery({
+    user_id: users?.id,
+  });
+
+  const {data: pkwtList} = useGetPkwtListQuery({
+    user_id: users?.id,
+  });
 
   const renderData = durasi => {
     if (durasi > 0) {
@@ -163,6 +159,10 @@ const Home = ({navigation}) => {
   }
 
   const numColums = 4;
+  const withContract = pkwtList?.total > 0;
+  const activeContract = pkwt == null ? false : true;
+  const contractleft =
+    moment(pkwt?.end_date, 'DD-MM-YYYY').diff(moment(), 'days') ?? null;
 
   return (
     <>
@@ -285,6 +285,71 @@ const Home = ({navigation}) => {
           </View>
           <View className="bg-primary-600">
             <View className="bg-[#fafafa] rounded-tl-[60px] min-h-[100px] py-7 px-5 pb-40">
+              {withContract && !activeContract && (
+                <View className="bg-primary-500/80 rounded-lg border border-gray-200 mb-2">
+                  <View className="w-full flex flex-row pt-2 pb-1 px-4 items-center">
+                    <Icon name="notifications-circle" size={22} color="#000" />
+                    <Text
+                      className="text-lg ml-1 flex-1 text-black"
+                      style={{fontFamily: 'OpenSans-Bold'}}>
+                      Informasi
+                    </Text>
+                  </View>
+                  <View className="px-4 pb-3">
+                    <Text
+                      className="text-xs text-black"
+                      style={{fontFamily: 'OpenSans-Medium'}}>
+                      Kontrak Kerja Anda Belum Aktif Silahkan Hubungi HRD.
+                    </Text>
+                  </View>
+                </View>
+              )}
+
+              {activeContract && contractleft <= 7 && (
+                <View
+                  className={`bg-primary-500/80 rounded-lg border border-gray-200 mb-2 relative ${
+                    showNotif ? '' : 'hidden'
+                  }`}>
+                  <View className="absolute top-2 right-2 rounded-full z-10">
+                    <TouchableOpacity
+                      onPress={() => {
+                        setShowNotif(false);
+                      }}>
+                      <Icon name="close-circle" size={18} color="#000" />
+                    </TouchableOpacity>
+                  </View>
+                  <View className="w-full flex flex-row pt-2 pb-1 px-4 items-center">
+                    <Icon name="notifications-circle" size={22} color="#000" />
+                    <Text
+                      className="text-lg ml-1 flex-1 text-black"
+                      style={{fontFamily: 'OpenSans-Bold'}}>
+                      Informasi
+                    </Text>
+                  </View>
+                  <View className="px-3 pb-3">
+                    <Text
+                      className="text-xs text-black"
+                      style={{fontFamily: 'OpenSans-Medium'}}>
+                      Kontrak Kerja Anda akan
+                      <Text
+                        className="font-bold"
+                        style={{fontFamily: 'OpenSans-Bold'}}>
+                        {' berakhir dalam ' + contractleft + ' hari, '}
+                      </Text>
+                      pada tgl{' '}
+                      <Text
+                        className="font-bold"
+                        style={{fontFamily: 'OpenSans-Bold'}}>
+                        {moment(pkwt?.end_date, 'DD/MM/YYYY').format(
+                          ' DD MMMM YYYY ',
+                        )}
+                      </Text>
+                      Silahkan periksa dan perbarui kontrak kerja Anda tepat
+                      waktu untuk menghindari gangguan pada akses sistem.
+                    </Text>
+                  </View>
+                </View>
+              )}
               <HomeCard title="Semua Fitur">
                 <FlatList
                   data={listMenu}
